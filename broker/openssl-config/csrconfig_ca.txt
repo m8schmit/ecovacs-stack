@@ -1,0 +1,11 @@
+[ req ]
+default_md = sha256
+prompt = no
+req_extensions = req_ext
+distinguished_name = req_distinguished_name
+[ req_distinguished_name ]
+commonName = ecovacs-privacy-control CA
+organizationName = ecovacs-privacy-control
+[ req_ext ]
+keyUsage=critical,keyCertSign,cRLSign
+basicConstraints=critical,CA:true,pathlen:1
