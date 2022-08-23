@@ -1,8 +1,8 @@
 version: '3'
 
-# networks:
-#   ecovacs_stack:
-#     internal: true
+networks:
+  ecovacs_stack:
+    internal: true
 services:
   broker:
     build:
@@ -27,6 +27,7 @@ services:
       - 443:443
     networks:
       ecovacs_stack:
+      default:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -40,6 +41,7 @@ services:
       dockerfile: Dockerfile
     networks:
       ecovacs_stack:
+      default:
     volumes:
       - ./mqtt:/opt/app
     command: bash -c 'yarn install && yarn run dev'
@@ -53,6 +55,7 @@ services:
       dockerfile: Dockerfile
     networks:
       ecovacs_stack:
+      default:
     volumes:
       - ./requestListener:/opt/app
     environment:
