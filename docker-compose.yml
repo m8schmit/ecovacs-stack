@@ -1,28 +1,62 @@
 version: '3'
+
+# networks:
+#   ecovacs_stack:
+#     internal: true
 services:
   broker:
     build:
       context: ./broker
       dockerfile: Dockerfile
-    network_mode: 'host'
+    networks:
+      ecovacs_stack:
     volumes:
       - './broker/config:/mosquitto/config'
     environment:
       - PUID=1000
       - PGID=1000
+    stdin_open: true
+
+  nginx:
+    depends_on:
+      - broker
+      - request-listener
+    image: nginx:alpine
     ports:
       - 8883:8883
-      - 443:8883
+      - 443:443
+    networks:
+      ecovacs_stack:
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./nginx/:/etc/nginx:ro
+
+  mqtt:
+    depends_on:
+      - nginx
+    build:
+      context: ./mqtt
+      dockerfile: Dockerfile
+    networks:
+      ecovacs_stack:
+    volumes:
+      - ./mqtt:/opt/app
+    command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
-  backend:
+
+  request-listener:
     depends_on:
       - broker
     build:
-      context: ./backend
+      context: ./requestListener
       dockerfile: Dockerfile
+    networks:
+      ecovacs_stack:
     volumes:
-      - './backend:/opt/app'
-    ports:
-      - 8080:8080
+      - ./requestListener:/opt/app
+    environment:
+      - PUID=1000
+      - PGID=1000
     command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
