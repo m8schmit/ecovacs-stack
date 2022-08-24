@@ -1,7 +1,7 @@
 import { connect } from 'mqtt';
 
-// const client = connect('mqtts://mq-ww.ecouser.net:8883', { rejectUnauthorized: false });
-const client = connect('mqtts://192.168.1.170:8883', { rejectUnauthorized: false });
+const client = connect('mqtts://mq-ww.ecouser.net:8883', { rejectUnauthorized: false });
+// const client = connect('mqtts://192.168.1.170:8883', { rejectUnauthorized: false });
 console.info('starting mqtts listener');
 
 client.on('connect', () => {
@@ -11,7 +11,8 @@ client.on('connect', () => {
     }
   });
 
-  client.subscribe('#', (err) => {});
+  client.subscribe('p2p', (err) => {});
+  client.subscribe('attr', (err) => {});
 });
 
 client.on('error', (err) => {

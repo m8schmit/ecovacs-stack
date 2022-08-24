@@ -4,12 +4,21 @@ prompt = no
 req_extensions = req_ext
 distinguished_name = req_distinguished_name
 [ req_distinguished_name ]
-commonName = ecovacs-privacy-control
-organizationName = ecovacs-privacy-control
+commonName = ecovacs-stack
+organizationName = ecovacs-stack
 [ req_ext ]
 keyUsage=critical,digitalSignature,keyEncipherment
 extendedKeyUsage=serverAuth,clientAuth
 basicConstraints=critical,CA:false
 subjectAltName = @alt_names
 [ alt_names ]
-DNS.0 = *.ww.ecouser.net
+DNS.0 = ecovacs.com
+DNS.1 = *.ecovacs.com
+DNS.2 = ecouser.net
+DNS.3 = *.ecouser.net
+DNS.4 = ecovacs.net
+DNS.5 = *.ecovacs.net
+DNS.6 = *.ww.ecouser.net
+DNS.7 = *.dc-eu.ww.ecouser.net
+DNS.8 = *.dc.ww.ecouser.net
+DNS.9 = *.area.ww.ecouser.net

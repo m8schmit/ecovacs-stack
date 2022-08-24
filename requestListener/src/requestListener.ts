@@ -15,8 +15,8 @@ const requestListener = (req: any, res: any) => {
 
 const httpServer = createServer(options, requestListener);
 
-const host = '0.0.0.0';
-const port = 8443;
+const host = 'localhost';
+const port = 443;
 
 httpServer.listen(port, host, () => {
   console.log(`Server is running on http://${host}:${port}`);
