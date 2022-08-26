@@ -23,11 +23,12 @@ const botClass = 'kw9ayx';
 const resource = '6Ket';
 
 const getJSONFormatedRequestTopic = (command: string) =>
-  `iot/p2p/x/x/x/x/${command}/${botId}/${botClass}/${resource}/q/x/j`;
+  `iot/p2p/${command}/fooBot/bar/1234/${botId}/${botClass}/${resource}/q/x/j`;
+// iot/p2p/+/+/+/+/bd802ce4-40c6-4943-b33b-58e5b06881f0/kw9ayx/6Ket/+/+/+
 
 const sendJSONCommand = () => {
   const topic = getJSONFormatedRequestTopic('playSound');
-  const command = { body: { code: 0 } };
+  const command = { body: { data: { code: 0 } } };
   const formatedCommand = (command: {}) => JSON.stringify({ ...command, ...getHeader() });
   client.publish(topic, formatedCommand(command), { qos: 0, retain: false }, (err) =>
     err
@@ -36,7 +37,7 @@ const sendJSONCommand = () => {
   );
 };
 
-const client = connect('mqtts://broker:8883', { ca });
+const client = connect('mqtts://request-listener:8883', { ca });
 console.info('starting mqtts listener');
 
 client.on('connect', () => {

@@ -22,4 +22,4 @@ DNS.6 = *.ww.ecouser.net
 DNS.7 = *.dc-eu.ww.ecouser.net
 DNS.8 = *.dc.ww.ecouser.net
 DNS.9 = *.area.ww.ecouser.net
-DNS.10 = broker
+DNS.10 = request-listener
