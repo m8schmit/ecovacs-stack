@@ -42,25 +42,8 @@ services:
       dockerfile: Dockerfile
     networks:
       ecovacs_stack:
-      # default:
-    # network_mode: host
+      default:
     volumes:
       - ./mqtt:/opt/app
     command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
-
-  # request-listener:
-  #   depends_on:
-  #     - broker
-  #   build:
-  #     context: ./requestListener
-  #     dockerfile: Dockerfile
-  #   networks:
-  #     ecovacs_stack:
-  #   #   default:
-  #   # network_mode: host
-  #   volumes:
-  #     - ./requestListener:/opt/app
-  #   user: 1000:1000
-  #   command: bash -c 'yarn install && yarn run dev'
-  #   stdin_open: true

@@ -1,40 +1,38 @@
 import { connect } from 'mqtt';
 import fs from 'fs';
-import { XMLBuilder } from 'fast-xml-parser';
+import { createServer } from 'https';
+
+// "iot/p2p/[command]/[clientName]/[ecosys = ???]/[bot id]/[bot class]/[bot resource]/[q for request, p for response]/[j for json, x for xml] body: [parameters], header: [pri 2 for query, 1 for response][timestamps][timezone][version of ??]
+// const channel1 = `iot/p2p/+/+/+/+/${this.vacuum['did']}/${this.vacuum['class']}/${this.vacuum['resource']}/q/+/j`;
+// const channel2 = `iot/p2p/+/${this.vacuum['did']}/${this.vacuum['class']}/${this.vacuum['resource']}/+/+/+/p/+/j`;
+// const channel3 = `iot/atr/#`;
 
 const ca = fs.readFileSync('/opt/app/src/ca.crt');
-// bd802ce4-40c6-4943-b33b-58e5b06881f0/kw9ayx/6Ket/j
-// {"header":{"pri":1,"tzm":480,"ts":"1661309828436","ver":"0.0.1","fwVer":"1.4.5","hwVer":"0.1.1"},"body":{"data":{"isCharging":0,"mode":"slot"}}}
-// {"header":{"pri":1,"tzm":480,"ts":1661387791472,"ver":"0.0.1","fwVer":"1.4.5","hwVer":"0.1.1"},"body":{"td":"GetBatteryInfo","toId":"bd802ce4-40c6-4943-b33b-58e5b06881f"}}
 
-const botSerial = 'bd802ce4-40c6-4943-b33b-58e5b06881f0';
-const deviceType = 'kw9ayx';
+const getHeader = () => ({
+  header: {
+    pri: 2,
+    tzm: 480,
+    ts: Date.now(),
+    ver: '0.0.22',
+  },
+});
+
+const botId = 'bd802ce4-40c6-4943-b33b-58e5b06881f0';
+const botClass = 'kw9ayx';
 const resource = '6Ket';
 
-const getJSONFormatedTopic = (command: string) =>
-  `iot/p2p/${command}/x/x/x/${botSerial}/${deviceType}/${resource}/p/x/j`;
-
-const getXMLFormatedTopic = (command: string) =>
-  `iot/p2p/${command}/x/x/x/${botSerial}/${deviceType}/${resource}/q/x/x`;
+const getJSONFormatedRequestTopic = (command: string) =>
+  `iot/p2p/x/x/x/x/${command}/${botId}/${botClass}/${resource}/q/x/j`;
 
 const sendJSONCommand = () => {
-  const topic = getJSONFormatedTopic('GetWkVer');
-  const command = {};
-  client.publish(topic, Buffer.from(JSON.stringify(command)), { qos: 0, retain: false }, (err) =>
+  const topic = getJSONFormatedRequestTopic('playSound');
+  const command = { body: { code: 0 } };
+  const formatedCommand = (command: {}) => JSON.stringify({ ...command, ...getHeader() });
+  client.publish(topic, formatedCommand(command), { qos: 0, retain: false }, (err) =>
     err
       ? console.log('sending err: ', err)
-      : console.log(`${JSON.stringify(command)} correctly sended to [${topic}] !`),
-  );
-};
-
-const sendXMLCommand = () => {
-  const builder = new XMLBuilder({});
-  const topic = getXMLFormatedTopic('GetBrushLifeSpan');
-  const command = {};
-  client.publish(topic, Buffer.from(builder.build(command)), { qos: 0, retain: false }, (err) =>
-    err
-      ? console.log('sending err: ', err)
-      : console.log(`${JSON.stringify(command)} correctly sended to [${topic}] !`),
+      : console.log(`${formatedCommand(command)} correctly sended to [${topic}] !`),
   );
 };
 
@@ -46,7 +44,7 @@ client.on('connect', () => {
 
   client.subscribe('iot/atr/#');
 
-  client.subscribe(`iot/p2p/+/${botSerial}/${deviceType}/${resource}/#`, (err) => {
+  client.subscribe(`iot/p2p/+/${botId}/${botClass}/${resource}/+/+/+/p/+/j`, (err) => {
     if (!err) {
       sendJSONCommand();
     }
