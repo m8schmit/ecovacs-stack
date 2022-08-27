@@ -1,8 +1,9 @@
 #!/bin/ash
 set -e
 
+echo "here"
 # Create certificate
-if [ ! -f /mosquitto/config/ca.crt ]; then
+if [ ! -f /config/ca.crt ]; then
 	echo "Generate Certificates" 
 	openssl genrsa -out ca.key 4096
 	openssl req -new -nodes -key ca.key -config csrconfig_ca.txt -out ca.csr
@@ -12,16 +13,7 @@ if [ ! -f /mosquitto/config/ca.crt ]; then
 	openssl x509 -req -in server.csr -days 365 -CA ca.crt -CAkey ca.key \
     -extfile certconfig_server.txt -extensions req_ext -CAcreateserial -out server.crt
 
-	cp /ca.crt /mosquitto/config/
-	cp /server.crt /mosquitto/config/
-	cp /server.key /mosquitto/config/
-
+	cp /ca.crt /config/
+	cp /server.crt /config/
+	cp /server.key /config/
 fi
-
-# Set permissions
-user="$(id -u)"
-if [ "$user" = '0' ]; then
-	[ -d "/mosquitto" ] && chown -R mosquitto:mosquitto /mosquitto || true
-fi
-
-exec "$@"

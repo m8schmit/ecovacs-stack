@@ -8,7 +8,7 @@ const options = {
 };
 
 const requestListener = (req: any, res: any) => {
-  console.log(req, res);
+  console.log('HTTP Server Receive: ', req, res);
   res.setHeader('Content-Type', 'text/json');
   res.writeHead(200);
   res.end(`{"message": {"success!!"}}`);

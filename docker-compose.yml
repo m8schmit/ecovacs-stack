@@ -4,19 +4,29 @@ networks:
   ecovacs_stack:
     internal: true
 services:
-  # broker:
-  #   build:
-  #     context: ./broker
-  #     dockerfile: Dockerfile
-  #   networks:
-  #     ecovacs_stack:
-  #   # network_mode: host
-  #   volumes:
-  #     - './broker/config:/mosquitto/config'
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #   stdin_open: true
+  generate-cert:
+    build:
+      context: ./generateCert
+      dockerfile: Dockerfile
+    networks:
+      default:
+    volumes:
+      - './generateCert/config:/config'
+    command: ash -c './generate-cert.sh'
+    # user: 1000:1000
+    stdin_open: true
+
+  request-listener:
+    build:
+      context: ./requestListener
+      dockerfile: Dockerfile
+    networks:
+      ecovacs_stack:
+    volumes:
+      - ./requestListener:/opt/app
+    user: 1000:1000
+    command: bash -c 'yarn install && yarn run dev'
+    stdin_open: true
 
   nginx:
     depends_on:
@@ -45,17 +55,5 @@ services:
       default:
     volumes:
       - ./mqtt:/opt/app
-    command: bash -c 'yarn install && yarn run dev'
-    stdin_open: true
-
-  request-listener:
-    build:
-      context: ./requestListener
-      dockerfile: Dockerfile
-    networks:
-      ecovacs_stack:
-    volumes:
-      - ./requestListener:/opt/app
-    user: 1000:1000
     command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
