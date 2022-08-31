@@ -15,7 +15,7 @@ const getJSONFormatedRequestTopic = ({ name }: BotCommand) =>
   `iot/p2p/${name}/HelperBot/x/${makeId(4)}/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/q/x/j`;
 
 const getFormatedCommand = ({ payload }: BotCommand) =>
-  JSON.stringify({ ...{ body: { data: { payload } } }, ...getHeader() });
+  JSON.stringify({ ...{ body: { data: { ...payload } } }, ...getHeader() });
 
 export const sendJSONCommand = (command: BotCommand, client: MqttClient) => {
   const topic = getJSONFormatedRequestTopic(command);

@@ -2,8 +2,10 @@ import 'dotenv/config';
 
 import fs from 'fs';
 import { connect } from 'mqtt';
+
 import { sendJSONCommand } from './commands/commands';
 import { BotCommand } from './commands/commands.model';
+import { makeId } from './text.utils';
 
 const ca = fs.readFileSync('/opt/app/src/ca.crt');
 
@@ -22,9 +24,16 @@ client.on('connect', () => {
     `iot/p2p/+/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/+/+/+/p/+/j`,
     (err) => {
       if (!err) {
+        // const command: BotCommand = {
+        //   name: 'playSound',
+        //   payload: { code: 0 },
+        // };
         const command: BotCommand = {
-          name: 'playSound',
-          payload: { code: 0 },
+          name: 'clean_V2',
+          payload: {
+            act: 'pause',
+            content: { total: 0, donotClean: 0, count: 0, type: 'auto', bdTaskID: makeId(16) },
+          },
         };
         sendJSONCommand(command, client);
       }
