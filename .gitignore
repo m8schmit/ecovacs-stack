@@ -107,3 +107,4 @@ dist
 ca.crt
 server.crt
 server.key
+test.*

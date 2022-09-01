@@ -9,6 +9,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/lzma-native": "^4.0.1",
     "@types/node": "^18.7.8",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
@@ -22,7 +23,9 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "canvas": "^2.9.3",
     "dotenv": "^16.0.1",
+    "lzma-native": "^8.0.6",
     "mqtt": "^4.3.7"
   }
 }

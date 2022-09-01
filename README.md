@@ -4,11 +4,45 @@ All this as only be tested on my T9 Aivi.
 
 ## Topics
 
-### Vacuum bot subscribe
+### Vacuum bot subscribe to
 
-`iot/atr` to send status information
+```typescript
+iot/p2p/+/+/+/+/${bot_id}/${bot_class}/${bot_resource}/+/+/+
+```
 
-todo
+to listen request
+
+```typescript
+iot/cfg/${bot_id}/${bot_class}/${bot_resource}/+/+
+```
+
+to... ?
+
+```typescript
+iot/dtcfg/${bot_id}/${bot_class}/${bot_resource}/+/+
+```
+
+to... ?
+
+```typescript
+iot/dtgcfg/${bot_id}/${bot_class}/${bot_resource}/+/+
+```
+
+to... ?
+
+### Vacuum bot will send messages to
+
+```typescript
+iot/p2p/${command}/${bot_id}/${bot_class}/${bot_resource}/${requester_name}/${env /*'ecosys'*/)/${4_char_id} /*'1234'*//p /*for resPonse*//${request_id}/${j /* for Json */}
+```
+
+to answer to requests.
+
+```typescript
+iot/atr/${command}/${bot_id}/${bot_class}/${bot_resource}/${request_id}/${j /* for Json */}
+```
+
+to send status update.
 
 ## Commands
 

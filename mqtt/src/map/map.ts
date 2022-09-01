@@ -30,7 +30,7 @@ interface MapBuffer {
 // 1 floor
 // 2 wall
 // 3 carpet
-const mapColors = ['#252525', '#FF0000', '#00FF00', '#0000FF'];
+const mapColors = ['#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#252525'];
 
 const decodeB64 = (str: string) => Buffer.from(str, 'base64');
 
@@ -43,62 +43,34 @@ const toBigIndian = (buffer: Buffer) => {
   return mergedBuffer;
 };
 
-const fillBuffer = (majorMap: MajorMap, pieceData: number[], pieceIndex: number): MapBuffer[] => {
-  let buffer: MapBuffer[] = [];
+const fillBuffer = (majorMap: MajorMap, pieceData: number[], pieceIndex: number): number[][] => {
   const rowStart = pieceIndex / majorMap.cellHeight;
   const columnStart = pieceIndex % majorMap.cellWidth;
   console.log(pieceIndex, majorMap.cellHeight);
+
+  const maxRow = majorMap.pieceHeight + rowStart * majorMap.cellHeight;
+  const maxCol = majorMap.pieceWidth + columnStart * majorMap.pieceWidth;
+  let buffer = [...Array(maxRow)].map(() => Array(maxCol));
 
   for (let row = 0; row < majorMap.pieceHeight; row++) {
     for (let column = 0; column < majorMap.pieceWidth; column++) {
       const bufferRow = row + rowStart * majorMap.cellHeight;
       const bufferColumn = column + columnStart * majorMap.pieceWidth;
       const pieceDataPosition = majorMap.pieceHeight * row + column;
-      buffer[row] = { row: bufferRow, column: bufferColumn, pieceData: pieceData[pieceDataPosition] };
+      // buffer.push({ row: bufferRow, column: bufferColumn, pieceData: pieceData[pieceDataPosition] });
+      buffer[bufferRow][bufferColumn] = pieceData[pieceDataPosition];
     }
   }
-  //   console.log('buffer ', buffer);
+  console.log(buffer);
   return buffer;
 };
 
-const getBufferValue = (buffer: MapBuffer[], row: number, col: number) => {
-  return buffer.find((current) => current.row === row && current.column === col)?.pieceData;
-};
-
-const getMapsize = (buffer: MapBuffer[]) => {
-  let maxMap = {
-    x: 0,
-    y: 0,
-  };
-
-  buffer.forEach((current) => {
-    maxMap.x = current.row > maxMap.x ? current.row : maxMap.x;
-    maxMap.y = current.column > maxMap.y ? current.column : maxMap.y;
-  });
-  console.log(maxMap);
-  return maxMap;
-};
-
-const drawCanvas = (buffer: MapBuffer[]) => {
-  const maxMap = getMapsize(buffer);
-  const imgX = 10;
-  const imgY = 10;
-  const canvas = createCanvas(imgX, imgY);
+const drawCanvas = (buffer: number[][]) => {
+  const canvas = createCanvas(800, 800);
   const ctx = canvas.getContext('2d');
-  for (let x = 0; x < imgX; x++) {
-    for (let y = 0; y < imgY; y++) {
-      //   const pixel = ctx.createImageData(1, 1);
-      //   pixel.data.fill(parseInt('ff0000',));
-      //   ctx.putImageData(pixel, x, y);
-      console.log(
-        'will color',
-        x,
-        y,
-        ' with ',
-        mapColors[getBufferValue(buffer, x, y) || 0],
-        getBufferValue(buffer, x, y),
-      );
-      ctx.fillStyle = mapColors[getBufferValue(buffer, x, y) || 0];
+  for (let x = 0; x < buffer.length; x++) {
+    for (let y = 0; y < buffer[x].length; y++) {
+      ctx.fillStyle = mapColors[buffer[x][y] || 4];
       ctx.fillRect(x, y, 1, 1);
     }
   }
@@ -109,8 +81,8 @@ const drawCanvas = (buffer: MapBuffer[]) => {
 export const BuildMap = () => {
   //// mock
   const pieceData =
-    'XQAABAAQJwAAAABpftpH+4yFqTiOMxoS2kYMCu47vWGBTekIqZVCGdI4cGyNmRZjI2iiZmnsOp2mePcwFyobNz2gUoKkGDXzxP+zfkw5y7fbIYr5LHftxOd5r1k43KJTzrfnVvEtaAdtQBVhLxbuycXHZ72dmNL9mskLIjMvCQA="';
-  const pieceIndex = 37;
+    'XQAABAAQJwAAAABv/f//o7f/Rz5IFXI5YVG4kijmo4YH6l9yPyDGMci67WbzQzb0LCvg21mWEcyR2pm7U6L5bMrrw8M02PHrp0QrUtmH/l58Bvq6Fkl2/0Zcf99PbYkS0WP3O1c+SSQKt8Ok3/3un3OR85LfsSGeiaXWeQxWLrA7ksfdOxxUyiIvUqoVF/dNuEwcL+sCqbQypxxQGYDV+Zq8bhYU08I/gDp0Bi+2A1cWawHHDWVcSov3cWjqI5W137dLp1NpApmCJC1iXuKpLNMpR7MPjnxe8StwAdODG4LQhF60x79JR+pnfZZ6ZHIAtVF2V/VKSCs+kdW1UIMjNOA/fxqVNJSx3ku0NayT8Fu8MT5G+9Qdg+FuLqk6OXQ+Xi9+GFnQyZJMPq65vQ4ve9gOcPNSGGgQZjwUlnm2ix+5ot3Ny1555qIXz4A0/JfCDweUGryxEp/iXcSGMuQ52OCH4cjVYzk5LVbXGhhxtLusI2c/PANfY/itqCL98amIHnMdG7sTbjM0rA2sU7Ol0b3W';
+  const pieceIndex = 22;
   const test: MajorMap = {
     mid: '1738289836',
     pieceWidth: 100,

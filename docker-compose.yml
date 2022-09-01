@@ -50,6 +50,9 @@ services:
     build:
       context: ./mqtt
       dockerfile: Dockerfile
+    environment:
+      NODE_OPTIONS: --max-old-space-size=8192
+
     networks:
       ecovacs_stack:
       default:

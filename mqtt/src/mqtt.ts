@@ -3,9 +3,7 @@ import 'dotenv/config';
 import fs from 'fs';
 import { connect } from 'mqtt';
 
-import { sendJSONCommand } from './commands/commands';
-import { BotCommand } from './commands/commands.model';
-import { makeId } from './text.utils';
+import { BuildMap } from './map/map';
 
 const ca = fs.readFileSync('/opt/app/src/ca.crt');
 
@@ -26,16 +24,18 @@ client.on('connect', () => {
       if (!err) {
         // const command: BotCommand = {
         //   name: 'playSound',
-        //   payload: { code: 0 },
+        //   payload: { sid: 30 },
         // };
-        const command: BotCommand = {
-          name: 'clean_V2',
-          payload: {
-            act: 'pause',
-            content: { total: 0, donotClean: 0, count: 0, type: 'auto', bdTaskID: makeId(16) },
-          },
-        };
-        sendJSONCommand(command, client);
+        // const command: BotCommand = {
+        //   name: 'clean_V2',
+        //   payload: {
+        //     act: 'pause',
+        //     content: { total: 0, donotClean: 0, count: 0, type: 'auto', bdTaskID: makeId(16) },
+        //   },
+        // };
+        // sendJSONCommand(command, client);
+
+        BuildMap();
       }
     },
   );
