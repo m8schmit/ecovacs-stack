@@ -1,4 +1,5 @@
 // ALL this may move in the frontend ?
+// TODO crop the transparent pixel
 import { createCanvas } from 'canvas';
 import fs from 'fs';
 import { decompress } from 'lzma-native';
@@ -24,7 +25,7 @@ interface MajorMap {
 // 2 wall
 // 3 carpet
 const mapColors = ['rgba(0,0,0,0)', '#A69E9D', '#696362', '#574C4A'];
-const buffer = [...Array(800)].map(() => Array(800));
+const buffer = [...Array(800)].map(() => Array(800).fill(null));
 
 const decodeB64 = (str: string) => Buffer.from(str, 'base64');
 
@@ -38,13 +39,13 @@ const toBigIndian = (buffer: Buffer) => {
 };
 
 const fillBuffer = (majorMap: MajorMap, pieceData: number[], pieceIndex: number) => {
-  const rowStart = pieceIndex / majorMap.cellHeight;
-  const columnStart = pieceIndex % majorMap.cellWidth;
+  const rowStart = (pieceIndex / majorMap.cellHeight) >> 0;
+  const columnStart = pieceIndex % majorMap.cellWidth >> 0;
 
   for (let row = 0; row < majorMap.pieceHeight; row++) {
     for (let column = 0; column < majorMap.pieceWidth; column++) {
-      const bufferRow = Math.round(row + rowStart * majorMap.pieceHeight);
-      const bufferColumn = Math.round(column + columnStart * majorMap.pieceWidth);
+      const bufferRow = row + rowStart * majorMap.pieceHeight;
+      const bufferColumn = column + columnStart * majorMap.pieceWidth;
       const pieceDataPosition = majorMap.pieceHeight * row + column;
 
       buffer[bufferRow][bufferColumn] = pieceData[pieceDataPosition];
@@ -57,8 +58,10 @@ const drawCanvas = (buffer: number[][]) => {
   const ctx = canvas.getContext('2d');
   for (let x = 0; x < buffer.length; x++) {
     for (let y = 0; y < buffer[x].length; y++) {
-      ctx.fillStyle = mapColors[buffer[x][y] || 0];
-      ctx.fillRect(x, y, 1, 1);
+      if (buffer[x][y] !== null) {
+        ctx.fillStyle = mapColors[buffer[x][y]];
+        ctx.fillRect(x, y, 1, 1);
+      }
     }
   }
   const canvasBuffer = canvas.toBuffer('image/png');
