@@ -3,6 +3,8 @@
 import { createCanvas } from 'canvas';
 import fs from 'fs';
 import { decompress } from 'lzma-native';
+import { trimCanvas } from './canvas.utils';
+import { decompressLZMA } from './LZMA.utils';
 
 // onMapInfo_V2
 // XQAABAA/AgAAAC2WwEIAXhQm9CPDU7ViTh9YrTvpuU9h+9Dd9nRTB9P4RXB1wqDeCC3JjQzxgpU6VMac2FPew6gP3FNcvd66b2/mSf6j1S6O5Yo/PkOujOzaOjryt/1nEf0la9KmXeqfRir8LE3IHOKa4BBJ3YAwRR5vNUP0rfEMgP8MdqoIcmd/L4TOugujv2XBnPsSwrbBB3G98hsCNx0Zz5s/TdJcB6/ORLN3S7HDI7zJTYw7FUo8jgZBHUQfPt4pxYygQaJhjEfTGyh5ysAxJT6R4U2TYztaXJ+gWMDydxNwKwA=
@@ -26,17 +28,6 @@ interface MajorMap {
 // 3 carpet
 const mapColors = ['rgba(0,0,0,0)', '#A69E9D', '#696362', '#574C4A'];
 const buffer = [...Array(800)].map(() => Array(800).fill(null));
-
-const decodeB64 = (str: string) => Buffer.from(str, 'base64');
-
-const toBigIndian = (buffer: Buffer) => {
-  const fourBytesBuffer = Buffer.allocUnsafe(4);
-  fourBytesBuffer.writeUintLE(0, 0, 4);
-  const start = buffer.subarray(0, 9);
-  const end = buffer.subarray(9);
-  const mergedBuffer = Buffer.concat([start, fourBytesBuffer, end]);
-  return mergedBuffer;
-};
 
 const fillBuffer = (majorMap: MajorMap, pieceData: number[], pieceIndex: number) => {
   const rowStart = (pieceIndex / majorMap.cellHeight) >> 0;
@@ -64,19 +55,17 @@ const drawCanvas = (buffer: number[][]) => {
       }
     }
   }
-  const canvasBuffer = canvas.toBuffer('image/png');
+  const canvasBuffer = trimCanvas(canvas).toBuffer('image/png');
   fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);
 };
 
 export const BuildMap = () => {
   console.log(getMapID(test));
-  mapArrayForTest.forEach((current, index) => {
-    decompress(toBigIndian(decodeB64(current.data)), undefined, (res) => {
+  mapArrayForTest.forEach(async (current, index) => {
+    await decompressLZMA(current.data).then((res) => {
       fillBuffer(test, res.toJSON().data, current.id);
-      if (index === mapArrayForTest.length - 1) {
-        drawCanvas(buffer);
-      }
     });
+    index === current.id && drawCanvas(buffer);
   });
 };
 
