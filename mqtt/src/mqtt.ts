@@ -73,6 +73,7 @@ const handleMap = (topic: string, message: Buffer) => {
     vacuumMap?.addPiecesIDsList(res.pieceIndex);
     vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
     if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
+      // TODO add a set timeout
       vacuumMap?.buildMap();
     }
   }

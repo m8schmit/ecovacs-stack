@@ -1,4 +1,4 @@
-FROM alpine:3.15 as cert-generation
+FROM lts-alpine
 
 RUN apk update && \
     apk add --no-cache openssl

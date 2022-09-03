@@ -60,3 +60,16 @@ services:
       - ./mqtt:/opt/app
     command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    networks:
+      ecovacs_stack:
+      default:
+    volumes:
+      - ./frontend:/opt/app
+    ports:
+      - 4200:3000
+    command: bash -c 'yarn install && yarn start'
+    stdin_open: true
