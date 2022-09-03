@@ -1,12 +1,11 @@
 import 'dotenv/config';
 
 import fs from 'fs';
-import { connect, MqttClient } from 'mqtt';
+import { connect } from 'mqtt';
 
-import { sendJSONCommand } from './commands/commands';
-import { BotCommand } from './commands/commands.model';
+import { charge, clean, getMajorMap, getMinorMap } from './commands/commands';
 import { VacuumMap } from './map/map';
-import { makeId } from './text.utils';
+import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
 
 const ca = fs.readFileSync('/opt/app/src/ca.crt');
@@ -28,26 +27,9 @@ client.on('connect', () => {
     `iot/p2p/+/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/+/+/+/p/+/j`,
     (err) => {
       if (!err) {
-        // const command: BotCommand = {
-        //   name: 'playSound',
-        //   payload: { sid: 30 },
-        // };
-        // const command: BotCommand = {
-        //   name: 'clean_V2',
-        //   payload: {
-        //     act: 'pause',
-        //     content: { total: 0, donotClean: 0, count: 0, type: 'auto', bdTaskID: makeId(16) },
-        //   },
-        // };
-        // sendJSONCommand(command, client);
-        // BuildMap();
-
-        //get Map
-        const getMajorMapCommand: BotCommand = {
-          name: 'getMajorMap',
-          payload: {},
-        };
-        sendJSONCommand(getMajorMapCommand, client);
+        // clean(client);
+        getMajorMap(client);
+        charge(client);
       }
     },
   );
@@ -62,48 +44,36 @@ client.on('message', (topic, message) => {
   console.log(getColoredConsoleLog(topic), message.toString());
 
   // check if bot is connected
-  if (topic.search('iot/atr/') >= 0 && process.env.BOTID && topic.search(process.env.BOTID) >= 0) {
+  if (isTopic('iot/atr/', topic)) {
     console.info(`${process.env.BOTID} is ready!`);
   }
 
   // handle 'getMajorMap'
-  if (topic.search('getMajorMap') >= 0) {
-    const res = JSON.parse(message.toString()).body.data;
+  handleMap(topic, message);
+});
+
+const handleMap = (topic: string, message: Buffer) => {
+  if (isTopic('getMajorMap', topic)) {
+    const res = getDatafromMessage(message);
     if (!vacuumMap) {
       vacuumMap = new VacuumMap(res);
     }
-    if (!vacuumMap.PiecesIDsList) {
+    if (!vacuumMap.piecesIDsList) {
       console.info('TODO: handle no name case.');
       return;
     }
-    vacuumMap?.PiecesIDsList.forEach((pieceID) => {
+    vacuumMap?.piecesIDsList.forEach((pieceID) => {
       console.log('ask minor map for ', pieceID);
-      const getMinorMapCommand: BotCommand = {
-        name: 'getMinorMap',
-        payload: {
-          pieceIndex: pieceID,
-          mid: vacuumMap?.settings.mid,
-          type: vacuumMap?.settings.type,
-          bdTaskID: makeId(16),
-        },
-      };
-      sendJSONCommand(getMinorMapCommand, client);
+      vacuumMap && getMinorMap(client, pieceID, vacuumMap.settings);
     });
   }
 
-  if (topic.search('getMinorMap') >= 0) {
-    const res = JSON.parse(message.toString()).body.data;
+  if (isTopic('MinorMap', topic)) {
+    const res = getDatafromMessage(message);
+    vacuumMap?.addPiecesIDsList(res.pieceIndex);
     vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
-    if (vacuumMap?.mapDataList.length === vacuumMap?.PiecesIDsList.length) {
+    if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
       vacuumMap?.buildMap();
     }
   }
-});
-
-const getColoredConsoleLog = (topic: string) => {
-  let color = 32;
-  if (topic.includes('p2p')) {
-    color = 36;
-  }
-  return `\x1b[${color}m[${topic}]\x1b[0m`;
 };

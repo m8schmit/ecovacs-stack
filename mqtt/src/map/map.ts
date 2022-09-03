@@ -14,7 +14,7 @@ import { MajorMap, MapData } from './map.model';
 // https://gitlab.com/michael.becker/vacuumclean/-/blob/master/deebot/deebot-core/README.md#map-details
 export class VacuumMap {
   private _settings!: MajorMap;
-  private _PiecesIDsList: number[] = [];
+  private _piecesIDsList: number[] = [];
   private _mapBuffer = [...Array(800)].map(() => Array(800).fill(null));
   private _mapDataList: MapData[] = [];
 
@@ -36,13 +36,17 @@ export class VacuumMap {
    */
   private InitPiecesIDsList() {
     const NO_PIECE = '1295764014';
-    this._PiecesIDsList = this._settings.value
+    this._piecesIDsList = this._settings.value
       .split(',')
       .reduce((acc: number[], curr, index) => (curr !== NO_PIECE ? [...acc, index] : acc), []);
   }
 
-  public get PiecesIDsList() {
-    return this._PiecesIDsList;
+  public addPiecesIDsList(value: number) {
+    this._piecesIDsList = [...this._piecesIDsList.filter((current) => current !== value), value];
+  }
+
+  public get piecesIDsList() {
+    return this._piecesIDsList;
   }
 
   public addMapDataList(value: MapData) {

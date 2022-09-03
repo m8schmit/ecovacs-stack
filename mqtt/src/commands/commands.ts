@@ -1,26 +1,52 @@
 import { MqttClient } from 'mqtt';
+import { MajorMap } from '../map/map.model';
 import { makeId } from '../text.utils';
 import { BotCommand } from './commands.model';
+import { sendJSONCommand } from './commands.utils';
 
-const getHeader = () => ({
-  header: {
-    pri: 2,
-    tzm: 480,
-    ts: Date.now(),
-    ver: '0.0.22',
-  },
-});
+export const clean = (client: MqttClient) => {
+  const command: BotCommand = {
+    name: 'clean_V2',
+    payload: {
+      act: 'pause',
+      content: { total: 0, donotClean: 0, count: 0, type: 'auto', bdTaskID: makeId(16) },
+    },
+  };
+  sendJSONCommand(command, client);
+};
 
-const getJSONFormatedRequestTopic = ({ name }: BotCommand) =>
-  `iot/p2p/${name}/HelperBot/x/${makeId(4)}/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/q/x/j`;
+export const getMajorMap = (client: MqttClient) => {
+  const command: BotCommand = {
+    name: 'getMajorMap',
+    payload: {},
+  };
+  sendJSONCommand(command, client);
+};
 
-const getFormatedCommand = ({ payload }: BotCommand) =>
-  JSON.stringify({ ...{ body: { data: { ...payload } } }, ...getHeader() });
+export const getMinorMap = (client: MqttClient, pieceID: number, { mid, type }: MajorMap) => {
+  const command: BotCommand = {
+    name: 'getMinorMap',
+    payload: {
+      pieceIndex: pieceID,
+      mid: mid,
+      type: type,
+      bdTaskID: makeId(16),
+    },
+  };
+  sendJSONCommand(command, client);
+};
+export const charge = (client: MqttClient) => {
+  const command: BotCommand = {
+    name: 'charge',
+    payload: {},
+  };
+  sendJSONCommand(command, client);
+};
 
-export const sendJSONCommand = (command: BotCommand, client: MqttClient) => {
-  const topic = getJSONFormatedRequestTopic(command);
-  const message = getFormatedCommand(command);
-  client.publish(topic, message, { qos: 0, retain: false }, (err) =>
-    err ? console.log('sending err: ', err) : console.log(`${message} correctly sended to [${topic}] !`),
-  );
+export const playSound = (client: MqttClient) => {
+  const getMajorMapCommand: BotCommand = {
+    name: 'getMajorMap',
+    payload: {},
+  };
+  sendJSONCommand(getMajorMapCommand, client);
 };
