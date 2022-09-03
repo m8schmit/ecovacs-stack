@@ -1,14 +1,20 @@
 import 'dotenv/config';
 
 import fs from 'fs';
-import { connect } from 'mqtt';
+import { connect, MqttClient } from 'mqtt';
 
-import { BuildMap } from './map/map';
+import { sendJSONCommand } from './commands/commands';
+import { BotCommand } from './commands/commands.model';
+import { VacuumMap } from './map/map';
+import { makeId } from './text.utils';
+import { Maybe } from './types';
 
 const ca = fs.readFileSync('/opt/app/src/ca.crt');
 
 const client = connect('mqtts://request-listener:8883', { ca });
 console.info('starting mqtts listener');
+let vacuumMap: Maybe<VacuumMap> = null;
+let botReady = false;
 
 client.on('connect', () => {
   console.log('connected');
@@ -34,8 +40,14 @@ client.on('connect', () => {
         //   },
         // };
         // sendJSONCommand(command, client);
+        // BuildMap();
 
-        BuildMap();
+        //get Map
+        const getMajorMapCommand: BotCommand = {
+          name: 'getMajorMap',
+          payload: {},
+        };
+        sendJSONCommand(getMajorMapCommand, client);
       }
     },
   );
@@ -46,7 +58,46 @@ client.on('error', (err) => {
 });
 
 client.on('message', (topic, message) => {
+  // log message
   console.log(getColoredConsoleLog(topic), message.toString());
+
+  // check if bot is connected
+  if (topic.search('iot/atr/') >= 0 && process.env.BOTID && topic.search(process.env.BOTID) >= 0) {
+    console.info(`${process.env.BOTID} is ready!`);
+  }
+
+  // handle 'getMajorMap'
+  if (topic.search('getMajorMap') >= 0) {
+    const res = JSON.parse(message.toString()).body.data;
+    if (!vacuumMap) {
+      vacuumMap = new VacuumMap(res);
+    }
+    if (!vacuumMap.PiecesIDsList) {
+      console.info('TODO: handle no name case.');
+      return;
+    }
+    vacuumMap?.PiecesIDsList.forEach((pieceID) => {
+      console.log('ask minor map for ', pieceID);
+      const getMinorMapCommand: BotCommand = {
+        name: 'getMinorMap',
+        payload: {
+          pieceIndex: pieceID,
+          mid: vacuumMap?.settings.mid,
+          type: vacuumMap?.settings.type,
+          bdTaskID: makeId(16),
+        },
+      };
+      sendJSONCommand(getMinorMapCommand, client);
+    });
+  }
+
+  if (topic.search('getMinorMap') >= 0) {
+    const res = JSON.parse(message.toString()).body.data;
+    vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
+    if (vacuumMap?.mapDataList.length === vacuumMap?.PiecesIDsList.length) {
+      vacuumMap?.buildMap();
+    }
+  }
 });
 
 const getColoredConsoleLog = (topic: string) => {
