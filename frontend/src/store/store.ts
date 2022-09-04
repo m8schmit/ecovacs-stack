@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import { VacuumSlice } from './vacuum/vacuumSlice';
+import { vacuumSlice } from './vacuum/vacuumSlice';
 
 const rootReducer = combineReducers({
-  vacuum: VacuumSlice.reducer,
+  vacuum: vacuumSlice.reducer,
 });
 
 const store = configureStore({
@@ -14,7 +14,7 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
-export type AppStore = ReturnType<typeof configureStore>;
-export type AppDispatch = AppStore['dispatch'];
+export type AppStore = typeof store;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;
