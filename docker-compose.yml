@@ -16,25 +16,27 @@ services:
     # user: 1000:1000
     stdin_open: true
 
-  request-listener:
+  backend:
     build:
-      context: ./requestListener
+      context: ./backend
       dockerfile: Dockerfile
     networks:
       ecovacs_stack:
+      default:
     volumes:
-      - ./requestListener:/opt/app
+      - ./backend:/opt/app
     user: 1000:1000
     command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
 
   nginx:
     depends_on:
-      - request-listener
+      - backend
     image: nginx:alpine
     ports:
       - 8883:8883
       - 443:443
+      - 3000:3000
     networks:
       default:
       ecovacs_stack:
@@ -43,23 +45,6 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./nginx/:/etc/nginx:ro
-
-  mqtt:
-    depends_on:
-      - nginx
-    build:
-      context: ./mqtt
-      dockerfile: Dockerfile
-    environment:
-      NODE_OPTIONS: --max-old-space-size=8192
-
-    networks:
-      ecovacs_stack:
-      default:
-    volumes:
-      - ./mqtt:/opt/app
-    command: bash -c 'yarn install && yarn run dev'
-    stdin_open: true
   frontend:
     depends_on:
       - nginx

@@ -2,13 +2,14 @@
   "name": "app",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ts-node-dev --exit-child src/requestListener.ts",
+    "dev": "ts-node-dev --exit-child src/index.ts",
     "start": "ts-node src/index.ts",
     "eslint": "eslint 'src/**/*.ts'",
     "eslint:fix": "eslint --fix 'src/**/*.ts'"
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/lzma-native": "^4.0.1",
     "@types/node": "^18.7.8",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
@@ -22,6 +23,11 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "aedes": "^0.47.0"
+    "aedes": "^0.47.0",
+    "canvas": "^2.9.3",
+    "dotenv": "^16.0.1",
+    "lzma-native": "^8.0.6",
+    "mqtt": "^4.3.7",
+    "socket.io": "^4.5.2"
   }
 }

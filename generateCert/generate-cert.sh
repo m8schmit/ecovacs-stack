@@ -17,4 +17,6 @@ if [ ! -f /config/ca.crt ]; then
 	cp /server.crt /config/
 	cp /server.key /config/
 	cp /ecovacs-stack.p12 /config/
+
+	 chown -R 1000:1000 /config/
 fi

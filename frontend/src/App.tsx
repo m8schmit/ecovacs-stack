@@ -1,13 +1,14 @@
 import './App.css';
 
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { useEffect } from 'react';
-import MQTTService from './services/mqtt.service';
 import { Box, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+
+import websocketService from './services/websocket.service';
 
 const App = () => {
   useEffect(() => {
-    MQTTService();
+    websocketService();
   }, []);
   return (
     <BrowserRouter>
