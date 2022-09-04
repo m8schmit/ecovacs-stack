@@ -1,13 +1,15 @@
-import { connect } from 'mqtt';
+import { connect, MqttClient } from 'mqtt';
 
 import { ca } from '../server.utils';
-import { charge, getMajorMap, getMinorMap } from './commands/commands';
+import { getMinorMap } from './commands/commands';
 import { VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
 
+export let client: MqttClient;
+
 const mqttClient = () => {
-  const client = connect('mqtts://localhost:8883', { ca });
+  client = connect('mqtts://localhost:8883', { ca });
   console.info('starting Backend MQTT client');
   let vacuumMap: Maybe<VacuumMap> = null;
   let botReady = false;
@@ -33,8 +35,6 @@ const mqttClient = () => {
     // check if bot is connected
     if (isTopic('iot/atr/', topic)) {
       console.info(`${process.env.BOTID} is ready!`);
-      // getMajorMap(client);
-      // charge(client);
     }
 
     // handle 'getMajorMap'
@@ -53,7 +53,7 @@ const mqttClient = () => {
       }
       vacuumMap?.piecesIDsList.forEach((pieceID) => {
         console.log('ask minor map for ', pieceID);
-        vacuumMap && getMinorMap(client, pieceID, vacuumMap.settings);
+        vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
       });
     }
 
@@ -67,6 +67,7 @@ const mqttClient = () => {
       }
     }
   };
+  return client;
 };
 
 export default mqttClient;

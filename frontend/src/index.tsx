@@ -1,19 +1,23 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 
 import App from './App';
 import { LanguageProvider } from './i18n';
 import reportWebVitals from './reportWebVitals';
+import store from './store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
-    <CssBaseline>
-      <LanguageProvider>
-        <App />
-      </LanguageProvider>
-    </CssBaseline>
+    <Provider store={store}>
+      <CssBaseline>
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
+      </CssBaseline>
+    </Provider>
   </StrictMode>,
 );
 

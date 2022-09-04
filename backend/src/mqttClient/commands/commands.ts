@@ -1,21 +1,23 @@
 import { MqttClient } from 'mqtt';
+
 import { MajorMap } from '../map/map.model';
+import { client } from '../mqttClient';
 import { makeId } from '../text.utils';
 import { BotCommand } from './commands.model';
 import { sendJSONCommand } from './commands.utils';
 
-export const clean = (client: MqttClient) => {
+export const clean = (params: string) => {
   const command: BotCommand = {
     name: 'clean_V2',
     payload: {
-      act: 'pause',
+      act: params,
       content: { total: 0, donotClean: 0, count: 0, type: 'auto', bdTaskID: makeId(16) },
     },
   };
   sendJSONCommand(command, client);
 };
 
-export const getMajorMap = (client: MqttClient) => {
+export const getMajorMap = () => {
   const command: BotCommand = {
     name: 'getMajorMap',
     payload: {},
@@ -23,7 +25,7 @@ export const getMajorMap = (client: MqttClient) => {
   sendJSONCommand(command, client);
 };
 
-export const getMinorMap = (client: MqttClient, pieceID: number, { mid, type }: MajorMap) => {
+export const getMinorMap = (pieceID: number, { mid, type }: MajorMap) => {
   const command: BotCommand = {
     name: 'getMinorMap',
     payload: {
@@ -43,7 +45,7 @@ export const charge = (client: MqttClient) => {
   sendJSONCommand(command, client);
 };
 
-export const playSound = (client: MqttClient) => {
+export const playSound = () => {
   const getMajorMapCommand: BotCommand = {
     name: 'getMajorMap',
     payload: {},

@@ -2,6 +2,7 @@
 // TODO crop the transparent pixel
 import { createCanvas } from 'canvas';
 import fs from 'fs';
+import { WSsocket } from '../../websocketServer/websocketServer';
 
 import { trimCanvas } from './canvas.utils';
 import { decompressLZMA } from './LZMA.utils';
@@ -97,6 +98,7 @@ export class VacuumMap {
       }
     }
     const canvasBuffer = trimCanvas(canvas).toBuffer('image/png');
+    WSsocket.emit('vacuumMap', canvasBuffer.toString('base64'));
     console.info('generate map.png');
     fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);
   }
