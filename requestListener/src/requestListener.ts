@@ -3,8 +3,8 @@ import fs from 'fs';
 import { createServer } from 'https';
 
 const options = {
-  key: fs.readFileSync('/opt/app/src/server.key'),
-  cert: fs.readFileSync('/opt/app/src/server.crt'),
+  key: fs.readFileSync('/opt/app/server.key'),
+  cert: fs.readFileSync('/opt/app/server.crt'),
 };
 
 const requestListener = (req: any, res: any) => {

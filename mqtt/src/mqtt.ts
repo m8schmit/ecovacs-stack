@@ -8,10 +8,10 @@ import { VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
 
-const ca = fs.readFileSync('/opt/app/src/ca.crt');
+const ca = fs.readFileSync('/opt/app/ca.crt');
 
 const client = connect('mqtts://request-listener:8883', { ca });
-console.info('starting mqtts listener');
+console.info('starting Backend MQTT client');
 let vacuumMap: Maybe<VacuumMap> = null;
 let botReady = false;
 
@@ -22,6 +22,8 @@ client.on('connect', () => {
   client.subscribe(`iot/cfg/#`);
   client.subscribe(`iot/dtcfg/#`);
   client.subscribe(`iot/dtgcfg/#`);
+  client.subscribe('iot/frontend/query');
+  // will write on iot/frontend/response
 
   client.subscribe(
     `iot/p2p/+/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/+/+/+/p/+/j`,

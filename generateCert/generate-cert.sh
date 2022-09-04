@@ -1,7 +1,6 @@
 #!/bin/ash
 set -e
 
-echo "here"
 # Create certificate
 if [ ! -f /config/ca.crt ]; then
 	echo "Generate Certificates" 
@@ -12,8 +11,10 @@ if [ ! -f /config/ca.crt ]; then
 	openssl req -new -nodes -key server.key -config csrconfig_server.txt -out server.csr
 	openssl x509 -req -in server.csr -days 365 -CA ca.crt -CAkey ca.key \
     -extfile certconfig_server.txt -extensions req_ext -CAcreateserial -out server.crt
+	openssl pkcs12 -export -out ecovacs-stack.p12 -inkey server.key -in server.crt -certfile ca.crt -passout pass:
 
 	cp /ca.crt /config/
 	cp /server.crt /config/
 	cp /server.key /config/
+	cp /ecovacs-stack.p12 /config/
 fi

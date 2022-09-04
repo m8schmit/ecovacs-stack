@@ -61,6 +61,8 @@ services:
     command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
   frontend:
+    depends_on:
+      - nginx
     build:
       context: ./frontend
       dockerfile: Dockerfile
