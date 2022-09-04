@@ -108,4 +108,4 @@ ca.crt
 server.crt
 server.key
 ecovacs-stack.p12
-*.png
+map.png
