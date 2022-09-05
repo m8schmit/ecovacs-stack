@@ -23,7 +23,7 @@ export class VacuumMap {
   // 1 floor
   // 2 wall
   // 3 carpet
-  private readonly _mapColors = ['rgba(0,0,0,0)', '#A69E9D', '#696362', '#574C4A'];
+  private readonly _mapColors = ['rgba(0,0,0,0.0)', '#A69E9D', '#696362', '#574C4A'];
 
   constructor(data: MajorMap) {
     this._settings = data;
@@ -97,9 +97,11 @@ export class VacuumMap {
         }
       }
     }
-    const canvasBuffer = trimCanvas(canvas).toBuffer('image/png');
-    WSsocket.emit('vacuumMap', canvasBuffer.toString('base64'));
-    console.info('generate map.png');
-    fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);
+    if (canvas) {
+      const canvasBuffer = trimCanvas(canvas).toBuffer('image/png');
+      WSsocket.emit('vacuumMap', canvasBuffer.toString('base64'));
+      console.info('generate map.png');
+      fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);
+    }
   }
 }

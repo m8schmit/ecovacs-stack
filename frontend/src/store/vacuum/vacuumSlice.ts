@@ -43,7 +43,7 @@ export const vacuumSlice = createSlice({
   },
 });
 
-export const { setVacuumMap } = vacuumSlice.actions;
+export const { setVacuumMap, setVacuumClean } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
 export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.clean);

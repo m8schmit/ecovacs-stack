@@ -44,17 +44,19 @@ const mqttClient = () => {
   const handleMap = (topic: string, message: Buffer) => {
     if (isTopic('getMajorMap', topic)) {
       const res = getDatafromMessage(message);
-      if (!vacuumMap) {
-        vacuumMap = new VacuumMap(res);
+      if (res) {
+        if (!vacuumMap) {
+          vacuumMap = new VacuumMap(res);
+        }
+        if (!vacuumMap.piecesIDsList) {
+          console.info('TODO: handle no name case.');
+          return;
+        }
+        vacuumMap?.piecesIDsList.forEach((pieceID) => {
+          console.log('ask minor map for ', pieceID);
+          vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
+        });
       }
-      if (!vacuumMap.piecesIDsList) {
-        console.info('TODO: handle no name case.');
-        return;
-      }
-      vacuumMap?.piecesIDsList.forEach((pieceID) => {
-        console.log('ask minor map for ', pieceID);
-        vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
-      });
     }
 
     if (isTopic('MinorMap', topic)) {
