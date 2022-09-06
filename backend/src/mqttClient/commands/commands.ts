@@ -1,5 +1,3 @@
-import { MqttClient } from 'mqtt';
-
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { makeId } from '../text.utils';
@@ -25,6 +23,14 @@ export const getMajorMap = () => {
   sendJSONCommand(command, client);
 };
 
+export const getMapInfo_v2 = (mapId: string) => {
+  const command: BotCommand = {
+    name: 'getMapInfo_v2',
+    payload: { mid: mapId, type: '0', bdTaskID: makeId(16) },
+  };
+  sendJSONCommand(command, client);
+};
+
 export const getMinorMap = (pieceID: number, { mid, type }: MajorMap) => {
   const command: BotCommand = {
     name: 'getMinorMap',
@@ -37,10 +43,10 @@ export const getMinorMap = (pieceID: number, { mid, type }: MajorMap) => {
   };
   sendJSONCommand(command, client);
 };
-export const charge = (client: MqttClient) => {
+export const charge = () => {
   const command: BotCommand = {
     name: 'charge',
-    payload: {},
+    payload: { act: 'go', bdTaskID: makeId(16) },
   };
   sendJSONCommand(command, client);
 };

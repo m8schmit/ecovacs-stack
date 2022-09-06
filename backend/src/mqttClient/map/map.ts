@@ -4,7 +4,7 @@ import { createCanvas } from 'canvas';
 import fs from 'fs';
 import { WSsocket } from '../../websocketServer/websocketServer';
 
-import { trimCanvas } from './canvas.utils';
+import { translateCanvas, trimCanvas } from './canvas.utils';
 import { decompressLZMA } from './LZMA.utils';
 import { MajorMap, MapData } from './map.model';
 
@@ -23,11 +23,12 @@ export class VacuumMap {
   // 1 floor
   // 2 wall
   // 3 carpet
-  private readonly _mapColors = ['rgba(0,0,0,0.0)', '#A69E9D', '#696362', '#574C4A'];
+  private readonly _mapColors = ['rgba(0,0,0,0.1)', '#A69E9D', '#696362', '#574C4A'];
 
   constructor(data: MajorMap) {
     this._settings = data;
     this.InitPiecesIDsList();
+    console.log('PIXEL', this._settings.pixel);
   }
 
   /**
@@ -98,7 +99,7 @@ export class VacuumMap {
       }
     }
     if (canvas) {
-      const canvasBuffer = trimCanvas(canvas).toBuffer('image/png');
+      const canvasBuffer = translateCanvas(trimCanvas(canvas), 'x').toBuffer('image/png');
       WSsocket.emit('vacuumMap', canvasBuffer.toString('base64'));
       console.info('generate map.png');
       fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);

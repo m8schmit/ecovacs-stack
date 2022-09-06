@@ -1,7 +1,8 @@
 import { connect, MqttClient } from 'mqtt';
 
 import { ca } from '../server.utils';
-import { getMinorMap } from './commands/commands';
+import { WSsocket } from '../websocketServer/websocketServer';
+import { charge, getMapInfo_v2, getMinorMap } from './commands/commands';
 import { VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
@@ -47,6 +48,7 @@ const mqttClient = () => {
       if (res) {
         if (!vacuumMap) {
           vacuumMap = new VacuumMap(res);
+          getMapInfo_v2(vacuumMap.settings.mid);
         }
         if (!vacuumMap.piecesIDsList) {
           console.info('TODO: handle no name case.');
@@ -67,6 +69,13 @@ const mqttClient = () => {
         // TODO add a set timeout
         vacuumMap?.buildMap();
       }
+    }
+
+    if (isTopic('onPos', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('ONPOS ', res);
+      WSsocket.emit('chargePos', res.chargePos);
+      WSsocket.emit('botPos', res.deebotPos);
     }
   };
   return client;

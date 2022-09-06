@@ -1,4 +1,5 @@
 import { Canvas, createCanvas } from 'canvas';
+import { Axis } from './map.model';
 
 export const trimCanvas = (source: Canvas) => {
   let ctx = source.getContext('2d');
@@ -48,4 +49,15 @@ export const trimCanvas = (source: Canvas) => {
   resultCtx.putImageData(trimmed, 0, 0);
 
   return result;
+};
+
+export const translateCanvas = (source: Canvas, axis: Axis) => {
+  let ctx = source.getContext('2d');
+  let result = createCanvas(source.width, source.height);
+  let resultCtx = result.getContext('2d');
+
+  ctx.save();
+  ctx.translate(source.width, 0);
+  ctx.scale(-1, 1);
+  return source;
 };

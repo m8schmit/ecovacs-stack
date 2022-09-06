@@ -109,3 +109,4 @@ server.crt
 server.key
 ecovacs-stack.p12
 map.png
+ecovacs-bot.log.yml

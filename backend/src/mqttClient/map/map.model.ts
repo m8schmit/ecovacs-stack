@@ -3,6 +3,8 @@ export interface MapData {
   index: number;
 }
 
+export type Axis = 'x' | 'y';
+
 export interface MajorMap {
   mid: string /*mapId*/;
   pieceWidth: number /*columnGrid*/;
