@@ -21,13 +21,15 @@ const Dashboard = () => {
       <Grid item xs={12}>
         <Typography variant="h4">Ecovacs stack</Typography>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <Typography>Controls</Typography>
         <Box>
-          <Button onClick={() => switchCleanState()}>{cleanData}</Button>
+          <Button variant="contained" onClick={() => switchCleanState()}>
+            {cleanData}
+          </Button>
         </Box>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={6}>
         <VacuumMap />
       </Grid>
     </Grid>

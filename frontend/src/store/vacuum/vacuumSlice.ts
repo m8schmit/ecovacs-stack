@@ -40,8 +40,8 @@ const initialState: VacuumState = {
   },
   position: {
     dock: {
-      x: -500,
-      y: 19,
+      x: 0,
+      y: 0,
       a: 0,
       invalid: 0,
     },

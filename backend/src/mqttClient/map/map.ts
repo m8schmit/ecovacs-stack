@@ -88,25 +88,23 @@ export class VacuumMap {
   }
 
   private drawCanvas() {
-    const canvas = createCanvas(10000, 10000);
+    const canvas = createCanvas(1600, 1600);
     const ctx = canvas.getContext('2d');
-    // Is it possible than this value is '50', and all the pieces are generated separatly as tiles for OL?
-    // So my map max x y should be '39950'
-    const PixelSize = 10;
+    const PixelRatio = 2;
     let x = 0;
     for (let rowIndex = 0; rowIndex < this._mapBuffer.length; rowIndex++) {
       let y = 0;
       for (let colIndex = 0; colIndex < this._mapBuffer[rowIndex].length; colIndex++) {
-        if (this._mapBuffer[rowIndex][colIndex] !== null) {
-          ctx.fillStyle = this._mapColors[this._mapBuffer[rowIndex][colIndex]];
-          ctx.fillRect(x, y, PixelSize, PixelSize);
-        }
-        y += PixelSize;
+        // if (this._mapBuffer[rowIndex][colIndex] !== null) {
+        ctx.fillStyle = this._mapColors[this._mapBuffer[rowIndex][colIndex] || 0];
+        ctx.fillRect(x, y, PixelRatio, PixelRatio);
+        // }
+        y += PixelRatio;
       }
-      x += PixelSize;
+      x += PixelRatio;
     }
     if (canvas) {
-      const canvasBuffer = translateCanvas(trimCanvas(canvas), 'y').toBuffer('image/png');
+      const canvasBuffer = translateCanvas(canvas, 'y').toBuffer('image/png');
       WSsocket.emit('vacuumMap', canvasBuffer.toString('base64'));
       console.info('generate map.png');
       fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);
