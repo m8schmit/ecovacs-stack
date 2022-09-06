@@ -37,8 +37,22 @@ const VacuumMap = () => {
   const botPosition = getVacuumPos('bot');
   const [mainLayer] = useState<ImageLayer<ImageSource>>(new ImageLayer());
   const extent = [0, 0, mapWidth, mapHeigth];
+
   const getCoordinates = (value: number, axis: 'x' | 'y') =>
     (value / pixelWidth) * PixelRatio + (axis === 'x' ? mapWidth : mapHeigth) / 2;
+
+  const [botLayerStyle] = useState<Style>(
+    new Style({
+      image: new Icon({
+        anchor: [0, 0],
+        scale: 0.5,
+        rotation: getAngle(botPosition.a),
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        src: `data:image/png;base64,${botIcon}`,
+      }),
+    }),
+  );
 
   const [botLayer] = useState<VectorLayer<VectorSource<Point>>>(
     new VectorLayer({
@@ -51,17 +65,7 @@ const VacuumMap = () => {
           }),
         ],
       }),
-      style: new Style({
-        image: new Icon({
-          //TODO adjust the anchor depending of the angle
-          anchor: [0.5, 0.5],
-          scale: 0.5,
-          rotation: getAngle(botPosition.a),
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'fraction',
-          src: `data:image/png;base64,${botIcon}`,
-        }),
-      }),
+      style: botLayerStyle,
     }),
   );
 
@@ -88,6 +92,7 @@ const VacuumMap = () => {
       }),
     }),
   );
+
   let initialized = false;
   const projection = new Projection({
     code: 'custom-base64-image',
@@ -103,8 +108,6 @@ const VacuumMap = () => {
         target: mapElement.current as HTMLDivElement,
         layers: [mainLayer, dockLayer, botLayer],
         view: new View({
-          // minResolution: 1200,
-          // extent: extent,
           projection: projection,
           center: extent,
           zoom: 3,
@@ -139,19 +142,8 @@ const VacuumMap = () => {
       .getSource()
       ?.getFeatures()[0]
       .setGeometry(new Point([getCoordinates(botPosition.x, 'x'), getCoordinates(botPosition.y, 'y')]));
-    // botLayer.setStyle(
-    //   new Style({
-    //     image: new Icon({
-    //       //TODO adjust the anchor depending of the angle
-    //       anchor: [0, -72],
-    //       scale: 0.5,
-    //       rotation: getAngle(botPosition.a),
-    //       anchorXUnits: 'fraction',
-    //       anchorYUnits: 'pixels',
-    //       src: `data:image/png;base64,${botIcon}`,
-    //     }),
-    //   }),
-    // );
+    console.log('move to ', botPosition.a);
+    botLayerStyle.getImage()?.setRotation(getAngle(botPosition.a));
   }, [botPosition]);
 
   useEffect(() => {
