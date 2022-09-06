@@ -52,12 +52,16 @@ export const trimCanvas = (source: Canvas) => {
 };
 
 export const translateCanvas = (source: Canvas, axis: Axis) => {
-  let ctx = source.getContext('2d');
   let result = createCanvas(source.width, source.height);
   let resultCtx = result.getContext('2d');
 
-  ctx.save();
-  ctx.translate(source.width, 0);
-  ctx.scale(-1, 1);
-  return source;
+  if (axis === 'x') {
+    resultCtx.translate(source.width, 0);
+    resultCtx.scale(-1, 1);
+  } else {
+    resultCtx.translate(0, source.height);
+    resultCtx.scale(1, -1);
+  }
+  resultCtx.drawImage(source, 0, 0);
+  return result;
 };

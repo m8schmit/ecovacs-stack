@@ -26,6 +26,8 @@ services:
     volumes:
       - ./backend:/opt/app
     user: 1000:1000
+    # environment:
+    #   - NODE_OPTIONS="--max-old-space-size=8192"
     command: bash -c 'yarn install && yarn run dev'
     stdin_open: true
 
