@@ -6,7 +6,13 @@ import { Socket } from 'socket.io-client';
 import Dashboard from './pages/Dashboard/Dashboard';
 import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
-import { setVacuumBattery, setVacuumMap, setVacuumPos, setVacuumState } from './store/vacuum/vacuumSlice';
+import {
+  setChargeState,
+  setVacuumBattery,
+  setVacuumMap,
+  setVacuumPos,
+  setVacuumState,
+} from './store/vacuum/vacuumSlice';
 import { WebSocketContext } from './utils/socket.utils';
 
 const App = () => {
@@ -62,6 +68,12 @@ const App = () => {
       socket.on('status', (payload) => {
         console.log('receive status', payload);
         dispatch(setVacuumState(payload));
+      });
+
+    socket &&
+      socket.on('chargeState', (payload) => {
+        console.log('receive charge', payload);
+        dispatch(setChargeState(payload));
       });
   }, [socket]);
 

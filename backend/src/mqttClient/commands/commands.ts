@@ -69,7 +69,7 @@ export const getCleanInfo = () => {
 
 export const GetChargeState = () => {
   const command: BotCommand = {
-    name: 'GetChargeState',
+    name: 'getChargeState',
     payload: { id: makeId(8) },
   };
   sendJSONCommand(command, client);

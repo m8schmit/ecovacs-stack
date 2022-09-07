@@ -1,4 +1,10 @@
-import { BatteryState, BotAct, CleanState, DevicesCoordinates } from '../mqttClient/commands/commands.model';
+import {
+  BatteryState,
+  BotAct,
+  ChargeState,
+  CleanState,
+  DevicesCoordinates,
+} from '../mqttClient/commands/commands.model';
 
 export interface ServerToClientEvents {
   // noArg: () => void;
@@ -9,11 +15,13 @@ export interface ServerToClientEvents {
   botPos: (coordinates: DevicesCoordinates) => void;
   batteryLevel: (batteryState: BatteryState) => void;
   status: (status: CleanState) => void;
+  chargeState: (chargeState: ChargeState) => void;
 }
 
 export interface ClientToServerEvents {
   getMajorMap: () => void;
   clean: (command: BotAct) => void;
+  charge: () => void;
 }
 
 export interface InterServerEvents {

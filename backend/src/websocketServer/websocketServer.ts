@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 
-import { clean, getBattery, GetChargeState, getCleanInfo, getMajorMap } from '../mqttClient/commands/commands';
+import { charge, clean, getBattery, GetChargeState, getCleanInfo, getMajorMap } from '../mqttClient/commands/commands';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
 
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
@@ -17,12 +17,12 @@ const websocketServer = () => {
     console.log('New client connected', socket.id);
 
     //Ask all basic info when an user open the frontend app
-    setTimeout(() => {
+    setInterval(() => {
       console.log('BASIC INFOS');
       getCleanInfo();
       GetChargeState();
       getBattery();
-    }, 1000);
+    }, 60000);
 
     socket.conn.on('close', (reason) => {
       console.log('Client Disconeccted', socket.id, reason);
@@ -36,6 +36,11 @@ const websocketServer = () => {
     socket.on('clean', (payload) => {
       console.log('receive clean');
       clean(payload);
+    });
+
+    socket.on('charge', () => {
+      console.log('receive charge');
+      charge();
     });
   });
 };

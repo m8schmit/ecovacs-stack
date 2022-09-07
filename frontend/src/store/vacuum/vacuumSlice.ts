@@ -36,6 +36,7 @@ interface VacuumState {
   };
   battery: BatteryState;
   status: CleanState;
+  chargeState: ChargeState;
 }
 
 // CleanState
@@ -43,6 +44,7 @@ export interface CleanState {
   state: BotState;
   cleanState: {
     id?: string /* 3 digits */;
+    cid?: string /* 3 digits */;
     router?: BotRoute;
     type?: BotType;
     motionState?: BotMotionState;
@@ -52,10 +54,18 @@ export interface CleanState {
   };
 }
 
-type BotState = 'clean' | 'pause' | 'idle';
+type BotState = 'clean' | 'pause' | 'idle' | 'goCharging';
 type BotRoute = 'plan';
 type BotType = 'auto';
 type BotMotionState = 'working' | 'pause';
+
+// ChargeState
+export interface ChargeState {
+  isCharging: boolean;
+  mode?: botMode;
+}
+
+type botMode = 'slot' | 'autoEmpty';
 
 const initialState: VacuumState = {
   map: {
@@ -85,6 +95,9 @@ const initialState: VacuumState = {
     state: 'idle',
     cleanState: {},
   },
+  chargeState: {
+    isCharging: false,
+  },
 };
 
 export const vacuumSlice = createSlice({
@@ -107,12 +120,17 @@ export const vacuumSlice = createSlice({
       ...state,
       battery: action.payload,
     }),
+    setChargeState: (state, action: PayloadAction<ChargeState>) => ({
+      ...state,
+      chargeState: { ...action.payload, isCharging: !!+action.payload.isCharging },
+    }),
   },
 });
 
-export const { setVacuumMap, setVacuumState, setVacuumPos, setVacuumBattery } = vacuumSlice.actions;
+export const { setVacuumMap, setVacuumState, setVacuumPos, setVacuumBattery, setChargeState } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
 export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.status);
 export const getVacuumPos = (device: Devices) => useAppSelector(({ vacuum }) => vacuum.position[device]);
 export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.battery);
+export const getChargeState = () => useAppSelector(({ vacuum }) => vacuum.chargeState);

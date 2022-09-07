@@ -137,12 +137,10 @@ const VacuumMap = () => {
   }, [mapData, map]);
 
   useEffect(() => {
-    console.log('bot pos source ', botLayer.getSource());
     botLayer
       .getSource()
       ?.getFeatures()[0]
       .setGeometry(new Point([getCoordinates(botPosition.x, 'x'), getCoordinates(botPosition.y, 'y')]));
-    console.log('move to ', botPosition.a);
     botLayerStyle.getImage()?.setRotation(getAngle(botPosition.a));
   }, [botPosition]);
 

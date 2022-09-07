@@ -6,7 +6,7 @@ type BotCommandName =
   | 'charge'
   | 'getMapInfo_v2'
   | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */
-  | 'GetCharge'
+  | 'getChargeState'
   | 'getBattery';
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume';
@@ -18,6 +18,7 @@ export interface CleanState {
   state: BotState;
   cleanState: {
     id?: string /* 3 digits */;
+    cid?: string /* 3 digits */;
     router?: BotRoute;
     type?: BotType;
     motionState?: BotMotionState;
@@ -27,10 +28,18 @@ export interface CleanState {
   };
 }
 
-type BotState = 'clean' | 'pause' | 'idle';
+type BotState = 'clean' | 'pause' | 'idle' | 'goCharging';
 type BotRoute = 'plan';
 type BotType = 'auto';
 type BotMotionState = 'working' | 'pause';
+
+// ChargeState
+export interface ChargeState {
+  isCharging: number /* boolean number*/;
+  mode: botMode;
+}
+
+type botMode = 'slot' | 'autoEmpty';
 
 export interface DevicesCoordinates {
   x: number;

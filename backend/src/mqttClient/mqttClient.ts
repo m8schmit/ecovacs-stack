@@ -78,15 +78,19 @@ const mqttClient = () => {
 
     if (isTopic('Battery', topic)) {
       const res = getDatafromMessage(message);
-      console.log('onBattery', res);
       WSsocket.emit('batteryLevel', res);
     }
 
     if (isTopic('CleanInfo', topic)) {
       const res = getDatafromMessage(message);
-      console.log('here CleanInfo', res);
-
       WSsocket.emit('status', { state: res.state, cleanState: res.cleanState });
+    }
+
+    if (isTopic('ChargeState', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('here ChargeState', res);
+
+      WSsocket.emit('chargeState', res);
     }
   };
   return client;
