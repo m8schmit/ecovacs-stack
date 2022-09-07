@@ -1,10 +1,10 @@
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { makeId } from '../text.utils';
-import { BotCommand } from './commands.model';
+import { BotAct, BotCommand } from './commands.model';
 import { sendJSONCommand } from './commands.utils';
 
-export const clean = (params: string) => {
+export const clean = (params: BotAct) => {
   const command: BotCommand = {
     name: 'clean_V2',
     payload: {
@@ -52,9 +52,33 @@ export const charge = () => {
 };
 
 export const playSound = () => {
-  const getMajorMapCommand: BotCommand = {
+  const command: BotCommand = {
     name: 'getMajorMap',
     payload: {},
   };
-  sendJSONCommand(getMajorMapCommand, client);
+  sendJSONCommand(command, client);
+};
+
+export const getCleanInfo = () => {
+  const command: BotCommand = {
+    name: 'getCleanInfo',
+    payload: { id: makeId(8) },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const GetChargeState = () => {
+  const command: BotCommand = {
+    name: 'GetChargeState',
+    payload: { id: makeId(8) },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getBattery = () => {
+  const command: BotCommand = {
+    name: 'getBattery',
+    payload: { id: makeId(8) },
+  };
+  sendJSONCommand(command, client);
 };

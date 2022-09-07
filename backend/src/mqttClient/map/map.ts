@@ -18,6 +18,8 @@ export class VacuumMap {
   private _piecesIDsList: number[] = [];
   private _mapBuffer = [...Array(800)].map(() => Array(800).fill(null));
   private _mapDataList: MapData[] = [];
+  private readonly _intervalDuration = 2000;
+  private _buildMapInterval!: NodeJS.Timeout;
 
   // 0 no data
   // 1 floor
@@ -68,7 +70,12 @@ export class VacuumMap {
       await decompressLZMA(current.data).then((res) => {
         this.fillBuffer(this._settings, res.toJSON().data, current.index);
       });
-      index === this._mapDataList.length - 1 && this.drawCanvas();
+      if (index === this._mapDataList.length - 1) {
+        clearTimeout(this._buildMapInterval);
+        this._buildMapInterval = setTimeout(() => {
+          this.drawCanvas();
+        }, this._intervalDuration);
+      }
     });
   }
 

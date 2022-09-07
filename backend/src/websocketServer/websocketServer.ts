@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 
-import { clean, getMajorMap } from '../mqttClient/commands/commands';
+import { clean, getBattery, GetChargeState, getCleanInfo, getMajorMap } from '../mqttClient/commands/commands';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
 
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
@@ -15,6 +15,14 @@ const websocketServer = () => {
   io.on('connection', (socket) => {
     WSsocket = socket;
     console.log('New client connected', socket.id);
+
+    //Ask all basic info when an user open the frontend app
+    setTimeout(() => {
+      console.log('BASIC INFOS');
+      getCleanInfo();
+      GetChargeState();
+      getBattery();
+    }, 1000);
 
     socket.conn.on('close', (reason) => {
       console.log('Client Disconeccted', socket.id, reason);

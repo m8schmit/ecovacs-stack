@@ -3,6 +3,7 @@ import { connect, MqttClient } from 'mqtt';
 import { ca } from '../server.utils';
 import { WSsocket } from '../websocketServer/websocketServer';
 import { charge, getMapInfo_v2, getMinorMap } from './commands/commands';
+import { BotStatus } from './commands/commands.model';
 import { VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
@@ -66,16 +67,28 @@ const mqttClient = () => {
       vacuumMap?.addPiecesIDsList(res.pieceIndex);
       vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
       if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
-        // TODO add a set timeout
         vacuumMap?.buildMap();
       }
     }
 
     if (isTopic('onPos', topic)) {
       const res = getDatafromMessage(message);
-      console.log('ONPOS ', res);
       WSsocket.emit('chargePos', res.chargePos);
       WSsocket.emit('botPos', res.deebotPos);
+    }
+
+    if (isTopic('Battery', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('onBattery', res);
+      WSsocket.emit('batteryLevel', res);
+    }
+
+    if (isTopic('CleanInfo', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('here CleanInfo', res);
+      let status: BotStatus = res.state === 'idle' ? 'idle' : res.motionState;
+
+      WSsocket.emit('status', status);
     }
   };
   return client;

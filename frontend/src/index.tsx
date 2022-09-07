@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
@@ -7,16 +8,19 @@ import App from './App';
 import { LanguageProvider } from './i18n';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store';
+import theme from './theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <CssBaseline>
-        <LanguageProvider>
-          <App />
-        </LanguageProvider>
-      </CssBaseline>
+      <ThemeProvider theme={theme}>
+        <CssBaseline>
+          <LanguageProvider>
+            <App />
+          </LanguageProvider>
+        </CssBaseline>
+      </ThemeProvider>
     </Provider>
   </StrictMode>,
 );

@@ -1,14 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { useAppSelector } from '../hooks';
 
-type CleanState = 'start' | 'pause' | 'charge';
-
+export type BotAct = 'go' | 'start' | 'stop' | 'resume';
+export type BotStatus = 'working' | 'pause' | 'idle';
+// state "clean" motionState "working"
+// state "clean" motionState "resume"
+// state "idle"
 type Devices = 'bot' | 'dock';
 interface DevicesCoordinates {
   x: number;
   y: number;
   a: number;
   invalid: number /* boolean number*/;
+}
+
+interface BatteryState {
+  level: number;
+  isLow: boolean;
 }
 
 interface DevicesPayload {
@@ -25,10 +34,10 @@ interface VacuumState {
     dock: DevicesCoordinates;
     bot: DevicesCoordinates;
   };
-  clean: {
-    isLoading: boolean;
-    isFetching: boolean;
-    data: CleanState;
+  battery: BatteryState;
+  status: {
+    status: BotStatus;
+    isCharging: boolean;
   };
 }
 
@@ -52,11 +61,24 @@ const initialState: VacuumState = {
       invalid: 0,
     },
   },
-  clean: {
-    isLoading: false,
-    isFetching: false,
-    data: 'pause',
+  battery: {
+    level: 0,
+    isLow: false,
   },
+  status: {
+    status: 'idle',
+    isCharging: false,
+  },
+};
+
+export const softUpdateStatus = (act: BotAct): BotStatus => {
+  if (act === 'start' || act === 'resume') {
+    return 'working';
+  }
+  if (act === 'stop') {
+    return 'pause';
+  }
+  return 'idle';
 };
 
 export const vacuumSlice = createSlice({
@@ -67,19 +89,24 @@ export const vacuumSlice = createSlice({
       ...state,
       map: { ...state.map, data: action.payload },
     }),
-    setVacuumClean: (state, action: PayloadAction<CleanState>) => ({
+    setVacuumClean: (state, action: PayloadAction<BotAct>) => ({
       ...state,
-      clean: { ...state.clean, data: action.payload },
+      clean: { ...state.status, status: softUpdateStatus(action.payload) },
     }),
     setVacuumPos: (state, { payload: { device, devicesCoordinates } }: PayloadAction<DevicesPayload>) => ({
       ...state,
       position: { ...state.position, [device]: devicesCoordinates },
     }),
+    setVacuumBattery: (state, action: PayloadAction<BatteryState>) => ({
+      ...state,
+      battery: action.payload,
+    }),
   },
 });
 
-export const { setVacuumMap, setVacuumClean, setVacuumPos } = vacuumSlice.actions;
+export const { setVacuumMap, setVacuumClean, setVacuumPos, setVacuumBattery } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
-export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.clean);
+export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.status);
 export const getVacuumPos = (device: Devices) => useAppSelector(({ vacuum }) => vacuum.position[device]);
+export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.battery);
