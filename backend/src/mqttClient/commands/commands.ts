@@ -23,10 +23,53 @@ export const getMajorMap = () => {
   sendJSONCommand(command, client);
 };
 
-export const getMapInfo_v2 = (mapId: string) => {
+export const getMapSet = (mid: string) => {
+  const command: BotCommand = {
+    name: 'getMapSet',
+    payload: { start: 0, mid, type: 'ar', bdTaskID: makeId(16) },
+  };
+  sendJSONCommand(command, client);
+};
+
+// q => {"start":0,"mid":"96151110","type":"ar","bdTaskID":"1662563889241531"}
+// p =>
+// {"type":"ar","count":11,"mid":"96151110","msid":"873210993","subsets":[
+//   {"mssid":"0","name":"","totalCount":110},
+//   {"mssid":"9","name":"","totalCount":97},
+//   {"mssid":"8","name":"","totalCount":132},
+//   {"mssid":"10","name":"","totalCount":134},
+//   {"mssid":"7","name":"","totalCount":46},
+//   {"mssid":"2","name":"","totalCount":51},
+//   {"mssid":"12","name":"","totalCount":68},
+//   {"mssid":"4","name":"","totalCount":35}
+//   ,{"mssid":"3","name":"","totalCount":50},
+//   {"mssid":"11","name":"","totalCount":20},
+//   {"mssid":"5","name":"","totalCount":53}
+// ]}
+export const getMapSubSet = (msid: string, count: number, mid: string, mssid: string) => {
+  const command: BotCommand = {
+    name: 'getMapSubSet',
+    payload: {
+      msid,
+      value: {},
+      count,
+      mid,
+      seqIndex: 0,
+      totalCount: count,
+      type: 'ar',
+      mssid,
+      seq: 0,
+      bdTaskID: makeId(16),
+    },
+  };
+  sendJSONCommand(command, client);
+};
+// q => "msid":"873210993","values":{},"count":110,"name":"","mid":"96151110","seqIndex":0,"totalCount":110,"type":"ar","mssid":"0","seq":0,"bdTaskID":"1662563890369576"}
+// q => {"msid":"873210993","values":{},"count":134,"name":"","mid":"96151110","seqIndex":0,"totalCount":134,"type":"ar","mssid":"10","seq":0,"bdTaskID":"1662563890385713"}
+export const getMapInfo_v2 = (mid: string) => {
   const command: BotCommand = {
     name: 'getMapInfo_v2',
-    payload: { mid: mapId, type: '0', bdTaskID: makeId(16) },
+    payload: { mid, type: '0', bdTaskID: makeId(16) },
   };
   sendJSONCommand(command, client);
 };

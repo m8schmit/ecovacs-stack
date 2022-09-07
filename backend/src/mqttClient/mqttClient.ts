@@ -2,7 +2,7 @@ import { connect, MqttClient } from 'mqtt';
 
 import { ca } from '../server.utils';
 import { WSsocket } from '../websocketServer/websocketServer';
-import { getMapInfo_v2, getMinorMap } from './commands/commands';
+import { getMapInfo_v2, getMapSet, getMinorMap } from './commands/commands';
 import { VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
@@ -49,9 +49,10 @@ const mqttClient = () => {
         if (!vacuumMap) {
           vacuumMap = new VacuumMap(res);
           getMapInfo_v2(vacuumMap.settings.mid);
+          getMapSet(vacuumMap.settings.mid);
         }
         if (!vacuumMap.piecesIDsList) {
-          console.info('TODO: handle no name case.');
+          console.info('TODO: handle no map case.');
           return;
         }
         vacuumMap?.piecesIDsList.forEach((pieceID) => {
@@ -61,6 +62,7 @@ const mqttClient = () => {
       }
     }
 
+    // Map Topic //
     if (isTopic('MinorMap', topic)) {
       const res = getDatafromMessage(message);
       vacuumMap?.addPiecesIDsList(res.pieceIndex);
@@ -76,6 +78,23 @@ const mqttClient = () => {
       WSsocket.emit('botPos', res.deebotPos);
     }
 
+    //This is the cleaning line ? seems to be b64 lzma but the toString return nothing
+    if (isTopic('MapTrace', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('here MapTrace', res);
+    }
+
+    if (isTopic('MapSubset', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('here MapSubset', res);
+    }
+
+    if (isTopic('MapSet', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('here MapSet', res);
+    }
+    /////
+
     if (isTopic('Battery', topic)) {
       const res = getDatafromMessage(message);
       WSsocket.emit('batteryLevel', res);
@@ -88,8 +107,6 @@ const mqttClient = () => {
 
     if (isTopic('ChargeState', topic)) {
       const res = getDatafromMessage(message);
-      console.log('here ChargeState', res);
-
       WSsocket.emit('chargeState', res);
     }
   };

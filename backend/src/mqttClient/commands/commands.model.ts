@@ -3,6 +3,8 @@ type BotCommandName =
   | 'clean_V2'
   | 'getMajorMap'
   | 'getMinorMap'
+  | 'getMapSet'
+  | 'getMapSubSet'
   | 'charge'
   | 'getMapInfo_v2'
   | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */
