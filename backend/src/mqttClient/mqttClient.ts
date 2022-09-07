@@ -2,8 +2,7 @@ import { connect, MqttClient } from 'mqtt';
 
 import { ca } from '../server.utils';
 import { WSsocket } from '../websocketServer/websocketServer';
-import { charge, getMapInfo_v2, getMinorMap } from './commands/commands';
-import { BotStatus } from './commands/commands.model';
+import { getMapInfo_v2, getMinorMap } from './commands/commands';
 import { VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
@@ -86,9 +85,8 @@ const mqttClient = () => {
     if (isTopic('CleanInfo', topic)) {
       const res = getDatafromMessage(message);
       console.log('here CleanInfo', res);
-      let status: BotStatus = res.state === 'idle' ? 'idle' : res.motionState;
 
-      WSsocket.emit('status', status);
+      WSsocket.emit('status', { state: res.state, cleanState: res.cleanState });
     }
   };
   return client;

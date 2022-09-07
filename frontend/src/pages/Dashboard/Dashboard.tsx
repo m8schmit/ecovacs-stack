@@ -1,24 +1,12 @@
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid, Typography } from '@mui/material';
 import { useContext } from 'react';
 
 import Battery from '../../components/Battery/Battery';
+import CleanState from '../../components/CleanState/CleanState';
 import VacuumMap from '../../components/VacuumMap/VacuumMap';
-import { useAppDispatch } from '../../store/hooks';
-import { getVacuumClean, setVacuumClean } from '../../store/vacuum/vacuumSlice';
 import theme from '../../theme';
-import { WebSocketContext } from '../../utils/socket.utils';
 
 const Dashboard = () => {
-  const { status } = getVacuumClean();
-  const socket = useContext(WebSocketContext);
-  const dispatch = useAppDispatch();
-
-  const switchCleanState = () => {
-    console.log('switchCleanState', status);
-    status === 'idle' && socket && socket.emit('clean', 'start') && dispatch(setVacuumClean('start'));
-    status === 'pause' && socket && socket.emit('clean', 'resume') && dispatch(setVacuumClean('resume'));
-    status === 'working' && socket && socket.emit('clean', 'stop') && dispatch(setVacuumClean('stop'));
-  };
   return (
     <Box sx={{ margin: theme.typography.pxToRem(15) }}>
       <Grid container spacing={2}>
@@ -31,11 +19,7 @@ const Dashboard = () => {
         </Grid>
         <Grid item xs={6}>
           <Typography>Controls</Typography>
-          <Box>
-            <Button variant="contained" onClick={() => switchCleanState()}>
-              {status}
-            </Button>
-          </Box>
+          <CleanState />
         </Grid>
         <Grid item xs={6}>
           <VacuumMap />
@@ -46,3 +30,26 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+//wotrkinh status
+// status: {
+//   state: 'clean',
+//   cleanState: {
+//     cid: '122',
+//     router: 'plan',
+//     motionState: 'pause',
+//     content: {
+//       type: 'auto'
+//     }
+//   }
+// }
+//pause status
+// status: {
+//   state: 'clean',
+//   cleanState: {
+//     id: '122',
+//     router: 'plan',
+//     type: 'auto',
+//     motionState: 'pause'
+//   }
+// }

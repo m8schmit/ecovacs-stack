@@ -35,11 +35,27 @@ interface VacuumState {
     bot: DevicesCoordinates;
   };
   battery: BatteryState;
-  status: {
-    status: BotStatus;
-    isCharging: boolean;
+  status: CleanState;
+}
+
+// CleanState
+export interface CleanState {
+  state: BotState;
+  cleanState: {
+    id?: string /* 3 digits */;
+    router?: BotRoute;
+    type?: BotType;
+    motionState?: BotMotionState;
+    content?: {
+      type?: BotType;
+    };
   };
 }
+
+type BotState = 'clean' | 'pause' | 'idle';
+type BotRoute = 'plan';
+type BotType = 'auto';
+type BotMotionState = 'working' | 'pause';
 
 const initialState: VacuumState = {
   map: {
@@ -66,19 +82,9 @@ const initialState: VacuumState = {
     isLow: false,
   },
   status: {
-    status: 'idle',
-    isCharging: false,
+    state: 'idle',
+    cleanState: {},
   },
-};
-
-export const softUpdateStatus = (act: BotAct): BotStatus => {
-  if (act === 'start' || act === 'resume') {
-    return 'working';
-  }
-  if (act === 'stop') {
-    return 'pause';
-  }
-  return 'idle';
 };
 
 export const vacuumSlice = createSlice({
@@ -89,9 +95,9 @@ export const vacuumSlice = createSlice({
       ...state,
       map: { ...state.map, data: action.payload },
     }),
-    setVacuumClean: (state, action: PayloadAction<BotAct>) => ({
+    setVacuumState: (state, action: PayloadAction<CleanState>) => ({
       ...state,
-      clean: { ...state.status, status: softUpdateStatus(action.payload) },
+      status: action.payload,
     }),
     setVacuumPos: (state, { payload: { device, devicesCoordinates } }: PayloadAction<DevicesPayload>) => ({
       ...state,
@@ -104,7 +110,7 @@ export const vacuumSlice = createSlice({
   },
 });
 
-export const { setVacuumMap, setVacuumClean, setVacuumPos, setVacuumBattery } = vacuumSlice.actions;
+export const { setVacuumMap, setVacuumState, setVacuumPos, setVacuumBattery } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
 export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.status);
