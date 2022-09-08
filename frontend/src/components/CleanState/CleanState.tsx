@@ -1,29 +1,27 @@
-import { Bolt, Close, Pause, PlayArrow } from '@mui/icons-material';
+import { Bolt, Close, Pause, PlayArrow, Stop } from '@mui/icons-material';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
 import {
   getChargeState,
-  getCleanTask,
+  getSelectedRoomsList,
   getVacuumClean,
-  resetCleanTask,
   resetSelectedRoomsList,
-  setCleanTask,
 } from '../../store/vacuum/vacuumSlice';
-import { BotAct, CleanState as CleanStateType } from '../../store/vacuum/vacuumSlice.type';
+import { BotAct, CleanState as CleanStateType, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
 
 const CleanState = () => {
   const status = getVacuumClean();
-  const cleanTask = getCleanTask();
+  const selectedRoomsList = getSelectedRoomsList();
   const { isCharging } = getChargeState();
   const dispatch = useAppDispatch();
 
   const socket = useContext(WebSocketContext);
 
-  const getNextAct = (status: CleanStateType): BotAct => {
+  const getNextAct = (): BotAct => {
     if (status?.cleanState?.motionState === 'working' || status?.state === 'goCharging') {
       return 'pause';
     } else if (status?.cleanState?.motionState === 'pause') {
@@ -33,12 +31,20 @@ const CleanState = () => {
       return 'start';
     }
   };
+
+  const getCleanTask = (act: BotAct | null = null): CleanTask => {
+    return {
+      act: act ? act : getNextAct(),
+      type: !selectedRoomsList.length ? 'auto' : 'spotArea',
+      value: selectedRoomsList.join(',') || null,
+    };
+  };
   const switchCleanState = () => {
     //TODO add a condition to resume charging
     console.log('switchCleanState', status);
-
-    dispatch(setCleanTask({ act: getNextAct(status) }));
-    socket.emit('clean', { ...cleanTask, act: getNextAct(status) });
+    const newTask = getCleanTask();
+    console.log('[switch] emit clean with ', newTask);
+    socket.emit('clean', newTask);
   };
 
   const goCharging = () => {
@@ -47,9 +53,11 @@ const CleanState = () => {
 
   const reset = () => {
     dispatch(resetSelectedRoomsList());
-    dispatch(resetCleanTask());
-    socket.emit('clean', cleanTask);
+    const newTask = getCleanTask();
+    console.log('[delete] emit clean with ', newTask);
+    socket.emit('clean', getCleanTask('stop'));
   };
+
   return (
     <Box
       sx={{
@@ -63,14 +71,18 @@ const CleanState = () => {
       </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography>
-          start an <b>{cleanTask.type}</b> cleaning {cleanTask.type === 'spotArea' && `on Rooms ${cleanTask.value}`}
+          start an <b>{!selectedRoomsList.length ? 'auto' : 'spotArea'}</b> cleaning{' '}
+          {selectedRoomsList.length && `on Rooms ${selectedRoomsList.join(', ')}`}
         </Typography>
-        {cleanTask.value && (
+        {selectedRoomsList.length && (
           <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
             reset
           </Button>
         )}
       </Box>
+      <IconButton size="large" color="primary" onClick={() => reset()}>
+        <Stop />
+      </IconButton>
       <IconButton size="large" color="primary" onClick={() => switchCleanState()}>
         {(status?.cleanState?.motionState === 'working' ||
           (status.state === 'goCharging' && status?.cleanState?.motionState !== 'pause')) && <Pause />}

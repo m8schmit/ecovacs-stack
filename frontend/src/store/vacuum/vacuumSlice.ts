@@ -5,7 +5,6 @@ import {
   BatteryState,
   ChargeState,
   CleanState,
-  CleanTask,
   Devices,
   DevicesCoordinates,
   DevicesPayload,
@@ -13,7 +12,6 @@ import {
 } from './vacuumSlice.type';
 
 interface VacuumState {
-  cleanTask: CleanTask;
   selectedRoomsList: number[];
   map: {
     isLoading: boolean;
@@ -31,10 +29,6 @@ interface VacuumState {
 }
 
 const initialState: VacuumState = {
-  cleanTask: {
-    act: 'stop',
-    type: 'auto',
-  },
   selectedRoomsList: [],
   map: {
     isLoading: true,
@@ -77,10 +71,13 @@ export const vacuumSlice = createSlice({
       ...state,
       map: { ...state.map, data: action.payload },
     }),
-    setVacuumState: (state, action: PayloadAction<CleanState>) => ({
-      ...state,
-      status: action.payload,
-    }),
+    setVacuumState: (state, action: PayloadAction<CleanState>) => {
+      return {
+        ...state,
+        status: action.payload,
+        // cleanTask,
+      };
+    },
     setVacuumPos: (state, { payload: { device, devicesCoordinates } }: PayloadAction<DevicesPayload>) => ({
       ...state,
       position: { ...state.position, [device]: devicesCoordinates },
@@ -100,25 +97,14 @@ export const vacuumSlice = createSlice({
         action.payload,
       ],
     }),
-    setCleanTask: (state, action: PayloadAction<Partial<CleanTask>>) => ({
-      ...state,
-      cleanTask: { ...state.cleanTask, ...action.payload },
-    }),
-    resetCleanTask: (state) => ({
-      ...state,
-      cleanTask: { ...initialState.cleanTask },
-    }),
     updateSelectedRoomsList: (state, action: PayloadAction<number>) => {
-      const selectedRoomsList =
-        state.selectedRoomsList.find((current) => current === action.payload) !== undefined
-          ? [...state.selectedRoomsList.filter((current) => current !== action.payload)]
-          : [...state.selectedRoomsList, action.payload];
-
-      const value = selectedRoomsList.length ? selectedRoomsList.join(',') : null;
       return {
         ...state,
-        cleanTask: { ...state.cleanTask, value, type: value ? 'spotArea' : 'auto' },
-        selectedRoomsList,
+        selectedRoomsList: [
+          ...(state.selectedRoomsList?.find((current) => current === action.payload) !== undefined
+            ? [...state.selectedRoomsList.filter((current) => current !== action.payload)]
+            : [...state.selectedRoomsList, action.payload]),
+        ],
       };
     },
     resetSelectedRoomsList: (state) => {
@@ -137,8 +123,7 @@ export const {
   setVacuumBattery,
   setChargeState,
   setMapSubsetsList,
-  setCleanTask,
-  resetCleanTask,
+
   updateSelectedRoomsList,
   resetSelectedRoomsList,
 } = vacuumSlice.actions;
@@ -149,5 +134,4 @@ export const getVacuumPos = (device: Devices) => useAppSelector(({ vacuum }) => 
 export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.battery);
 export const getChargeState = () => useAppSelector(({ vacuum }) => vacuum.chargeState);
 export const getMapSubsetsList = () => useAppSelector(({ vacuum }) => vacuum.mapSubsetsList);
-export const getCleanTask = () => useAppSelector(({ vacuum }) => vacuum.cleanTask);
 export const getSelectedRoomsList = () => useAppSelector(({ vacuum }) => vacuum.selectedRoomsList);

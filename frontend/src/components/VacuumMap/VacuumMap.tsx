@@ -119,7 +119,7 @@ const VacuumMap = () => {
 
   const isRoomSelected = (roomName: string) => {
     const mssid = +roomName.split(' ')[1];
-    return selectedRoomsList.find((current) => current === mssid) !== undefined;
+    return selectedRoomsList?.find((current) => current === mssid) !== undefined;
   };
 
   useEffect(() => {
