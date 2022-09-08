@@ -49,7 +49,7 @@ export interface MapSubSet {
   cleanset: string /* string list like '1,0,2' */;
   valueSize: number;
   center: string /* x y, like '4825,-3125' */;
-  msid: string /* number length 1*/;
+  mssid: string /* number length 1*/;
   value: string[][] /* decoded B64 LZMA, classic polygon coordinates like [[x, y], [x, y]...] */;
 }
 

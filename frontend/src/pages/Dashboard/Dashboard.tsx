@@ -1,5 +1,4 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
-import { useContext } from 'react';
 
 import Battery from '../../components/Battery/Battery';
 import CleanState from '../../components/CleanState/CleanState';
@@ -30,26 +29,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-//wotrkinh status
-// status: {
-//   state: 'clean',
-//   cleanState: {
-//     cid: '122',
-//     router: 'plan',
-//     motionState: 'pause',
-//     content: {
-//       type: 'auto'
-//     }
-//   }
-// }
-//pause status
-// status: {
-//   state: 'clean',
-//   cleanState: {
-//     id: '122',
-//     router: 'plan',
-//     type: 'auto',
-//     motionState: 'pause'
-//   }
-// }

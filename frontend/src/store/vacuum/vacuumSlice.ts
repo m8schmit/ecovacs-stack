@@ -109,9 +109,10 @@ export const vacuumSlice = createSlice({
       cleanTask: { ...initialState.cleanTask },
     }),
     updateSelectedRoomsList: (state, action: PayloadAction<number>) => {
-      const selectedRoomsList = state.selectedRoomsList.find((current) => current === action.payload)
-        ? [...state.selectedRoomsList.filter((current) => current !== action.payload)]
-        : [...state.selectedRoomsList, action.payload];
+      const selectedRoomsList =
+        state.selectedRoomsList.find((current) => current === action.payload) !== undefined
+          ? [...state.selectedRoomsList.filter((current) => current !== action.payload)]
+          : [...state.selectedRoomsList, action.payload];
 
       const value = selectedRoomsList.length ? selectedRoomsList.join(',') : null;
       return {

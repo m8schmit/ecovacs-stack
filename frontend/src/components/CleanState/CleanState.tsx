@@ -38,11 +38,8 @@ const CleanState = () => {
     console.log('switchCleanState', status);
 
     dispatch(setCleanTask({ act: getNextAct(status) }));
+    socket.emit('clean', { ...cleanTask, act: getNextAct(status) });
   };
-
-  useEffect(() => {
-    socket.emit('clean', cleanTask);
-  }, [cleanTask.act]);
 
   const goCharging = () => {
     socket.emit('charge');
@@ -51,6 +48,7 @@ const CleanState = () => {
   const reset = () => {
     dispatch(resetSelectedRoomsList());
     dispatch(resetCleanTask());
+    socket.emit('clean', cleanTask);
   };
   return (
     <Box

@@ -1,16 +1,26 @@
-const getRandomColor = (id: number) => {
-  const colors = [
-    'rgba(50, 168, 82, 1.0)',
-    'rgba(50, 148, 168, 1.0)',
-    'rgba(255, 215, 56, 1.0)',
-    'rgba(255, 215, 56, 1.0)',
-    'rgba(255, 144, 18, 1.0)',
-    'rgba(255, 38, 64, 1.0)',
-    'rgba(228, 77, 255, 1.0)',
-    'rgba(43, 72, 255, 1.0)',
-  ];
+const convertHexToRGBA = (hexCode: string, opacity: number) => {
+  let hex = hexCode.replace('#', '');
 
-  return colors[id % colors.length];
+  if (hex.length === 3) {
+    hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+  }
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  /* Backward compatibility for whole number based opacity values. */
+  if (opacity > 1 && opacity <= 100) {
+    opacity = opacity / 100;
+  }
+
+  return `rgba(${r},${g},${b},${opacity})`;
+};
+
+const getRandomColor = (id: number, opacity = 1) => {
+  const colors = ['#00ffe1', '#ff9100', '#0011ff', '#00ff77', '#15ff00', '#ff2600'];
+
+  return convertHexToRGBA(colors[id % colors.length], opacity);
 };
 
 export default getRandomColor;

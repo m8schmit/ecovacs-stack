@@ -33,13 +33,11 @@ const App = () => {
 
     socket &&
       socket.on('vacuumMap', (payload) => {
-        console.log('receive vacuumMap');
         dispatch(setVacuumMap(payload));
       });
 
     socket &&
       socket.on('chargePos', (payload) => {
-        console.log('receive chargePos', payload);
         dispatch(
           setVacuumPos({
             device: 'dock',
@@ -50,7 +48,6 @@ const App = () => {
 
     socket &&
       socket.on('botPos', (payload) => {
-        console.log('receive botPos', payload);
         dispatch(
           setVacuumPos({
             device: 'bot',
@@ -61,25 +58,21 @@ const App = () => {
 
     socket &&
       socket.on('batteryLevel', (payload) => {
-        console.log('receive BatteryLevel', payload);
         dispatch(setVacuumBattery({ level: payload.value, isLow: !!+payload.isLow }));
       });
 
     socket &&
       socket.on('status', (payload) => {
-        console.log('receive status', payload);
         dispatch(setVacuumState(payload));
       });
 
     socket &&
       socket.on('chargeState', (payload) => {
-        console.log('receive charge', payload);
         dispatch(setChargeState(payload));
       });
 
     socket &&
       socket.on('mapSubSet', (payload) => {
-        console.log('receive mapSubSet', payload);
         dispatch(setMapSubsetsList(payload));
       });
   }, [socket]);

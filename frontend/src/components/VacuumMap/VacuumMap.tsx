@@ -17,7 +17,13 @@ import Style from 'ol/style/Style';
 import Text from 'ol/style/Text';
 import { useEffect, useRef, useState } from 'react';
 
-import { getMapSubsetsList, getVacuumMap, getVacuumPos, updateSelectedRoomsList } from '../../store/vacuum/vacuumSlice';
+import {
+  getMapSubsetsList,
+  getSelectedRoomsList,
+  getVacuumMap,
+  getVacuumPos,
+  updateSelectedRoomsList,
+} from '../../store/vacuum/vacuumSlice';
 import getRandomColor from '../../utils/colors.utils';
 import { getAngle } from './Map.utils';
 import VectorSource from 'ol/source/Vector';
@@ -43,13 +49,14 @@ const VacuumMap = () => {
   const dockPosition = getVacuumPos('dock');
   const botPosition = getVacuumPos('bot');
   const mapSubsetsList = getMapSubsetsList();
+  const selectedRoomsList = getSelectedRoomsList();
   const [mainLayer] = useState<ImageLayer<ImageSource>>(new ImageLayer());
   const extent = [0, 0, mapWidth, mapHeigth];
 
   const getCoordinates = (value: number, axis: 'x' | 'y') =>
     (value / pixelWidth) * PixelRatio + (axis === 'x' ? mapWidth : mapHeigth) / 2;
 
-  const [roomsLayer] = useState<VectorLayer<VectorSource<Polygon>>>(new VectorLayer({ opacity: 0.5 }));
+  const [roomsLayer] = useState<VectorLayer<VectorSource<Polygon>>>(new VectorLayer());
 
   const [botLayerStyle] = useState<Style>(
     new Style({
@@ -110,6 +117,11 @@ const VacuumMap = () => {
     extent: extent,
   });
 
+  const isRoomSelected = (roomName: string) => {
+    const mssid = +roomName.split(' ')[1];
+    return selectedRoomsList.find((current) => current === mssid) !== undefined;
+  };
+
   useEffect(() => {
     console.log('init', botLayer.getSource());
     if (!initialized) {
@@ -131,6 +143,26 @@ const VacuumMap = () => {
   }, []);
 
   useEffect(() => {
+    roomsLayer
+      .getSource()
+      ?.getFeatures()
+      .forEach((feature, index) =>
+        feature.setStyle(
+          new Style({
+            stroke: new Stroke({
+              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.5),
+              width: 2,
+            }),
+            fill: new Fill({
+              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.5),
+            }),
+            text: new Text({ text: feature.get('name') }),
+          }),
+        ),
+      );
+  }, [selectedRoomsList, roomsLayer?.getSource()]);
+
+  useEffect(() => {
     if (map && mapData && mainLayer) {
       mainLayer.setSource(
         new Static({
@@ -146,16 +178,18 @@ const VacuumMap = () => {
   }, [mapData, map]);
 
   useEffect(() => {
+    console.log('register event ', map);
     if (!map) return;
     map.on('click', (event: MapBrowserEvent<any>) => {
-      console.log(event);
-
       const feature = map.forEachFeatureAtPixel(event.pixel, (feature) => feature);
-      console.log('clicked feature', feature?.get('name'));
       // TODO find a better way to get mssid
-      dispatch(updateSelectedRoomsList(+feature?.get('name').split(' ')[1]));
+      const featureName = feature?.get('name');
+      if (featureName) {
+        const mssid = +featureName.split(' ')[1];
+        dispatch(updateSelectedRoomsList(mssid));
+      }
     });
-  });
+  }, [map]);
 
   useEffect(() => {
     botLayer
@@ -179,36 +213,17 @@ const VacuumMap = () => {
   useEffect(() => {
     roomsLayer.setSource(
       new Vector({
-        features: mapSubsetsList.map(({ value, totalCount }) => {
-          console.log(totalCount);
+        features: mapSubsetsList.map(({ value, mssid }) => {
           return new Feature({
             //TODO there an offset, some polygon are overlaping
             geometry: new Polygon([
               [...value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y')])],
             ]),
-            name: `Room ${totalCount}`,
+            name: `Room ${mssid}`,
           });
         }),
       }),
     );
-    roomsLayer
-      .getSource()
-      ?.getFeatures()
-      .forEach((feature, index) =>
-        feature.setStyle(
-          new Style({
-            stroke: new Stroke({
-              color: getRandomColor(index),
-              width: 2,
-            }),
-            fill: new Fill({
-              color: getRandomColor(index),
-            }),
-            text: new Text({ text: feature.get('name') }),
-          }),
-        ),
-      );
-    console.log('update Rooms layer source ', roomsLayer.getSource()?.getFeatures());
   }, [mapSubsetsList]);
 
   return (
