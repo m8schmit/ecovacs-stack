@@ -1,11 +1,13 @@
 import {
   BatteryState,
   BotAct,
+  BotType,
   ChargeState,
   CleanState,
   DevicesCoordinates,
   MapSubSet,
 } from '../mqttClient/commands/commands.model';
+import { Maybe } from '../mqttClient/types';
 
 export interface ServerToClientEvents {
   // noArg: () => void;
@@ -22,7 +24,7 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   getMajorMap: () => void;
-  clean: (command: BotAct) => void;
+  clean: (params: { act: BotAct; type: BotType; value: Maybe<string> }) => void;
   charge: () => void;
 }
 

@@ -34,8 +34,8 @@ const websocketServer = () => {
     });
 
     socket.on('clean', (payload) => {
-      console.log('receive clean');
-      clean(payload);
+      console.log('receive clean ', payload);
+      clean(payload.act, payload.type, payload?.value);
     });
 
     socket.on('charge', () => {

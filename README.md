@@ -86,6 +86,10 @@ to send status update.
 | 'getMapInfo_V2'      | `{"mid": string (length 16),"type": string ("1, 4"),"bdTaskID": string (length 16)}`                                                                                                                                |
 | 'shell'              | `{"script": string (b64 encoded shell script)`                                                                                                                                                                      | to send bash script encoded in B64 who will be executed by the Vacuum bot     | na                                                                                                                                                                                                                                                                     | _Vacuum bot execute the script without any verification, user seem to be `root`, WTF!_                                                             |
 
+# Video
+
+Obviously another protocol, the bot send some "Feiyan Info" then call https://iot-auth-global.aliyuncs.com and https://public.iot-as-mqtt.cn-shanghai.aliyuncs.com/.
+
 # Thanks to
 
 https://github.com/mrbungle64/ecovacs-deebot.js  

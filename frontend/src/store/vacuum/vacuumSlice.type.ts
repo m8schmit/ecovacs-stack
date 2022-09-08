@@ -1,20 +1,3 @@
-type BotCommandName =
-  | 'playSound'
-  | 'clean_V2'
-  | 'getMajorMap'
-  | 'getMinorMap'
-  | 'getMapSet'
-  | 'getMapSubSet'
-  | 'charge'
-  | 'getMapInfo_v2'
-  | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */
-  | 'getChargeState'
-  | 'getBattery';
-
-export type BotAct = 'go' | 'start' | 'stop' | 'resume';
-
-// export type BotState = 'working' | 'pause' | 'idle';
-
 // CleanState
 export interface CleanState {
   state: BotState;
@@ -32,18 +15,28 @@ export interface CleanState {
 
 type BotState = 'clean' | 'pause' | 'idle' | 'goCharging';
 type BotRoute = 'plan';
-export type BotType = 'auto' | 'spotArea' | 'customArea';
+type BotType = 'auto';
 type BotMotionState = 'working' | 'pause';
 
 // ChargeState
 export interface ChargeState {
-  isCharging: number /* boolean number*/;
-  mode: botMode;
+  isCharging: boolean;
+  mode?: botMode;
 }
 
 type botMode = 'slot' | 'autoEmpty';
 
-// MapSubSet
+// cleanTask
+export interface CleanTask {
+  act: BotAct;
+  type: BotCleanType;
+  value?: string | null /* array of mssid or 4 xy value for a customArea, alway separated by commans */;
+}
+
+export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'pause';
+export type BotCleanType = 'auto' | 'spotArea' | 'customArea';
+
+// Map
 export interface MapSubSet {
   type: MapSubSetType;
   subtype: string /* number length 1*/;
@@ -62,6 +55,8 @@ export interface MapSubSet {
 
 export type MapSubSetType = 'ar' | 'vw' | 'mw';
 
+export type Devices = 'bot' | 'dock';
+
 export interface DevicesCoordinates {
   x: number;
   y: number;
@@ -71,9 +66,10 @@ export interface DevicesCoordinates {
 
 export interface BatteryState {
   level: number;
-  isLow: number /* boolean number*/;
+  isLow: boolean;
 }
-export interface BotCommand {
-  name: BotCommandName;
-  payload: {};
+
+export interface DevicesPayload {
+  device: Devices;
+  devicesCoordinates: DevicesCoordinates;
 }

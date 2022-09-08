@@ -1,47 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
+import {
+  BatteryState,
+  ChargeState,
+  CleanState,
+  CleanTask,
+  Devices,
+  DevicesCoordinates,
+  DevicesPayload,
+  MapSubSet,
+} from './vacuumSlice.type';
 
-export type BotAct = 'go' | 'start' | 'stop' | 'resume';
-export type BotStatus = 'working' | 'pause' | 'idle';
-
-// Map
-export interface MapSubSet {
-  type: MapSubSetType;
-  subtype: string /* number length 1*/;
-  connections: string /* string list like '9,' */;
-  name: string;
-  seqIndex: number;
-  count: number;
-  totalCount: number;
-  index: number;
-  cleanset: string /* string list like '1,0,2' */;
-  valueSize: number;
-  center: string /* x y, like '4825,-3125' */;
-  msid: string /* number length 1*/;
-  value: string[][] /* decoded B64 LZMA, classic polygon coordinates like [[x, y], [x, y]...] */;
-}
-
-export type MapSubSetType = 'ar' | 'vw' | 'mw';
-
-type Devices = 'bot' | 'dock';
-interface DevicesCoordinates {
-  x: number;
-  y: number;
-  a: number;
-  invalid: number /* boolean number*/;
-}
-
-interface BatteryState {
-  level: number;
-  isLow: boolean;
-}
-
-interface DevicesPayload {
-  device: Devices;
-  devicesCoordinates: DevicesCoordinates;
-}
 interface VacuumState {
+  cleanTask: CleanTask;
+  selectedRoomsList: number[];
   map: {
     isLoading: boolean;
     isFetching: boolean;
@@ -57,35 +30,12 @@ interface VacuumState {
   chargeState: ChargeState;
 }
 
-// CleanState
-export interface CleanState {
-  state: BotState;
-  cleanState: {
-    id?: string /* 3 digits */;
-    cid?: string /* 3 digits */;
-    router?: BotRoute;
-    type?: BotType;
-    motionState?: BotMotionState;
-    content?: {
-      type?: BotType;
-    };
-  };
-}
-
-type BotState = 'clean' | 'pause' | 'idle' | 'goCharging';
-type BotRoute = 'plan';
-type BotType = 'auto';
-type BotMotionState = 'working' | 'pause';
-
-// ChargeState
-export interface ChargeState {
-  isCharging: boolean;
-  mode?: botMode;
-}
-
-type botMode = 'slot' | 'autoEmpty';
-
 const initialState: VacuumState = {
+  cleanTask: {
+    act: 'stop',
+    type: 'auto',
+  },
+  selectedRoomsList: [],
   map: {
     isLoading: true,
     isFetching: false,
@@ -150,11 +100,47 @@ export const vacuumSlice = createSlice({
         action.payload,
       ],
     }),
+    setCleanTask: (state, action: PayloadAction<Partial<CleanTask>>) => ({
+      ...state,
+      cleanTask: { ...state.cleanTask, ...action.payload },
+    }),
+    resetCleanTask: (state) => ({
+      ...state,
+      cleanTask: { ...initialState.cleanTask },
+    }),
+    updateSelectedRoomsList: (state, action: PayloadAction<number>) => {
+      const selectedRoomsList = state.selectedRoomsList.find((current) => current === action.payload)
+        ? [...state.selectedRoomsList.filter((current) => current !== action.payload)]
+        : [...state.selectedRoomsList, action.payload];
+
+      const value = selectedRoomsList.length ? selectedRoomsList.join(',') : null;
+      return {
+        ...state,
+        cleanTask: { ...state.cleanTask, value, type: value ? 'spotArea' : 'auto' },
+        selectedRoomsList,
+      };
+    },
+    resetSelectedRoomsList: (state) => {
+      return {
+        ...state,
+        selectedRoomsList: initialState.selectedRoomsList,
+      };
+    },
   },
 });
 
-export const { setVacuumMap, setVacuumState, setVacuumPos, setVacuumBattery, setChargeState, setMapSubsetsList } =
-  vacuumSlice.actions;
+export const {
+  setVacuumMap,
+  setVacuumState,
+  setVacuumPos,
+  setVacuumBattery,
+  setChargeState,
+  setMapSubsetsList,
+  setCleanTask,
+  resetCleanTask,
+  updateSelectedRoomsList,
+  resetSelectedRoomsList,
+} = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
 export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.status);
@@ -162,3 +148,5 @@ export const getVacuumPos = (device: Devices) => useAppSelector(({ vacuum }) => 
 export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.battery);
 export const getChargeState = () => useAppSelector(({ vacuum }) => vacuum.chargeState);
 export const getMapSubsetsList = () => useAppSelector(({ vacuum }) => vacuum.mapSubsetsList);
+export const getCleanTask = () => useAppSelector(({ vacuum }) => vacuum.cleanTask);
+export const getSelectedRoomsList = () => useAppSelector(({ vacuum }) => vacuum.selectedRoomsList);

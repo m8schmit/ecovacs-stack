@@ -103,7 +103,7 @@ const mqttClient = () => {
     if (isTopic('MapSet', topic)) {
       const res = getDatafromMessage(message);
       console.log('here MapSet', res);
-      res.subsets.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
+      res.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
         getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid),
       );
     }

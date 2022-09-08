@@ -1,20 +1,27 @@
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { makeId } from '../text.utils';
-import { BotAct, BotCommand, MapSubSetType } from './commands.model';
+import { Maybe } from '../types';
+import { BotAct, BotCommand, BotType, MapSubSetType } from './commands.model';
 import { sendJSONCommand } from './commands.utils';
 
-export const clean = (params: BotAct) => {
+export const clean = (
+  params: BotAct,
+  type: BotType = 'auto',
+  value: Maybe<string> = null /* like mssid,mssid, etc */,
+) => {
+  const content = { total: 0, donotClean: 0, count: 0, type, bdTaskID: makeId(16) };
   const command: BotCommand = {
     name: 'clean_V2',
     payload: {
       act: params,
-      content: { total: 0, donotClean: 0, count: 0, type: 'auto', bdTaskID: makeId(16) },
+      content: value ? { ...content, value } : content,
     },
   };
   sendJSONCommand(command, client);
 };
-
+// custom polygon payload
+// {"act":"start","content":{"total":0,"donotClean":0,"count":0,"type":"customArea","value":"1357,1342,5592,-2892;"},"bdTaskID":"1662650212038842"}
 export const getMajorMap = () => {
   const command: BotCommand = {
     name: 'getMajorMap',
