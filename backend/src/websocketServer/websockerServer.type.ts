@@ -4,6 +4,7 @@ import {
   ChargeState,
   CleanState,
   DevicesCoordinates,
+  MapSubSet,
 } from '../mqttClient/commands/commands.model';
 
 export interface ServerToClientEvents {
@@ -16,6 +17,7 @@ export interface ServerToClientEvents {
   batteryLevel: (batteryState: BatteryState) => void;
   status: (status: CleanState) => void;
   chargeState: (chargeState: ChargeState) => void;
+  mapSubSet: (mapSubSet: MapSubSet) => void;
 }
 
 export interface ClientToServerEvents {

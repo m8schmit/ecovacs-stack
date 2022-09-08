@@ -43,6 +43,25 @@ export interface ChargeState {
 
 type botMode = 'slot' | 'autoEmpty';
 
+// MapSubSet
+export interface MapSubSet {
+  type: MapSubSetType;
+  subtype: string /* number length 1*/;
+  connections: string /* string list like '9,' */;
+  name: string;
+  seqIndex: number;
+  count: number;
+  totalCount: number;
+  index: number;
+  cleanset: string /* string list like '1,0,2' */;
+  valueSize: number;
+  center: string /* x y, like '4825,-3125' */;
+  msid: string /* number length 1*/;
+  value: string[][] /* decoded B64 LZMA, classic polygon coordinates like [[x, y], [x, y]...] */;
+}
+
+export type MapSubSetType = 'ar' | 'vw' | 'mw';
+
 export interface DevicesCoordinates {
   x: number;
   y: number;

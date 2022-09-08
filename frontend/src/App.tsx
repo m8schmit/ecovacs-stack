@@ -8,6 +8,7 @@ import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
 import {
   setChargeState,
+  setMapSubsetsList,
   setVacuumBattery,
   setVacuumMap,
   setVacuumPos,
@@ -74,6 +75,12 @@ const App = () => {
       socket.on('chargeState', (payload) => {
         console.log('receive charge', payload);
         dispatch(setChargeState(payload));
+      });
+
+    socket &&
+      socket.on('mapSubSet', (payload) => {
+        console.log('receive mapSubSet', payload);
+        dispatch(setMapSubsetsList(payload));
       });
   }, [socket]);
 

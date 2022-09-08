@@ -2,7 +2,8 @@ import { connect, MqttClient } from 'mqtt';
 
 import { ca } from '../server.utils';
 import { WSsocket } from '../websocketServer/websocketServer';
-import { getMapInfo_v2, getMapSet, getMinorMap } from './commands/commands';
+import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap } from './commands/commands';
+import { decompressLZMA } from './map/LZMA.utils';
 import { VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
@@ -49,7 +50,6 @@ const mqttClient = () => {
         if (!vacuumMap) {
           vacuumMap = new VacuumMap(res);
           getMapInfo_v2(vacuumMap.settings.mid);
-          getMapSet(vacuumMap.settings.mid);
         }
         if (!vacuumMap.piecesIDsList) {
           console.info('TODO: handle no map case.');
@@ -59,6 +59,8 @@ const mqttClient = () => {
           console.log('ask minor map for ', pieceID);
           vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
         });
+
+        getMapSet(vacuumMap.settings.mid);
       }
     }
 
@@ -84,14 +86,26 @@ const mqttClient = () => {
       console.log('here MapTrace', res);
     }
 
-    if (isTopic('MapSubset', topic)) {
+    if (isTopic('MapSubSet', topic)) {
       const res = getDatafromMessage(message);
       console.log('here MapSubset', res);
+      decompressLZMA(res.value).then((value) =>
+        WSsocket.emit('mapSubSet', {
+          ...res,
+          value: value
+            .toString()
+            .split(';')
+            .map((current) => current.split(',')),
+        }),
+      );
     }
 
     if (isTopic('MapSet', topic)) {
       const res = getDatafromMessage(message);
       console.log('here MapSet', res);
+      res.subsets.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
+        getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid),
+      );
     }
     /////
 

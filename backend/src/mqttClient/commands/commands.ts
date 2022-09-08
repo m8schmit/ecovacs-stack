@@ -1,7 +1,7 @@
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { makeId } from '../text.utils';
-import { BotAct, BotCommand } from './commands.model';
+import { BotAct, BotCommand, MapSubSetType } from './commands.model';
 import { sendJSONCommand } from './commands.utils';
 
 export const clean = (params: BotAct) => {
@@ -46,7 +46,7 @@ export const getMapSet = (mid: string) => {
 //   {"mssid":"11","name":"","totalCount":20},
 //   {"mssid":"5","name":"","totalCount":53}
 // ]}
-export const getMapSubSet = (msid: string, count: number, mid: string, mssid: string) => {
+export const getMapSubSet = (msid: string, count: number, mid: string, mssid: string, type: MapSubSetType = 'ar') => {
   const command: BotCommand = {
     name: 'getMapSubSet',
     payload: {
@@ -56,7 +56,7 @@ export const getMapSubSet = (msid: string, count: number, mid: string, mssid: st
       mid,
       seqIndex: 0,
       totalCount: count,
-      type: 'ar',
+      type,
       mssid,
       seq: 0,
       bdTaskID: makeId(16),
