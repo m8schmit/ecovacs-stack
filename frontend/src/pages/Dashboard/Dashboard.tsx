@@ -16,11 +16,11 @@ const Dashboard = () => {
           </Box>
           <Divider />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Typography>Controls</Typography>
           <CleanState />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <VacuumMap />
         </Grid>
       </Grid>

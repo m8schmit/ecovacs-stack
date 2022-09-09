@@ -17,6 +17,7 @@ const websocketServer = () => {
     console.log('New client connected', socket.id);
 
     //Ask all basic info when an user open the frontend app
+    // find a bettweway to do this
     setInterval(() => {
       console.log('BASIC INFOS');
       getCleanInfo();

@@ -4,7 +4,7 @@ import { ca } from '../server.utils';
 import { WSsocket } from '../websocketServer/websocketServer';
 import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap } from './commands/commands';
 import { decompressLZMA } from './map/LZMA.utils';
-import { VacuumMap } from './map/map';
+import { parseTracePoints, VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
 
@@ -80,10 +80,17 @@ const mqttClient = () => {
       WSsocket.emit('botPos', res.deebotPos);
     }
 
-    //This is the cleaning line ? seems to be b64 lzma but the toString return nothing
+    // ovacs-stack-backend-1        | here MapTrace {
+    //   ecovacs-stack-backend-1        |   tid: '32159666',
+    //   ecovacs-stack-backend-1        |   totalCount: 3111,
+    //   ecovacs-stack-backend-1        |   traceStart: 3110,
+    //   ecovacs-stack-backend-1        |   pointCount: 1,
+    //   ecovacs-stack-backend-1        |   traceValue: 'XQAABAAFAAAAAGMAS//gB7wgAA=='
+
     if (isTopic('MapTrace', topic)) {
       const res = getDatafromMessage(message);
       console.log('here MapTrace', res);
+      parseTracePoints(res.traceValue).then((res) => console.log('decoded MapTrace', res));
     }
 
     if (isTopic('MapSubSet', topic)) {

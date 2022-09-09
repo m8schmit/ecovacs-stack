@@ -67,20 +67,23 @@ const CleanState = () => {
       }}
     >
       <Typography>
-        currently: {status?.cleanState?.type || status?.cleanState?.content?.type || status.state}
+        currently: {status?.cleanState?.type || status?.cleanState?.content?.type || status.state}{' '}
+        {Array.isArray(status?.cleanState?.content) && `on Rooms ${status?.cleanState?.content}`}
       </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography>
-          start an <b>{!selectedRoomsList.length ? 'auto' : 'spotArea'}</b> cleaning{' '}
-          {selectedRoomsList.length && `on Rooms ${selectedRoomsList.join(', ')}`}
-        </Typography>
-        {selectedRoomsList.length && (
-          <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
-            reset
-          </Button>
-        )}
-      </Box>
-      <IconButton size="large" color="primary" onClick={() => reset()}>
+      {status.state === 'idle' && (
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography>
+            start an <b>{selectedRoomsList.length <= 0 ? 'auto' : 'spotArea'}</b> cleaning
+            {selectedRoomsList.length > 0 && `on Rooms ${selectedRoomsList.join(', ')}`}
+          </Typography>
+          {selectedRoomsList.length > 0 && (
+            <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
+              reset
+            </Button>
+          )}
+        </Box>
+      )}
+      <IconButton size="large" color="primary" disabled={status.state === 'idle'} onClick={() => reset()}>
         <Stop />
       </IconButton>
       <IconButton size="large" color="primary" onClick={() => switchCleanState()}>

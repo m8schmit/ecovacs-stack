@@ -15,3 +15,13 @@ export interface MajorMap {
   value: string /*crc*/;
   type: string;
 }
+
+export interface Coordinate {
+  x: number;
+  y: number;
+}
+export interface MapTrace {
+  mapTracePointsList: Coordinate;
+  type: number /*dont know yet what it is */;
+  isConnectedWithPrevious: boolean;
+}

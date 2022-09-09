@@ -228,8 +228,7 @@ const VacuumMap = () => {
 
   return (
     <>
-      {!mapData && <Typography>no map data</Typography>}
-      {mapData && <Box sx={{ height: '90vh' }} ref={mapElement} />}
+      <Box sx={{ height: '90vh' }} ref={mapElement} />
     </>
   );
 };
