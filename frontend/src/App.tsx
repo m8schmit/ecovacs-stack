@@ -7,9 +7,11 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
 import {
+  setAutoEmpty,
   setChargeState,
   setMapSubsetsList,
   setVacuumBattery,
+  setVacuumingOption,
   setVacuumMap,
   setVacuumPos,
   setVacuumState,
@@ -57,23 +59,30 @@ const App = () => {
       });
 
     socket &&
-      socket.on('batteryLevel', (payload) => {
-        dispatch(setVacuumBattery({ level: payload.value, isLow: !!+payload.isLow }));
-      });
+      socket.on('batteryLevel', (payload) =>
+        dispatch(setVacuumBattery({ level: payload.value, isLow: !!+payload.isLow })),
+      );
+
+    socket && socket.on('status', (payload) => dispatch(setVacuumState(payload)));
+
+    socket && socket.on('chargeState', (payload) => dispatch(setChargeState(payload)));
+
+    socket && socket.on('mapSubSet', (payload) => dispatch(setMapSubsetsList(payload)));
+
+    socket && socket.on('speed', (payload) => dispatch(setVacuumingOption(payload)));
+
+    socket && socket.on('cleanCount', (payload) => dispatch(setVacuumingOption(payload)));
+
+    socket && socket.on('autoEmpty', (payload) => dispatch(setAutoEmpty(payload)));
 
     socket &&
-      socket.on('status', (payload) => {
-        dispatch(setVacuumState(payload));
-      });
-
-    socket &&
-      socket.on('chargeState', (payload) => {
-        dispatch(setChargeState(payload));
-      });
-
-    socket &&
-      socket.on('mapSubSet', (payload) => {
-        dispatch(setMapSubsetsList(payload));
+      socket.on('mapTrace', (payload) => {
+        console.log('receive mapTraces ', payload);
+        if (payload.newEntriesList[payload.newEntriesList.length].index !== payload.newEntriesList.totalCount - 1) {
+          console.info('TODO get missing traces');
+        }
+        //TODO but info in store.
+        // dispatch(setMapSubsetsList(payload));
       });
   }, [socket]);
 

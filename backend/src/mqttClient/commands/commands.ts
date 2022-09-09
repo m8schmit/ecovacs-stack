@@ -132,3 +132,35 @@ export const getBattery = () => {
   };
   sendJSONCommand(command, client);
 };
+
+export const setSpeed = (value: number) => {
+  const command: BotCommand = {
+    name: 'setSpeed',
+    payload: { speed: value, bdTaskID: makeId(16) },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const setCleanCount = (value: number) => {
+  const command: BotCommand = {
+    name: 'setCleanCount',
+    payload: { count: value, bdTaskID: makeId(16) },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getSpeed = () => {
+  const command: BotCommand = {
+    name: 'getSpeed',
+    payload: { id: makeId(8) },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getCleanCount = () => {
+  const command: BotCommand = {
+    name: 'getCleanCount',
+    payload: { id: makeId(8) },
+  };
+  sendJSONCommand(command, client);
+};

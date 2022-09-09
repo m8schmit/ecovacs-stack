@@ -1,15 +1,16 @@
 import { Bolt, Close, Pause, PlayArrow, Stop } from '@mui/icons-material';
-import { Box, Button, IconButton, Typography } from '@mui/material';
-import { useContext, useEffect } from 'react';
+import { Backdrop, Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
+import { useContext } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
 import {
+  getAutoEmptyState,
   getChargeState,
   getSelectedRoomsList,
   getVacuumClean,
   resetSelectedRoomsList,
 } from '../../store/vacuum/vacuumSlice';
-import { BotAct, CleanState as CleanStateType, CleanTask } from '../../store/vacuum/vacuumSlice.type';
+import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
 
@@ -17,6 +18,7 @@ const CleanState = () => {
   const status = getVacuumClean();
   const selectedRoomsList = getSelectedRoomsList();
   const { isCharging } = getChargeState();
+  const { active: autoEmptyActive } = getAutoEmptyState();
   const dispatch = useAppDispatch();
 
   const socket = useContext(WebSocketContext);
@@ -58,6 +60,22 @@ const CleanState = () => {
     socket.emit('clean', getCleanTask('stop'));
   };
 
+  const getTextState = () => {
+    if (autoEmptyActive) {
+      return (
+        <>
+          Currently emptying the dustbox <CircularProgress color="info" size={15} />
+        </>
+      );
+    }
+    return (
+      <>
+        {status?.cleanState?.type || status?.cleanState?.content?.type || status.state}{' '}
+        {Array.isArray(status?.cleanState?.content) && `on Rooms ${status?.cleanState?.content}`}
+      </>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -66,10 +84,7 @@ const CleanState = () => {
         borderRadius: theme.typography.pxToRem(5),
       }}
     >
-      <Typography>
-        currently: {status?.cleanState?.type || status?.cleanState?.content?.type || status.state}{' '}
-        {Array.isArray(status?.cleanState?.content) && `on Rooms ${status?.cleanState?.content}`}
-      </Typography>
+      <Typography>currently: {getTextState()}</Typography>
       {status.state === 'idle' && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography>
@@ -83,15 +98,20 @@ const CleanState = () => {
           )}
         </Box>
       )}
-      <IconButton size="large" color="primary" disabled={status.state === 'idle'} onClick={() => reset()}>
+      <IconButton
+        size="large"
+        color="primary"
+        disabled={status.state === 'idle' || autoEmptyActive}
+        onClick={() => reset()}
+      >
         <Stop />
       </IconButton>
-      <IconButton size="large" color="primary" onClick={() => switchCleanState()}>
+      <IconButton size="large" color="primary" onClick={() => switchCleanState()} disabled={autoEmptyActive}>
         {(status?.cleanState?.motionState === 'working' ||
           (status.state === 'goCharging' && status?.cleanState?.motionState !== 'pause')) && <Pause />}
         {(status?.cleanState?.motionState === 'pause' || status.state === 'idle') && <PlayArrow />}
       </IconButton>
-      <IconButton size="large" color="primary" disabled={isCharging} onClick={() => goCharging()}>
+      <IconButton size="large" color="primary" disabled={isCharging || autoEmptyActive} onClick={() => goCharging()}>
         <Bolt />
       </IconButton>
     </Box>

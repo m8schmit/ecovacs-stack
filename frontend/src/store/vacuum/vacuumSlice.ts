@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
 import {
+  AutoEmptyState,
   BatteryState,
   ChargeState,
   CleanState,
@@ -9,6 +10,7 @@ import {
   DevicesCoordinates,
   DevicesPayload,
   MapSubSet,
+  VacuumingOptionState,
 } from './vacuumSlice.type';
 
 interface VacuumState {
@@ -26,6 +28,8 @@ interface VacuumState {
   battery: BatteryState;
   status: CleanState;
   chargeState: ChargeState;
+  autoEmpty: AutoEmptyState;
+  vacuumingOption: VacuumingOptionState;
 }
 
 const initialState: VacuumState = {
@@ -61,6 +65,14 @@ const initialState: VacuumState = {
   chargeState: {
     isCharging: false,
   },
+  autoEmpty: {
+    active: false,
+    enable: false,
+  },
+  vacuumingOption: {
+    speed: 0,
+    count: 1,
+  },
 };
 
 export const vacuumSlice = createSlice({
@@ -93,7 +105,7 @@ export const vacuumSlice = createSlice({
     setMapSubsetsList: (state, action: PayloadAction<MapSubSet>) => ({
       ...state,
       mapSubsetsList: [
-        ...state.mapSubsetsList.filter((mapSubset) => mapSubset.seqIndex === action.payload.seqIndex),
+        ...state.mapSubsetsList.filter((mapSubset) => mapSubset.mssid !== action.payload.mssid),
         action.payload,
       ],
     }),
@@ -113,6 +125,20 @@ export const vacuumSlice = createSlice({
         selectedRoomsList: initialState.selectedRoomsList,
       };
     },
+    setAutoEmpty: (state, action: PayloadAction<Partial<AutoEmptyState>>) => ({
+      ...state,
+      autoEmpty: {
+        ...state.autoEmpty,
+        ...action.payload,
+      },
+    }),
+    setVacuumingOption: (state, action: PayloadAction<Partial<VacuumingOptionState>>) => ({
+      ...state,
+      vacuumingOption: {
+        ...state.vacuumingOption,
+        ...action.payload,
+      },
+    }),
   },
 });
 
@@ -126,6 +152,9 @@ export const {
 
   updateSelectedRoomsList,
   resetSelectedRoomsList,
+
+  setAutoEmpty,
+  setVacuumingOption,
 } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
@@ -135,3 +164,5 @@ export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.batt
 export const getChargeState = () => useAppSelector(({ vacuum }) => vacuum.chargeState);
 export const getMapSubsetsList = () => useAppSelector(({ vacuum }) => vacuum.mapSubsetsList);
 export const getSelectedRoomsList = () => useAppSelector(({ vacuum }) => vacuum.selectedRoomsList);
+export const getAutoEmptyState = () => useAppSelector(({ vacuum }) => vacuum.autoEmpty);
+export const getVacuumingOption = () => useAppSelector(({ vacuum }) => vacuum.vacuumingOption);

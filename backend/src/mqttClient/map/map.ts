@@ -12,7 +12,7 @@ import { MajorMap, MapData, MapTrace } from './map.model';
 /*
  * Thanks to https://gitlab.com/michael.becker/vacuumclean/-/blob/master/deebot/deebot-core/src/main/java/de/caterdev/vacuumclean/deebot/core/DataParseUtils.java#L94
  */
-export const parseTracePoints = async (data: string): Promise<MapTrace[]> => {
+export const parseTracePoints = async (data: string, startIndex: number): Promise<MapTrace[]> => {
   const LEN_TRACEPOINT_FIELD = 5;
   if (!data) {
     console.error('Trace is empty');
@@ -25,6 +25,7 @@ export const parseTracePoints = async (data: string): Promise<MapTrace[]> => {
       mapTrace = [
         ...mapTrace,
         {
+          index: startIndex++,
           mapTracePointsList: {
             x: res.readInt16LE(i) * 10,
             y: res.readInt16LE(i + 2) * 10,

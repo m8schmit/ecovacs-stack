@@ -10,7 +10,7 @@ export interface MajorMap {
   pieceWidth: number /*columnGrid*/;
   pieceHeight: number /*rowGrid*/;
   cellWidth: number /*columnPiece-**/;
-  cellHeight: number /*rowPiece*/;
+  cellHeight: number /*rowPiece;*/;
   pixel: number /*pixeWidth*/;
   value: string /*crc*/;
   type: string;
@@ -21,6 +21,7 @@ export interface Coordinate {
   y: number;
 }
 export interface MapTrace {
+  index: number;
   mapTracePointsList: Coordinate;
   type: number /*dont know yet what it is */;
   isConnectedWithPrevious: boolean;

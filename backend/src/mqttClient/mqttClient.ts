@@ -80,17 +80,13 @@ const mqttClient = () => {
       WSsocket.emit('botPos', res.deebotPos);
     }
 
-    // ovacs-stack-backend-1        | here MapTrace {
-    //   ecovacs-stack-backend-1        |   tid: '32159666',
-    //   ecovacs-stack-backend-1        |   totalCount: 3111,
-    //   ecovacs-stack-backend-1        |   traceStart: 3110,
-    //   ecovacs-stack-backend-1        |   pointCount: 1,
-    //   ecovacs-stack-backend-1        |   traceValue: 'XQAABAAFAAAAAGMAS//gB7wgAA=='
-
     if (isTopic('MapTrace', topic)) {
       const res = getDatafromMessage(message);
       console.log('here MapTrace', res);
-      parseTracePoints(res.traceValue).then((res) => console.log('decoded MapTrace', res));
+      parseTracePoints(res.traceValue, res.traceStart).then((decoded) => {
+        console.log('decoded MapTrace', decoded);
+        WSsocket.emit('mapTrace', { newEntriesList: decoded, totalCount: res.totalCount });
+      });
     }
 
     if (isTopic('MapSubSet', topic)) {
@@ -129,6 +125,23 @@ const mqttClient = () => {
     if (isTopic('ChargeState', topic)) {
       const res = getDatafromMessage(message);
       WSsocket.emit('chargeState', res);
+    }
+
+    if (isTopic('Speed', topic) && !isTopic('setSpeed', topic)) {
+      const res = getDatafromMessage(message);
+      WSsocket.emit('speed', res);
+    }
+
+    if (isTopic('CleanCount', topic) && !isTopic('setCleanCount', topic)) {
+      const res = getDatafromMessage(message);
+      WSsocket.emit('cleanCount', res);
+    }
+
+    if (isTopic('AutoEmpty', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('autoEmpty ', res);
+      //not sure, I receive 1 or 5
+      WSsocket.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
     }
   };
   return client;

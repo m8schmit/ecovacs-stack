@@ -211,6 +211,7 @@ const VacuumMap = () => {
   }, [map]);
 
   useEffect(() => {
+    roomsLayer.getSource()?.refresh();
     roomsLayer.setSource(
       new Vector({
         features: mapSubsetsList.map(({ value, mssid }) => {

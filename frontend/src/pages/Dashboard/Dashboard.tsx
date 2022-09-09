@@ -3,6 +3,7 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 import Battery from '../../components/Battery/Battery';
 import CleanState from '../../components/CleanState/CleanState';
 import VacuumMap from '../../components/VacuumMap/VacuumMap';
+import VacuumOptions from '../../components/VacuumOptions/VacuumOptions';
 import theme from '../../theme';
 
 const Dashboard = () => {
@@ -17,8 +18,12 @@ const Dashboard = () => {
           <Divider />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography>Controls</Typography>
+          <Typography variant="overline">Controls</Typography>
           <CleanState />
+          <Typography variant="overline">Vacuuming Options</Typography>
+          <VacuumOptions />
+          <Typography variant="overline">Mopping Options</Typography>
+          TODO
         </Grid>
         <Grid item xs={12} md={6}>
           <VacuumMap />

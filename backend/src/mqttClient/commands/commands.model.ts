@@ -1,6 +1,12 @@
+import { MapTrace } from '../map/map.model';
+
 type BotCommandName =
   | 'playSound'
   | 'clean_V2'
+  | 'setSpeed'
+  | 'setCleanCount'
+  | 'getSpeed'
+  | 'getCleanCount'
   | 'getMajorMap'
   | 'getMinorMap'
   | 'getMapSet'
@@ -43,6 +49,13 @@ export interface ChargeState {
 
 type botMode = 'slot' | 'autoEmpty';
 
+// AutoEmpty
+
+export interface AutoEmptyState {
+  active: boolean;
+  enable: boolean;
+}
+
 // MapSubSet
 export interface MapSubSet {
   type: MapSubSetType;
@@ -62,6 +75,12 @@ export interface MapSubSet {
 
 export type MapSubSetType = 'ar' | 'vw' | 'mw';
 
+// MapTracesList
+
+export interface MapTracesList {
+  totalCount: number;
+  newEntriesList: MapTrace[];
+}
 export interface DevicesCoordinates {
   x: number;
   y: number;

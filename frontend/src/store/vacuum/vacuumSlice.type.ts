@@ -73,3 +73,17 @@ export interface DevicesPayload {
   device: Devices;
   devicesCoordinates: DevicesCoordinates;
 }
+
+// AutoEmpty
+
+export interface AutoEmptyState {
+  active: boolean;
+  enable: boolean;
+}
+
+//  VacuumingOptionState
+
+export interface VacuumingOptionState {
+  speed: number;
+  count: number;
+}

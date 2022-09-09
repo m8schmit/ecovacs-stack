@@ -1,6 +1,17 @@
 import { Server, Socket } from 'socket.io';
 
-import { charge, clean, getBattery, GetChargeState, getCleanInfo, getMajorMap } from '../mqttClient/commands/commands';
+import {
+  charge,
+  clean,
+  getBattery,
+  GetChargeState,
+  getCleanCount,
+  getCleanInfo,
+  getMajorMap,
+  getSpeed,
+  setCleanCount,
+  setSpeed,
+} from '../mqttClient/commands/commands';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
 
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
@@ -23,6 +34,8 @@ const websocketServer = () => {
       getCleanInfo();
       GetChargeState();
       getBattery();
+      getSpeed();
+      getCleanCount();
     }, 60000);
 
     socket.conn.on('close', (reason) => {
@@ -42,6 +55,16 @@ const websocketServer = () => {
     socket.on('charge', () => {
       console.log('receive charge');
       charge();
+    });
+
+    socket.on('setSpeed', (payload) => {
+      console.log('setSpeed', payload);
+      setSpeed(payload);
+    });
+
+    socket.on('setCleanCount', (payload) => {
+      console.log('setCleanCount', payload);
+      setCleanCount(payload);
     });
   });
 };
