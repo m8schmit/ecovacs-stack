@@ -87,3 +87,22 @@ export interface VacuumingOptionState {
   speed: number;
   count: number;
 }
+
+// mapTrace
+
+export interface MapTracesList {
+  totalCount: number;
+  newEntriesList: MapTrace[];
+}
+
+interface Coordinate {
+  x: number;
+  y: number;
+}
+
+interface MapTrace {
+  index: number;
+  mapTracePointsList: Coordinate;
+  type: number /*dont know yet what it is */;
+  isConnectedWithPrevious: boolean;
+}

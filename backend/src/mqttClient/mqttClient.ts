@@ -43,7 +43,7 @@ const mqttClient = () => {
     handleMap(topic, message);
   });
 
-  const handleMap = (topic: string, message: Buffer) => {
+  const handleMap = async (topic: string, message: Buffer) => {
     if (isTopic('getMajorMap', topic)) {
       const res = getDatafromMessage(message);
       if (res) {
@@ -76,24 +76,22 @@ const mqttClient = () => {
 
     if (isTopic('onPos', topic)) {
       const res = getDatafromMessage(message);
-      WSsocket.emit('chargePos', res.chargePos);
-      WSsocket.emit('botPos', res.deebotPos);
+      WSsocket?.emit('chargePos', res.chargePos);
+      WSsocket?.emit('botPos', res.deebotPos);
     }
 
     if (isTopic('MapTrace', topic)) {
       const res = getDatafromMessage(message);
-      console.log('here MapTrace', res);
-      parseTracePoints(res.traceValue, res.traceStart).then((decoded) => {
-        console.log('decoded MapTrace', decoded);
-        WSsocket.emit('mapTrace', { newEntriesList: decoded, totalCount: res.totalCount });
-      });
+      const decodedTrace = await parseTracePoints(res.traceValue, res.traceStart);
+      console.log('decodedTrace', decodedTrace);
+      WSsocket?.emit('mapTrace', { newEntriesList: decodedTrace, totalCount: res.totalCount });
     }
 
     if (isTopic('MapSubSet', topic)) {
       const res = getDatafromMessage(message);
-      console.log('here MapSubset', res);
+      // console.log('here MapSubset', res);
       decompressLZMA(res.value).then((value) =>
-        WSsocket.emit('mapSubSet', {
+        WSsocket?.emit('mapSubSet', {
           ...res,
           value: value
             .toString()
@@ -105,7 +103,7 @@ const mqttClient = () => {
 
     if (isTopic('MapSet', topic)) {
       const res = getDatafromMessage(message);
-      console.log('here MapSet', res);
+      // console.log('here MapSet', res);
       res.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
         getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid),
       );
@@ -114,34 +112,34 @@ const mqttClient = () => {
 
     if (isTopic('Battery', topic)) {
       const res = getDatafromMessage(message);
-      WSsocket.emit('batteryLevel', res);
+      WSsocket?.emit('batteryLevel', res);
     }
 
     if (isTopic('CleanInfo', topic)) {
       const res = getDatafromMessage(message);
-      WSsocket.emit('status', { state: res.state, cleanState: res.cleanState });
+      WSsocket?.emit('status', { state: res.state, cleanState: res.cleanState });
     }
 
     if (isTopic('ChargeState', topic)) {
       const res = getDatafromMessage(message);
-      WSsocket.emit('chargeState', res);
+      WSsocket?.emit('chargeState', res);
     }
 
     if (isTopic('Speed', topic) && !isTopic('setSpeed', topic)) {
       const res = getDatafromMessage(message);
-      WSsocket.emit('speed', res);
+      WSsocket?.emit('speed', res);
     }
 
     if (isTopic('CleanCount', topic) && !isTopic('setCleanCount', topic)) {
       const res = getDatafromMessage(message);
-      WSsocket.emit('cleanCount', res);
+      WSsocket?.emit('cleanCount', res);
     }
 
     if (isTopic('AutoEmpty', topic)) {
       const res = getDatafromMessage(message);
       console.log('autoEmpty ', res);
       //not sure, I receive 1 or 5
-      WSsocket.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
+      WSsocket?.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
     }
   };
   return client;

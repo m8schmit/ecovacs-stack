@@ -10,6 +10,7 @@ import {
   DevicesCoordinates,
   DevicesPayload,
   MapSubSet,
+  MapTracesList,
   VacuumingOptionState,
 } from './vacuumSlice.type';
 
@@ -21,6 +22,7 @@ interface VacuumState {
     data: string | null;
   };
   mapSubsetsList: MapSubSet[];
+  mapTracesList: MapTracesList;
   position: {
     dock: DevicesCoordinates;
     bot: DevicesCoordinates;
@@ -40,6 +42,10 @@ const initialState: VacuumState = {
     data: null,
   },
   mapSubsetsList: [],
+  mapTracesList: {
+    totalCount: 0,
+    newEntriesList: [],
+  },
   position: {
     dock: {
       x: 0,
@@ -139,6 +145,19 @@ export const vacuumSlice = createSlice({
         ...action.payload,
       },
     }),
+    setMapTracesList: (state, action: PayloadAction<MapTracesList>) => ({
+      ...state,
+      mapTracesList: {
+        totalCount: action.payload.totalCount,
+        newEntriesList: [
+          ...state.mapTracesList.newEntriesList.filter(
+            (current) =>
+              !action.payload.newEntriesList?.map((payloadEntry) => payloadEntry.index).includes(current.index),
+          ),
+          ...action.payload.newEntriesList,
+        ],
+      },
+    }),
   },
 });
 
@@ -155,6 +174,7 @@ export const {
 
   setAutoEmpty,
   setVacuumingOption,
+  setMapTracesList,
 } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
@@ -166,3 +186,4 @@ export const getMapSubsetsList = () => useAppSelector(({ vacuum }) => vacuum.map
 export const getSelectedRoomsList = () => useAppSelector(({ vacuum }) => vacuum.selectedRoomsList);
 export const getAutoEmptyState = () => useAppSelector(({ vacuum }) => vacuum.autoEmpty);
 export const getVacuumingOption = () => useAppSelector(({ vacuum }) => vacuum.vacuumingOption);
+export const getMapTracesList = () => useAppSelector(({ vacuum }) => vacuum.mapTracesList);

@@ -10,6 +10,7 @@ import {
   setAutoEmpty,
   setChargeState,
   setMapSubsetsList,
+  setMapTracesList,
   setVacuumBattery,
   setVacuumingOption,
   setVacuumMap,
@@ -78,11 +79,8 @@ const App = () => {
     socket &&
       socket.on('mapTrace', (payload) => {
         console.log('receive mapTraces ', payload);
-        if (payload.newEntriesList[payload.newEntriesList.length].index !== payload.newEntriesList.totalCount - 1) {
-          console.info('TODO get missing traces');
-        }
-        //TODO but info in store.
-        // dispatch(setMapSubsetsList(payload));
+        //TODO get the previous Traces on load during a cleaning
+        dispatch(setMapTracesList(payload));
       });
   }, [socket]);
 

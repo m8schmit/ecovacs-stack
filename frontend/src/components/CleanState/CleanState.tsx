@@ -89,7 +89,7 @@ const CleanState = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography>
             start an <b>{selectedRoomsList.length <= 0 ? 'auto' : 'spotArea'}</b> cleaning
-            {selectedRoomsList.length > 0 && `on Rooms ${selectedRoomsList.join(', ')}`}
+            {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
           </Typography>
           {selectedRoomsList.length > 0 && (
             <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
