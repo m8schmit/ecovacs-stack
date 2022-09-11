@@ -73,7 +73,7 @@ const VacuumMap = () => {
   const [botLayerStyle] = useState<Style>(
     new Style({
       image: new Icon({
-        anchor: [0, 0],
+        anchor: [0.5, 0.5],
         scale: 0.5,
         rotation: getAngle(botPosition.a),
         anchorXUnits: 'fraction',

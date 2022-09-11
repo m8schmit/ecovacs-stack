@@ -70,8 +70,9 @@ const CleanState = () => {
     }
     return (
       <>
+        {/* TODO fix this `status?.cleanState?.content` can be string|null|{} */}
         {status?.cleanState?.type || status?.cleanState?.content?.type || status.state}{' '}
-        {Array.isArray(status?.cleanState?.content) && `on Rooms ${status?.cleanState?.content}`}
+        {status?.cleanState?.content && `on Rooms ${status?.cleanState?.content}`}
       </>
     );
   };

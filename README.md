@@ -7,6 +7,32 @@ All this as only be tested on my T9 Aivi.
 Bot make request on port 8883 (MQTTs) and 443 (MQTTs too, but, I've put an HTTPS server with a listener to be sure)
 Frontend as difficulties with MQTT protocol, so it listen to the events trought a WS server on port 3000.
 
+## How to install
+
+It still in early development so it's a little bit complicated:
+
+- Add a new rule file in your `Dsnmasq` to redirect all the Ecovacs urls to your local ip
+
+```
+address=/ecouser.net/your-local-ip-here
+address=/ecovacs.com/your-local-ip-here
+address=/ecovacs.net/your-local-ip-here
+address=/aliyuncs.com/your-local-ip-here
+```
+
+- make a copy of the `.env.example` file to `.env` and add you Vacuum bot `id`, `class` and `ressources` .
+
+- run `docker-compose up`, the first time it will fail but create some certificates in `generateCert/config` (this part will be updated in the future)
+
+- changer the owner of the certificates (`chown ...`) and copy past them in `backend/src`
+
+- re-run `docker-compose up`, this time you should be able to access to `http://localhost:4200/`
+
+- restart your vacuum bot, it should connect to the MQTTs server and you should see something like:
+
+![alt text](2022-09-11_17-04.png 'Title')
+(the map is zoomed on my screen, because the main goal of this app is to not show my place to everyone. :-p)
+
 ## Topics
 
 ### Vacuum bot subscribe to
