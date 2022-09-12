@@ -31,14 +31,13 @@ address=/aliyuncs.com/your-local-ip-here
 - restart your vacuum bot, it should connect to the MQTTs server and you should see something like:
 
 ![alt text](2022-09-11_17-04.png 'Title')
-(the map is zoomed on my screen, because the main goal of this app is to not show my place to everyone. :-p)
 
 ## Topics
 
 ### Vacuum bot subscribe to
 
 ```typescript
-iot/p2p/+/+/+/+/${bot_id}/${bot_class}/${bot_resource}/+/+/+
+iot/p2p/+/+/+/+/${bot_id}/${bot_class}/${bot_resource}/q/+/+
 ```
 
 to listen request
