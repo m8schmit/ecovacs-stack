@@ -34,81 +34,9 @@ const mqttClient = () => {
     // log message
     console.log(getColoredConsoleLog(topic), message.toString());
 
-    // check if bot is connected
-    if (isTopic('iot/atr/', topic)) {
-      console.info(`${process.env.BOTID} is ready!`);
-    }
-
-    // handle 'getMajorMap'
     handleMap(topic, message);
-  });
 
-  const handleMap = async (topic: string, message: Buffer) => {
-    if (isTopic('getMajorMap', topic)) {
-      const res = getDatafromMessage(message);
-      if (res) {
-        if (!vacuumMap) {
-          vacuumMap = new VacuumMap(res);
-          getMapInfo_v2(vacuumMap.settings.mid);
-        }
-        if (!vacuumMap.piecesIDsList) {
-          console.info('TODO: handle no map case.');
-          return;
-        }
-        vacuumMap?.piecesIDsList.forEach((pieceID) => {
-          console.log('ask minor map for ', pieceID);
-          vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
-        });
-
-        getMapSet(vacuumMap.settings.mid);
-      }
-    }
-
-    // Map Topic //
-    if (isTopic('MinorMap', topic)) {
-      const res = getDatafromMessage(message);
-      vacuumMap?.addPiecesIDsList(res.pieceIndex);
-      vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
-      if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
-        vacuumMap?.buildMap();
-      }
-    }
-
-    if (isTopic('onPos', topic)) {
-      const res = getDatafromMessage(message);
-      WSsocket?.emit('chargePos', res.chargePos);
-      WSsocket?.emit('botPos', res.deebotPos);
-    }
-
-    if (isTopic('MapTrace', topic)) {
-      const res = getDatafromMessage(message);
-      const decodedTrace = await parseTracePoints(res.traceValue, res.traceStart);
-      console.log('decodedTrace', decodedTrace);
-      WSsocket?.emit('mapTrace', { newEntriesList: decodedTrace, totalCount: res.totalCount });
-    }
-
-    if (isTopic('MapSubSet', topic)) {
-      const res = getDatafromMessage(message);
-      // console.log('here MapSubset', res);
-      decompressLZMA(res.value).then((value) =>
-        WSsocket?.emit('mapSubSet', {
-          ...res,
-          value: value
-            .toString()
-            .split(';')
-            .map((current) => current.split(',')),
-        }),
-      );
-    }
-
-    if (isTopic('MapSet', topic)) {
-      const res = getDatafromMessage(message);
-      // console.log('here MapSet', res);
-      res.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
-        getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid),
-      );
-    }
-    /////
+    handleSchedule(topic, message);
 
     if (isTopic('Battery', topic)) {
       const res = getDatafromMessage(message);
@@ -141,7 +69,80 @@ const mqttClient = () => {
       //not sure, I receive 1 or 5
       WSsocket?.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
     }
+  });
+
+  const handleMap = async (topic: string, message: Buffer) => {
+    if (isTopic('getMajorMap', topic)) {
+      const res = getDatafromMessage(message);
+      if (res) {
+        if (!vacuumMap) {
+          vacuumMap = new VacuumMap(res);
+          getMapInfo_v2(vacuumMap.settings.mid);
+        }
+        if (!vacuumMap.piecesIDsList) {
+          console.info('TODO: handle no map case.');
+          return;
+        }
+        vacuumMap?.piecesIDsList.forEach((pieceID) => {
+          console.log('ask minor map for ', pieceID);
+          vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
+        });
+
+        getMapSet(vacuumMap.settings.mid);
+      }
+    }
+
+    if (isTopic('MinorMap', topic)) {
+      const res = getDatafromMessage(message);
+      vacuumMap?.addPiecesIDsList(res.pieceIndex);
+      vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
+      if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
+        vacuumMap?.buildMap();
+      }
+    }
+
+    if (isTopic('onPos', topic)) {
+      const res = getDatafromMessage(message);
+      WSsocket?.emit('chargePos', res.chargePos);
+      WSsocket?.emit('botPos', res.deebotPos);
+    }
+
+    if (isTopic('MapTrace', topic)) {
+      const res = getDatafromMessage(message);
+      const decodedTrace = await parseTracePoints(res.traceValue, res.traceStart);
+      console.log('decodedTrace', decodedTrace);
+      WSsocket?.emit('mapTrace', { newEntriesList: decodedTrace, totalCount: res.totalCount });
+    }
+
+    if (isTopic('MapSubSet', topic)) {
+      const res = getDatafromMessage(message);
+      decompressLZMA(res.value).then((value) =>
+        WSsocket?.emit('mapSubSet', {
+          ...res,
+          value: value
+            .toString()
+            .split(';')
+            .map((current) => current.split(',')),
+        }),
+      );
+    }
+
+    if (isTopic('MapSet', topic)) {
+      const res = getDatafromMessage(message);
+      res.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
+        getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid),
+      );
+    }
   };
+
+  const handleSchedule = (topic: string, message: Buffer) => {
+    if (isTopic('Sched_V2', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('Sched_V2 ', res);
+      WSsocket?.emit('schedulesList', res);
+    }
+  };
+
   return client;
 };
 

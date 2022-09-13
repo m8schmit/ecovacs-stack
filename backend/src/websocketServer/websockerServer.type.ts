@@ -1,3 +1,4 @@
+import { Schedules } from '../mqttClient/commands/commands.schedules.type';
 import {
   AutoEmptyState,
   BatteryState,
@@ -8,7 +9,7 @@ import {
   DevicesCoordinates,
   MapSubSet,
   MapTracesList,
-} from '../mqttClient/commands/commands.model';
+} from '../mqttClient/commands/commands.type';
 import { Maybe } from '../mqttClient/types';
 
 export interface ServerToClientEvents {
@@ -23,6 +24,7 @@ export interface ServerToClientEvents {
   speed: (value: number) => void;
   autoEmpty: (autoEmptyState: AutoEmptyState) => void;
   cleanCount: (value: number) => void;
+  schedulesList: (schedulesList: Schedules[]) => void;
 }
 
 export interface ClientToServerEvents {
@@ -31,6 +33,8 @@ export interface ClientToServerEvents {
   charge: () => void;
   setSpeed: (value: number) => void;
   setCleanCount: (value: number) => void;
+  setRelocationState: () => void;
+  getSchedulesList: () => void;
 }
 
 export interface InterServerEvents {

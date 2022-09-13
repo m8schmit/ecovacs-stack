@@ -5,6 +5,7 @@ type BotCommandName =
   | 'clean_V2'
   | 'setSpeed'
   | 'setCleanCount'
+  | 'setRelocationState'
   | 'getSpeed'
   | 'getCleanCount'
   | 'getMajorMap'
@@ -15,6 +16,7 @@ type BotCommandName =
   | 'getMapInfo_v2'
   | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */
   | 'getChargeState'
+  | 'getSched_V2'
   | 'getBattery';
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume';

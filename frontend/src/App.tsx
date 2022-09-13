@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -11,6 +11,7 @@ import {
   setChargeState,
   setMapSubsetsList,
   setMapTracesList,
+  setSchedulesList,
   setVacuumBattery,
   setVacuumingOption,
   setVacuumMap,
@@ -76,6 +77,8 @@ const App = () => {
 
     socket && socket.on('autoEmpty', (payload) => dispatch(setAutoEmpty(payload)));
 
+    socket && socket.on('schedulesList', (payload) => dispatch(setSchedulesList(payload)));
+
     socket &&
       socket.on('mapTrace', (payload) => {
         console.log('receive mapTraces ', payload);
@@ -91,7 +94,7 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </BrowserRouter>
         </WebSocketContext.Provider>

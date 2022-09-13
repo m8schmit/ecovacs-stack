@@ -2,7 +2,7 @@ import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { makeId } from '../text.utils';
 import { Maybe } from '../types';
-import { BotAct, BotCommand, BotType, MapSubSetType } from './commands.model';
+import { BotAct, BotCommand, BotType, MapSubSetType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const clean = (
@@ -20,8 +20,7 @@ export const clean = (
   };
   sendJSONCommand(command, client);
 };
-// custom polygon payload
-// {"act":"start","content":{"total":0,"donotClean":0,"count":0,"type":"customArea","value":"1357,1342,5592,-2892;"},"bdTaskID":"1662650212038842"}
+
 export const getMajorMap = () => {
   const command: BotCommand = {
     name: 'getMajorMap',
@@ -38,21 +37,6 @@ export const getMapSet = (mid: string) => {
   sendJSONCommand(command, client);
 };
 
-// q => {"start":0,"mid":"96151110","type":"ar","bdTaskID":"1662563889241531"}
-// p =>
-// {"type":"ar","count":11,"mid":"96151110","msid":"873210993","subsets":[
-//   {"mssid":"0","name":"","totalCount":110},
-//   {"mssid":"9","name":"","totalCount":97},
-//   {"mssid":"8","name":"","totalCount":132},
-//   {"mssid":"10","name":"","totalCount":134},
-//   {"mssid":"7","name":"","totalCount":46},
-//   {"mssid":"2","name":"","totalCount":51},
-//   {"mssid":"12","name":"","totalCount":68},
-//   {"mssid":"4","name":"","totalCount":35}
-//   ,{"mssid":"3","name":"","totalCount":50},
-//   {"mssid":"11","name":"","totalCount":20},
-//   {"mssid":"5","name":"","totalCount":53}
-// ]}
 export const getMapSubSet = (msid: string, count: number, mid: string, mssid: string, type: MapSubSetType = 'ar') => {
   const command: BotCommand = {
     name: 'getMapSubSet',
@@ -71,8 +55,7 @@ export const getMapSubSet = (msid: string, count: number, mid: string, mssid: st
   };
   sendJSONCommand(command, client);
 };
-// q => "msid":"873210993","values":{},"count":110,"name":"","mid":"96151110","seqIndex":0,"totalCount":110,"type":"ar","mssid":"0","seq":0,"bdTaskID":"1662563890369576"}
-// q => {"msid":"873210993","values":{},"count":134,"name":"","mid":"96151110","seqIndex":0,"totalCount":134,"type":"ar","mssid":"10","seq":0,"bdTaskID":"1662563890385713"}
+
 export const getMapInfo_v2 = (mid: string) => {
   const command: BotCommand = {
     name: 'getMapInfo_v2',
@@ -149,6 +132,14 @@ export const setCleanCount = (value: number) => {
   sendJSONCommand(command, client);
 };
 
+export const setRelocationState = () => {
+  const command: BotCommand = {
+    name: 'setRelocationState',
+    payload: { mode: 'manu', bdTaskID: makeId(16) },
+  };
+  sendJSONCommand(command, client);
+};
+
 export const getSpeed = () => {
   const command: BotCommand = {
     name: 'getSpeed',
@@ -161,6 +152,14 @@ export const getCleanCount = () => {
   const command: BotCommand = {
     name: 'getCleanCount',
     payload: { id: makeId(8) },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getSched_V2 = () => {
+  const command: BotCommand = {
+    name: 'getSched_V2',
+    payload: { type: 1, bdTaskID: makeId(16) },
   };
   sendJSONCommand(command, client);
 };

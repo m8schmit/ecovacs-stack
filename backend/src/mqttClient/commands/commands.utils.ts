@@ -1,6 +1,6 @@
 import { MqttClient } from 'mqtt';
 import { makeId } from '../text.utils';
-import { BotCommand } from './commands.model';
+import { BotCommand } from './commands.type';
 
 export const getHeader = () => ({
   header: {

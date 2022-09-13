@@ -110,6 +110,12 @@ to send status update.
 | 'getCleanInfo_V2'    |                                                                                                                                                                                                                     |                                                                               |                                                                                                                                                                                                                                                                        | _Don't return anything, activate 'OnCleanInfo_V2' ?_                                                                                               |
 | 'getMapInfo_V2'      | `{"mid": string (length 16),"type": string ("1, 4"),"bdTaskID": string (length 16)}`                                                                                                                                |
 | 'shell'              | `{"script": string (b64 encoded shell script)`                                                                                                                                                                      | to send bash script encoded in B64 who will be executed by the Vacuum bot     | na                                                                                                                                                                                                                                                                     | _Vacuum bot execute the script without any verification, user seem to be `root`, WTF!_                                                             |
+| onEvt                | na                                                                                                                                                                                                                  | triggered by the bot on event                                                 | `{"code": number}`                                                                                                                                                                                                                                                     |
+
+| Event            | code   |
+| ---------------- | ------ |
+| relocate success | `1071` |
+| Ozmo pro plugged | `1007` |
 
 # Video
 

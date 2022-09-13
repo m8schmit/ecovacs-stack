@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
+import { Schedules } from './commands.schedules.type';
 import {
   AutoEmptyState,
   BatteryState,
@@ -32,6 +33,7 @@ interface VacuumState {
   chargeState: ChargeState;
   autoEmpty: AutoEmptyState;
   vacuumingOption: VacuumingOptionState;
+  schedulesList: Schedules[];
 }
 
 const initialState: VacuumState = {
@@ -79,6 +81,7 @@ const initialState: VacuumState = {
     speed: 0,
     count: 1,
   },
+  schedulesList: [],
 };
 
 export const vacuumSlice = createSlice({
@@ -158,6 +161,10 @@ export const vacuumSlice = createSlice({
         ],
       },
     }),
+    setSchedulesList: (state, action: PayloadAction<Schedules[]>) => ({
+      ...state,
+      schedulesList: action.payload,
+    }),
   },
 });
 
@@ -175,6 +182,7 @@ export const {
   setAutoEmpty,
   setVacuumingOption,
   setMapTracesList,
+  setSchedulesList,
 } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
@@ -187,3 +195,4 @@ export const getSelectedRoomsList = () => useAppSelector(({ vacuum }) => vacuum.
 export const getAutoEmptyState = () => useAppSelector(({ vacuum }) => vacuum.autoEmpty);
 export const getVacuumingOption = () => useAppSelector(({ vacuum }) => vacuum.vacuumingOption);
 export const getMapTracesList = () => useAppSelector(({ vacuum }) => vacuum.mapTracesList);
+export const geSchedulesList = () => useAppSelector(({ vacuum }) => vacuum.schedulesList);

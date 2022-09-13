@@ -1,5 +1,5 @@
 import { Bolt, Close, Pause, PlayArrow, Stop } from '@mui/icons-material';
-import { Backdrop, Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
 import { useContext } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
@@ -11,8 +11,8 @@ import {
   resetSelectedRoomsList,
 } from '../../store/vacuum/vacuumSlice';
 import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
-import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
+import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
 
 const CleanState = () => {
   const status = getVacuumClean();
@@ -78,13 +78,7 @@ const CleanState = () => {
   };
 
   return (
-    <Box
-      sx={{
-        padding: theme.typography.pxToRem(10),
-        border: `solid thin ${theme.palette.grey[300]}`,
-        borderRadius: theme.typography.pxToRem(5),
-      }}
-    >
+    <OptionsFrame>
       <Typography>currently: {getTextState()}</Typography>
       {status.state === 'idle' && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -115,7 +109,7 @@ const CleanState = () => {
       <IconButton size="large" color="primary" disabled={isCharging || autoEmptyActive} onClick={() => goCharging()}>
         <Bolt />
       </IconButton>
-    </Box>
+    </OptionsFrame>
   );
 };
 

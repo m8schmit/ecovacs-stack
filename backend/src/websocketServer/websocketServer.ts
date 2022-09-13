@@ -8,8 +8,10 @@ import {
   getCleanCount,
   getCleanInfo,
   getMajorMap,
+  getSched_V2,
   getSpeed,
   setCleanCount,
+  setRelocationState,
   setSpeed,
 } from '../mqttClient/commands/commands';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
@@ -65,6 +67,17 @@ const websocketServer = () => {
     socket.on('setCleanCount', (payload) => {
       console.log('setCleanCount', payload);
       setCleanCount(payload);
+    });
+
+    //TODO handle `onEvt` success or fail
+    socket.on('setRelocationState', () => {
+      console.log('setRelocationState');
+      setRelocationState();
+    });
+
+    socket.on('getSchedulesList', () => {
+      console.log('getSchedulesList');
+      getSched_V2();
     });
   });
 };
