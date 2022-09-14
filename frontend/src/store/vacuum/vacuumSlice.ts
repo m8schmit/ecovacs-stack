@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
-import { Schedules } from './commands.schedules.type';
+import { RawSchedules, Schedules } from './commands.schedules.type';
 import {
   AutoEmptyState,
   BatteryState,
@@ -161,9 +161,13 @@ export const vacuumSlice = createSlice({
         ],
       },
     }),
-    setSchedulesList: (state, action: PayloadAction<Schedules[]>) => ({
+    setSchedulesList: (state, action: PayloadAction<RawSchedules[]>) => ({
       ...state,
-      schedulesList: action.payload,
+      schedulesList: action.payload.map((current) => ({
+        ...current,
+        enable: !!+current.enable,
+        content: { ...current.content, jsonStr: JSON.parse(current.content.jsonStr) },
+      })),
     }),
   },
 });
