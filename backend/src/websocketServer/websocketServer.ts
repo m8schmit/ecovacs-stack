@@ -21,7 +21,7 @@ export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterSer
 const websocketServer = () => {
   const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(3000, {
     cors: {
-      origin: 'http://localhost:4200',
+      origin: [`http://${process.env.HOST_IP}:4200`, 'http://localhost:4200'],
       methods: ['GET', 'POST'],
     },
   });

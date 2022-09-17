@@ -44,7 +44,6 @@ services:
     environment:
       - WDS_SOCKET_PORT=0
     networks:
-      ecovacs_stack:
       default:
     volumes:
       - ./frontend:/opt/app
