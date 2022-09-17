@@ -4,18 +4,6 @@ networks:
   ecovacs_stack:
     internal: true
 services:
-  generate-cert:
-    build:
-      context: ./generateCert
-      dockerfile: Dockerfile
-    networks:
-      default:
-    volumes:
-      - './generateCert/config:/config'
-    command: ash -c './generate-cert.sh'
-    # user: 1000:1000
-    stdin_open: true
-
   backend:
     build:
       context: ./backend
@@ -26,9 +14,10 @@ services:
     volumes:
       - ./backend:/opt/app
     user: 1000:1000
-    # environment:
-    #   - NODE_OPTIONS="--max-old-space-size=8192"
-    command: bash -c 'yarn install && yarn run dev'
+    environment:
+      - BASE_URL=https://localhost
+    command: bash -c './generate_certs.sh && yarn install && yarn run dev'
+
     stdin_open: true
 
   nginx:
@@ -42,7 +31,6 @@ services:
     networks:
       default:
       ecovacs_stack:
-    # network_mode: host
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

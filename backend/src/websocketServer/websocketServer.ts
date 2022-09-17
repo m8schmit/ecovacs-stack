@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
 import {
+  addSched_V2,
   charge,
   clean,
   getBattery,
@@ -78,6 +79,11 @@ const websocketServer = () => {
     socket.on('getSchedulesList', () => {
       console.log('getSchedulesList');
       getSched_V2();
+    });
+
+    socket.on('addSched_V2', ({ hour, minute, repeat, index, mid, type, value }) => {
+      console.log('getSchedulesList');
+      addSched_V2(hour, minute, repeat, index, mid, type, value);
     });
   });
 };

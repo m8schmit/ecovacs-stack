@@ -1,4 +1,4 @@
-import { Schedules } from '../mqttClient/commands/commands.schedules.type';
+import { CleaningType, Schedules } from '../mqttClient/commands/commands.schedules.type';
 import {
   AutoEmptyState,
   BatteryState,
@@ -35,6 +35,15 @@ export interface ClientToServerEvents {
   setCleanCount: (value: number) => void;
   setRelocationState: () => void;
   getSchedulesList: () => void;
+  addSched_V2: (params: {
+    hour: number;
+    minute: number;
+    repeat: number;
+    index: number;
+    mid: string;
+    type: CleaningType;
+    value?: string;
+  }) => void;
 }
 
 export interface InterServerEvents {

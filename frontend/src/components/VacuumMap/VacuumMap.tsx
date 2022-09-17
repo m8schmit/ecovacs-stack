@@ -162,11 +162,11 @@ const VacuumMap = () => {
         feature.setStyle(
           new Style({
             stroke: new Stroke({
-              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.5),
+              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.6),
               width: 2,
             }),
             fill: new Fill({
-              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.5),
+              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.6),
             }),
             text: new Text({ text: feature.get('name') }),
           }),

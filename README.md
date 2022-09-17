@@ -22,11 +22,7 @@ address=/aliyuncs.com/your-local-ip-here
 
 - make a copy of the `.env.example` file to `.env` and add you Vacuum bot `id`, `class` and `ressources` .
 
-- run `docker-compose up`, the first time it will fail but create some certificates in `generateCert/config` (this part will be updated in the future)
-
-- changer the owner of the certificates (`chown ...`) and copy past them in `backend/src`
-
-- re-run `docker-compose up`, this time you should be able to access to `http://localhost:4200/`
+- run `docker-compose up`, you should be able to access to `http://localhost:4200/`
 
 - restart your vacuum bot, it should connect to the MQTTs server and you should see something like:
 

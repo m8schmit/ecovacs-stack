@@ -17,9 +17,10 @@ type BotCommandName =
   | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */
   | 'getChargeState'
   | 'getSched_V2'
+  | 'setSched_V2'
   | 'getBattery';
 
-export type BotAct = 'go' | 'start' | 'stop' | 'resume';
+export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'merge' | 'divide';
 
 // export type BotState = 'working' | 'pause' | 'idle';
 

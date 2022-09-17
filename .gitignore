@@ -105,8 +105,8 @@ dist
 
 #
 ca.crt
-server.crt
-server.key
+ssl.crt
+ssl.key
 ecovacs-stack.p12
 map.png
 ecovacs-bot.log.yml

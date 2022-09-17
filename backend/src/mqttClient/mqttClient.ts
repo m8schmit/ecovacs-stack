@@ -1,6 +1,5 @@
 import { connect, MqttClient } from 'mqtt';
 
-import { ca } from '../server.utils';
 import { WSsocket } from '../websocketServer/websocketServer';
 import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap } from './commands/commands';
 import { decompressLZMA } from './map/LZMA.utils';
@@ -11,7 +10,7 @@ import { Maybe } from './types';
 export let client: MqttClient;
 
 const mqttClient = () => {
-  client = connect('mqtts://localhost:8883', { ca });
+  client = connect('mqtts://localhost:8883');
   console.info('starting Backend MQTT client');
   let vacuumMap: Maybe<VacuumMap> = null;
   let botReady = false;
@@ -94,7 +93,7 @@ const mqttClient = () => {
 
     if (isTopic('MinorMap', topic)) {
       const res = getDatafromMessage(message);
-      vacuumMap?.addPiecesIDsList(res.pieceIndex);
+      vacuumMap?.addPiecesIDsList(res?.pieceIndex);
       vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
       if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
         vacuumMap?.buildMap();

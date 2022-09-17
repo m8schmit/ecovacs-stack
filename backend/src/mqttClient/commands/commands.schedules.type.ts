@@ -16,6 +16,8 @@ type SchedNameType = 'clean' | 'plan';
 
 type TriggerType = 'app';
 
+export type CleaningType = 'auto' | 'spotArea';
+
 interface ScheduleContent {
   name: SchedNameType;
   jsonStr: string;

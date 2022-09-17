@@ -2,6 +2,7 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 
 import Battery from '../../components/Battery/Battery';
 import CleanState from '../../components/CleanState/CleanState';
+import { ScheduleDialog } from '../../components/Dialog/ScheduleDialog/ScheduleDialog';
 import Relocate from '../../components/Relocate/Relocate';
 import { Schedules } from '../../components/Schedules/Schedules';
 import VacuumMap from '../../components/VacuumMap/VacuumMap';
@@ -32,6 +33,7 @@ const Dashboard = () => {
             </Box>
             <Typography variant="overline">Schedules</Typography>
             <Schedules />
+            <ScheduleDialog />
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
