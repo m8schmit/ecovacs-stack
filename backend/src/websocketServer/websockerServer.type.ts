@@ -13,7 +13,7 @@ import {
 import { Maybe } from '../mqttClient/types';
 
 export interface ServerToClientEvents {
-  vacuumMap: (image: string) => void;
+  vacuumMap: (params: { image: string; id: string }) => void;
   chargePos: (coordinates: DevicesCoordinates[]) => void;
   botPos: (coordinates: DevicesCoordinates) => void;
   batteryLevel: (batteryState: BatteryState) => void;

@@ -21,6 +21,7 @@ interface VacuumState {
     isLoading: boolean;
     isFetching: boolean;
     data: string | null;
+    id: string | null;
   };
   mapSubsetsList: MapSubSet[];
   mapTracesList: MapTracesList;
@@ -42,6 +43,7 @@ const initialState: VacuumState = {
     isLoading: true,
     isFetching: false,
     data: null,
+    id: null,
   },
   mapSubsetsList: [],
   mapTracesList: {
@@ -88,9 +90,9 @@ export const vacuumSlice = createSlice({
   name: 'vacuum',
   initialState,
   reducers: {
-    setVacuumMap: (state, action: PayloadAction<string>) => ({
+    setVacuumMap: (state, action: PayloadAction<{ image: string; id: string }>) => ({
       ...state,
-      map: { ...state.map, data: action.payload },
+      map: { ...state.map, data: action.payload.image, id: action.payload.id },
     }),
     setVacuumState: (state, action: PayloadAction<CleanState>) => {
       return {

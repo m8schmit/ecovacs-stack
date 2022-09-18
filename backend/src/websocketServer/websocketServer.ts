@@ -26,20 +26,21 @@ const websocketServer = () => {
     },
   });
 
+  setInterval(() => {
+    console.log('BASIC INFOS');
+    getCleanInfo();
+    GetChargeState();
+    getBattery();
+    getSpeed();
+    getCleanCount();
+  }, 10000);
+
   io.on('connection', (socket) => {
     WSsocket = socket;
     console.log('New client connected', socket.id);
 
     //Ask all basic info when an user open the frontend app
     // find a bettweway to do this
-    setInterval(() => {
-      console.log('BASIC INFOS');
-      getCleanInfo();
-      GetChargeState();
-      getBattery();
-      getSpeed();
-      getCleanCount();
-    }, 60000);
 
     socket.conn.on('close', (reason) => {
       console.log('Client Disconeccted', socket.id, reason);

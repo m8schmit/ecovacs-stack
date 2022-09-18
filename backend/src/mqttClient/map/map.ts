@@ -139,7 +139,7 @@ export class VacuumMap {
     }
     if (canvas) {
       const canvasBuffer = translateCanvas(canvas, 'y').toBuffer('image/png');
-      WSsocket.emit('vacuumMap', canvasBuffer.toString('base64'));
+      WSsocket.emit('vacuumMap', { image: canvasBuffer.toString('base64'), id: this._settings.mid });
       console.info('generate map.png');
       // fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);
     }
