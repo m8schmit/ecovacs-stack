@@ -168,7 +168,7 @@ export const getSched_V2 = () => {
 export const addSched_V2 = (
   hour: number,
   minute: number,
-  repeat: number,
+  repeat: string,
   index: number,
   mid: string,
   type: CleaningType,
@@ -196,7 +196,7 @@ export const addSched_V2 = (
 
 export const delSched_V2 = (
   hour: number,
-  repeat: number,
+  repeat: string,
   index: number,
   mid: string,
   type: CleaningType,

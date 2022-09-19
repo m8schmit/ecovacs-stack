@@ -38,7 +38,7 @@ export interface ClientToServerEvents {
   addSched_V2: (params: {
     hour: number;
     minute: number;
-    repeat: number;
+    repeat: string;
     index: number;
     mid: string;
     type: CleaningType;

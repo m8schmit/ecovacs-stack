@@ -2,7 +2,6 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 
 import Battery from '../../components/Battery/Battery';
 import CleanState from '../../components/CleanState/CleanState';
-import { ScheduleDialog } from '../../components/Dialog/ScheduleDialog/ScheduleDialog';
 import Relocate from '../../components/Relocate/Relocate';
 import { Schedules } from '../../components/Schedules/Schedules';
 import VacuumMap from '../../components/VacuumMap/VacuumMap';
@@ -12,7 +11,7 @@ import theme from '../../theme';
 const Dashboard = () => {
   return (
     <Box sx={{ margin: `0 ${theme.typography.pxToRem(15)}` }}>
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: `${theme.typography.pxToRem(15)} 0` }}>
             <Typography variant="h4">Ecovacs stack</Typography>
@@ -33,7 +32,6 @@ const Dashboard = () => {
             </Box>
             <Typography variant="overline">Schedules</Typography>
             <Schedules />
-            <ScheduleDialog />
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>

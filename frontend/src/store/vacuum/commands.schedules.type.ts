@@ -3,7 +3,7 @@ export interface RawSchedules {
   trigger: TriggerType;
   sid: number;
   state: number /* boolean number? */;
-  repeat: number /* seven boolean numbers, first is Sunday, last is Saturday */;
+  repeat: string /* seven boolean numbers, first is Sunday, last is Saturday */;
   hour: number /* 12 or 24? */;
   minute: number;
   mid: number;
@@ -17,7 +17,7 @@ export interface Schedules {
   trigger: TriggerType;
   sid: number;
   state: number /* boolean number? */;
-  repeat: number /* seven boolean numbers, first is Sunday, last is Saturday */;
+  repeat: string /* seven boolean numbers, first is Sunday, last is Saturday */;
   hour: number /* 12 or 24? */;
   minute: number;
   mid: number;

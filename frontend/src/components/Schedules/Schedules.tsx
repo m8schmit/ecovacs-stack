@@ -1,16 +1,16 @@
-import { Add } from '@mui/icons-material';
-import { Box, FormControlLabel, IconButton, Switch, TextField, Typography } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { Add, Delete, Edit } from '@mui/icons-material';
+import { Box, FormControlLabel, IconButton, Paper, Switch, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useContext, useEffect } from 'react';
 
 import { showDialog } from '../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { geSchedulesList } from '../../store/vacuum/vacuumSlice';
+import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
+import { daysList } from './ScheduleDialog/Schedule.utils';
+import { ScheduleDialog } from './ScheduleDialog/ScheduleDialog';
 
 export const Schedules = () => {
   const socket = useContext(WebSocketContext);
@@ -23,41 +23,69 @@ export const Schedules = () => {
 
   const showAddScheduleDialog = () => dispatch(showDialog('ScheduleDialog'));
 
-  return (
-    <OptionsFrame>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {ScheduleList.map((currentSchedule) => (
-            <Box
-              key={`schedule-${currentSchedule.index}`}
-              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-            >
-              <FormControlLabel control={<Switch checked={currentSchedule.enable} />} label="enabled" />
+  const getScheduleNextday = (repeat: string) => {
+    const todayDay = dayjs().day();
+    const nextScheduleDay = repeat.indexOf('1');
+    if (todayDay === nextScheduleDay) {
+      return 'Today';
+    } else if (todayDay + 1 === nextScheduleDay) {
+      return 'Tomorrow';
+    }
+    return daysList[nextScheduleDay].label;
+  };
 
-              <Typography>
-                {currentSchedule.content.jsonStr?.content?.type === 'auto' && 'Clean everywhere'}
-                {currentSchedule.content.jsonStr?.content?.type === 'spotArea' &&
-                  `Clean ${currentSchedule.content.jsonStr?.content?.value
-                    .split(',')
-                    .map((curr: string) => `room ${curr}`)
-                    .join(',')}`}
-              </Typography>
-              <TimePicker
-                label="Time"
-                value={dayjs().set('hour', currentSchedule.hour).set('minute', currentSchedule.minute)}
-                onChange={console.log}
-                // disabled
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </Box>
+  return (
+    <>
+      <OptionsFrame>
+        <Box sx={{ display: 'flex', mb: 1 }}>
+          {ScheduleList.map((currentSchedule) => (
+            <Paper
+              elevation={1}
+              key={`schedule-${currentSchedule.index}`}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                p: 1,
+                borderRadius: theme.typography.pxToRem(5),
+                width: '100%',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Switch checked={currentSchedule.enable} />
+                <Typography sx={{ opacity: currentSchedule.enable ? 1 : 0.5 }}>
+                  Will {currentSchedule.content.jsonStr?.content?.type === 'auto' && 'clean everywhere'}
+                  {currentSchedule.content.jsonStr?.content?.type === 'spotArea' &&
+                    `clean ${currentSchedule.content.jsonStr?.content?.value
+                      .split(',')
+                      .map((curr: string) => `room ${curr}`)
+                      .join(',')}`}{' '}
+                  {getScheduleNextday(currentSchedule.repeat)} at{' '}
+                  {dayjs().set('hour', currentSchedule.hour).set('minute', currentSchedule.minute).format('HH:mm')}.
+                </Typography>
+              </Box>
+              <Box>
+                <IconButton disabled>
+                  <Edit />
+                </IconButton>
+                <IconButton disabled>
+                  <Delete />
+                </IconButton>
+              </Box>
+            </Paper>
           ))}
           {(!ScheduleList || ScheduleList.length === 0) && <em>No Schedules yet.</em>}
-          <IconButton size="large" color="primary" onClick={showAddScheduleDialog}>
-            <Add />
-          </IconButton>
         </Box>
-      </LocalizationProvider>
-      {/* <pre>{JSON.stringify(ScheduleList[0], null, 2)}</pre> */}
-    </OptionsFrame>
+        <IconButton size="large" color="primary" onClick={showAddScheduleDialog}>
+          <Add />
+        </IconButton>
+      </OptionsFrame>
+      <ScheduleDialog />
+    </>
   );
 };
