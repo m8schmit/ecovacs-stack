@@ -44,6 +44,7 @@ export interface ClientToServerEvents {
     type: CleaningType;
     value?: string;
   }) => void;
+  delSched_V2: (params: { sid: string }) => void;
 }
 
 export interface InterServerEvents {

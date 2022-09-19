@@ -59,7 +59,7 @@ export const ScheduleDialog = () => {
   const roomsList = getMapSubsetsList().map((mapSubset) => mapSubset.mssid);
 
   const socket = useContext(WebSocketContext);
-  const { id: mapId } = getVacuumMap();
+  const { id: mid } = getVacuumMap();
 
   useEffect(() => {
     isVisible && setDefaultValues((prev) => ({ ...prev, startAt: dayjs().add(1, 'minute') }));
@@ -75,23 +75,24 @@ export const ScheduleDialog = () => {
   const getRepeat = (days: string[]) =>
     daysList.reduce((acc: string[], { value }) => (days.includes(value) ? [...acc, '1'] : [...acc, '0']), []).join('');
 
+  const handleClose = () => {
+    reset();
+    dispatch(hideDialog());
+  };
+
   const onSubmit = ({ startAt, once, days, auto, rooms }: ScheduleFormData) => {
     const payload = {
       hour: startAt.hour(),
       minute: startAt.minute(),
       repeat: once ? '0000000' : getRepeat(days),
       index: scheduleLength > 0 ? scheduleLength - 1 : 0,
-      mid: mapId,
+      mid,
       type: auto ? 'auto' : 'spotArea',
       value: rooms.join(',') || null,
     };
     console.log('submit', payload);
     socket.emit('addSched_V2', payload);
-  };
-
-  const handleClose = () => {
-    reset();
-    dispatch(hideDialog());
+    handleClose();
   };
 
   const auto = useWatch({

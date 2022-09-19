@@ -4,6 +4,7 @@ import {
   addSched_V2,
   charge,
   clean,
+  delSched_V2,
   getBattery,
   GetChargeState,
   getCleanCount,
@@ -83,8 +84,13 @@ const websocketServer = () => {
     });
 
     socket.on('addSched_V2', ({ hour, minute, repeat, index, mid, type, value }) => {
-      console.log('getSchedulesList');
+      console.log('addSched_V2');
       addSched_V2(hour, minute, repeat, index, mid, type, value);
+    });
+
+    socket.on('delSched_V2', ({ sid }) => {
+      console.log('delSched_V2');
+      delSched_V2(sid);
     });
   });
 };

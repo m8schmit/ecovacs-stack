@@ -194,29 +194,12 @@ export const addSched_V2 = (
   sendJSONCommand(command, client);
 };
 
-export const delSched_V2 = (
-  hour: number,
-  repeat: string,
-  index: number,
-  mid: string,
-  type: CleaningType,
-  value?: string,
-) => {
+export const delSched_V2 = (sid: string) => {
   const command: BotCommand = {
     name: 'setSched_V2',
     payload: {
       act: 'del',
-      hour,
-      enable: 1,
-      repeat,
-      index,
-      mid,
-      state: 0,
-      trigger: 'app',
-      content: { jsonStr: JSON.stringify({ content: { type, value } }), name: 'clean' },
-      minute: 27,
-      sid: makeId(14),
-      bdTaskID: makeId(16),
+      sid,
     },
   };
   sendJSONCommand(command, client);

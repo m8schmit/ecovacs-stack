@@ -1,11 +1,12 @@
 import { Add, Delete, Edit } from '@mui/icons-material';
-import { Box, FormControlLabel, IconButton, Paper, Switch, Typography } from '@mui/material';
+import { Box, IconButton, Paper, Switch, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useContext, useEffect } from 'react';
 
 import { showDialog } from '../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../store/hooks';
-import { geSchedulesList } from '../../store/vacuum/vacuumSlice';
+import { Schedules as SchedulesType } from '../../store/vacuum/commands.schedules.type';
+import { geSchedulesList, getVacuumMap } from '../../store/vacuum/vacuumSlice';
 import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
@@ -26,6 +27,10 @@ export const Schedules = () => {
   const getScheduleNextday = (repeat: string) => {
     const todayDay = dayjs().day();
     const nextScheduleDay = repeat.indexOf('1');
+    if (nextScheduleDay < 0) {
+      // todo
+      return;
+    }
     if (todayDay === nextScheduleDay) {
       return 'Today';
     } else if (todayDay + 1 === nextScheduleDay) {
@@ -33,6 +38,8 @@ export const Schedules = () => {
     }
     return daysList[nextScheduleDay].label;
   };
+
+  const delSchedule = ({ sid }: SchedulesType) => socket.emit('delSched_V2', { sid });
 
   return (
     <>
@@ -73,7 +80,8 @@ export const Schedules = () => {
                 <IconButton disabled>
                   <Edit />
                 </IconButton>
-                <IconButton disabled>
+                {/* TODO confirm dialog */}
+                <IconButton onClick={() => delSchedule(currentSchedule)}>
                   <Delete />
                 </IconButton>
               </Box>
