@@ -69,21 +69,9 @@ const mqttClient = () => {
       WSsocket?.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
     }
 
-    /* The Helperbot seems to send some information to the bot when it login :
-     * setTime, on p2p, otherwise it never trigger the schedules at the right hour
-     * 'setting2' on cfg, seems to be some indication of the compatibility with the server and video
-     * 'rcpRules' on dtgcfg, some acl information and a lua script in B64
-     * 'setting2' on dtgcfg, seems to be some indication of the compatibility with the server and video
-     * shell, on p2p, with a script to download a binary file and some assets in B64
-     */
     if (isTopic('onFwBuryPoint', topic)) {
       const res = getDatafromMessage(message);
       console.log('onFwBuryPoint ', JSON.parse(res.content));
-
-      if (JSON.parse(res.content)?.d.body?.data?.d_val?.act === 'online') {
-        console.log('Bot Ready!');
-        setTime();
-      }
     }
   });
 

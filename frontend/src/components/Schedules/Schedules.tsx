@@ -24,7 +24,7 @@ export const Schedules = () => {
   }, []);
 
   const showAddScheduleDialog = () => dispatch(showDialog('ScheduleDialog'));
-  const showEditScheduleDialog = ({ index }: SchedulesType) => dispatch(showEditDialog(index));
+  const showEditScheduleDialog = ({ sid }: SchedulesType) => dispatch(showEditDialog(sid));
 
   const getScheduleNextday = (repeat: string) => {
     const todayDay = dayjs().day();
@@ -45,7 +45,6 @@ export const Schedules = () => {
     hour,
     minute,
     repeat,
-    index,
     sid,
     enable,
     content: {
@@ -53,8 +52,7 @@ export const Schedules = () => {
         content: { type, value },
       },
     },
-  }: SchedulesType) =>
-    socket.emit('editSched_V2', { hour, minute, repeat, index, mid, type, sid, enable: !enable, value });
+  }: SchedulesType) => socket.emit('editSched_V2', { hour, minute, repeat, mid, type, sid, enable: !enable, value });
 
   const delSchedule = ({ sid }: SchedulesType) => socket.emit('delSched_V2', { sid });
 
@@ -65,7 +63,7 @@ export const Schedules = () => {
           {ScheduleList.map((currentSchedule) => (
             <Paper
               elevation={1}
-              key={`schedule-${currentSchedule.index}`}
+              key={`schedule-${currentSchedule.sid}`}
               sx={{
                 display: 'flex',
                 alignItems: 'center',

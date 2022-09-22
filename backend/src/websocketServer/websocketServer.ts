@@ -84,14 +84,14 @@ const websocketServer = () => {
       getSched_V2();
     });
 
-    socket.on('addSched_V2', ({ hour, minute, repeat, index, mid, type, value }) => {
+    socket.on('addSched_V2', ({ hour, minute, repeat, mid, type, value }) => {
       console.log('addSched_V2');
-      addSched_V2(hour, minute, repeat, index, mid, type, value);
+      addSched_V2(hour, minute, repeat, mid, type, value);
     });
 
-    socket.on('editSched_V2', ({ hour, minute, repeat, index, mid, type, sid, enable, value }) => {
+    socket.on('editSched_V2', ({ hour, minute, repeat, mid, type, sid, enable, value }) => {
       console.log('addSched_V2');
-      editSched_V2(hour, minute, repeat, index, mid, type, sid, +enable, value);
+      editSched_V2(hour, minute, repeat, mid, type, sid, +enable, value);
     });
 
     socket.on('delSched_V2', ({ sid }) => {

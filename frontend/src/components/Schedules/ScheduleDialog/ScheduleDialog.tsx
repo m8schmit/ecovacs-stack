@@ -47,7 +47,7 @@ const MenuProps = {
 
 export const ScheduleDialog = () => {
   const dispatch = useAppDispatch();
-  const { isVisible, schedIndex } = getDialog('ScheduleDialog');
+  const { isVisible, schedId } = getDialog('ScheduleDialog');
   const schedulesList = geSchedulesList();
   const [currentSchedule, setCurrentSchedule] = useState<Schedules>();
   const scheduleLength = schedulesList.length;
@@ -85,7 +85,6 @@ export const ScheduleDialog = () => {
       hour: startAt.hour(),
       minute: startAt.minute(),
       repeat: once ? '0000000' : getRepeat(days),
-      index: scheduleLength,
       mid,
       type: auto ? 'auto' : 'spotArea',
       value: rooms.join(',') || null,
@@ -101,16 +100,16 @@ export const ScheduleDialog = () => {
 
   useEffect(() => {
     if (isVisible) {
-      if (schedIndex !== null) {
-        const schedule = schedulesList.find((schedule) => schedule.index === schedIndex);
+      if (schedId !== null) {
+        const schedule = schedulesList.find((schedule) => schedule.sid === schedId);
         if (schedule) {
           setCurrentSchedule(schedule);
           reset({
             startAt: dayjs().set('hour', schedule.hour).set('minute', schedule.minute),
             once: schedule.repeat === '0000000',
             days: schedule.repeat.split('').map((isActive, index) => (+isActive ? daysList[index].value : undefined)),
-            auto: schedule.content.jsonStr.content.value === null,
-            rooms: schedule.content.jsonStr.content.value.split(','),
+            auto: schedule.content.jsonStr.content?.type === 'auto',
+            rooms: schedule.content.jsonStr?.content?.value ? schedule.content.jsonStr?.content?.value.split(',') : [],
           });
         }
         console.log('reset');
@@ -119,7 +118,7 @@ export const ScheduleDialog = () => {
       }
       console.log(defaultValues);
     }
-  }, [isVisible, schedIndex]);
+  }, [isVisible, schedId]);
 
   const auto = useWatch({
     control,
@@ -141,7 +140,7 @@ export const ScheduleDialog = () => {
 
   return (
     <Dialog open={isVisible} onClose={handleClose}>
-      <DialogTitle>{`${schedIndex === null ? 'Add a new' : 'Edit this'} Schedule`}</DialogTitle>
+      <DialogTitle>{`${schedId === null ? 'Add a new' : 'Edit this'} Schedule`}</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -279,7 +278,7 @@ export const ScheduleDialog = () => {
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button variant="contained" disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)}>
-          {schedIndex === null ? 'Add' : 'Edit'}
+          {schedId === null ? 'Add' : 'Edit'}
         </Button>
       </DialogActions>
     </Dialog>

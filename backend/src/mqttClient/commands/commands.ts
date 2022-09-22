@@ -190,7 +190,6 @@ export const addSched_V2 = (
   hour: number,
   minute: number,
   repeat: string,
-  index: number,
   mid: string,
   type: CleaningType,
   value?: string,
@@ -202,7 +201,6 @@ export const addSched_V2 = (
       hour,
       enable: 1,
       repeat,
-      // index,
       mid,
       state: 0,
       trigger: 'app',
@@ -215,11 +213,11 @@ export const addSched_V2 = (
   sendJSONCommand(command, client);
 };
 
+/* index is index of the mid ?*/
 export const editSched_V2 = (
   hour: number,
   minute: number,
   repeat: string,
-  index: number,
   mid: string,
   type: CleaningType,
   sid: string,
@@ -233,7 +231,6 @@ export const editSched_V2 = (
       hour,
       enable,
       repeat,
-      index,
       mid,
       state: 0,
       trigger: 'app',

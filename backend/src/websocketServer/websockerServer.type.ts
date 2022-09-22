@@ -39,7 +39,6 @@ export interface ClientToServerEvents {
     hour: number;
     minute: number;
     repeat: string;
-    index: number;
     mid: string;
     type: CleaningType;
     value?: string;
@@ -48,7 +47,6 @@ export interface ClientToServerEvents {
     hour: number;
     minute: number;
     repeat: string;
-    index: number;
     mid: string;
     type: CleaningType;
     sid: string;

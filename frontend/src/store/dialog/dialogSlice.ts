@@ -6,7 +6,7 @@ type Maybe<T> = null | T;
 
 interface ScheduleDialog {
   isVisible: boolean;
-  schedIndex: Maybe<number>;
+  schedId: Maybe<number>;
 }
 
 interface DialogState {
@@ -16,7 +16,7 @@ interface DialogState {
 const initialState: DialogState = {
   ScheduleDialog: {
     isVisible: false,
-    schedIndex: null,
+    schedId: null,
   },
 };
 
@@ -31,7 +31,7 @@ export const dialogSlice = createSlice({
     },
     showEditDialog: (state, action: PayloadAction<number>) => {
       state.ScheduleDialog.isVisible = true;
-      state.ScheduleDialog.schedIndex = action.payload;
+      state.ScheduleDialog.schedId = action.payload;
     },
     hideDialog: () => initialState,
   },
