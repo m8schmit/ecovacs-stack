@@ -104,10 +104,10 @@ dist
 .tern-port
 
 #
-ca.crt
 ssl.crt
 ssl.key
-ecovacs-stack.p12
+# Debug
 map.png
 ecovacs-bot.log.yml
 more-logs.json
+VideoScript.lua

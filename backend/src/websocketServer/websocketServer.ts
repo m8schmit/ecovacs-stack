@@ -5,6 +5,7 @@ import {
   charge,
   clean,
   delSched_V2,
+  editSched_V2,
   getBattery,
   GetChargeState,
   getCleanCount,
@@ -27,14 +28,14 @@ const websocketServer = () => {
     },
   });
 
-  setInterval(() => {
-    console.log('BASIC INFOS');
-    getCleanInfo();
-    GetChargeState();
-    getBattery();
-    getSpeed();
-    getCleanCount();
-  }, 10000);
+  // setInterval(() => {
+  //   console.log('BASIC INFOS');
+  //   getCleanInfo();
+  //   GetChargeState();
+  //   getBattery();
+  //   getSpeed();
+  //   getCleanCount();
+  // }, 10000);
 
   io.on('connection', (socket) => {
     WSsocket = socket;
@@ -86,6 +87,11 @@ const websocketServer = () => {
     socket.on('addSched_V2', ({ hour, minute, repeat, index, mid, type, value }) => {
       console.log('addSched_V2');
       addSched_V2(hour, minute, repeat, index, mid, type, value);
+    });
+
+    socket.on('editSched_V2', ({ hour, minute, repeat, index, mid, type, sid, enable, value }) => {
+      console.log('addSched_V2');
+      editSched_V2(hour, minute, repeat, index, mid, type, sid, +enable, value);
     });
 
     socket.on('delSched_V2', ({ sid }) => {

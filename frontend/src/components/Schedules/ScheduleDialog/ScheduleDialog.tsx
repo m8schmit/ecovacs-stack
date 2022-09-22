@@ -25,8 +25,9 @@ import dayjs from 'dayjs';
 import { useContext, useEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 
-import { getDialogStatus, hideDialog } from '../../../store/dialog/dialogSlice';
+import { getDialog, hideDialog } from '../../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../../store/hooks';
+import { Schedules } from '../../../store/vacuum/commands.schedules.type';
 import { geSchedulesList, getMapSubsetsList, getVacuumMap } from '../../../store/vacuum/vacuumSlice';
 import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
@@ -45,25 +46,23 @@ const MenuProps = {
 };
 
 export const ScheduleDialog = () => {
-  const [defaultValues, setDefaultValues] = useState<ScheduleFormData>({
-    startAt: dayjs().add(1, 'minute'),
-    once: true,
-    days: [],
-    auto: true,
-    rooms: [],
-  });
-
   const dispatch = useAppDispatch();
-  const isVisible = getDialogStatus('ScheduleDialog');
-  const scheduleLength = geSchedulesList().length;
+  const { isVisible, schedIndex } = getDialog('ScheduleDialog');
+  const schedulesList = geSchedulesList();
+  const [currentSchedule, setCurrentSchedule] = useState<Schedules>();
+  const scheduleLength = schedulesList.length;
   const roomsList = getMapSubsetsList().map((mapSubset) => mapSubset.mssid);
 
   const socket = useContext(WebSocketContext);
   const { id: mid } = getVacuumMap();
 
-  useEffect(() => {
-    isVisible && setDefaultValues((prev) => ({ ...prev, startAt: dayjs().add(1, 'minute') }));
-  }, [isVisible]);
+  const defaultValues = {
+    startAt: dayjs().add(1, 'minute'),
+    once: true,
+    days: [],
+    auto: true,
+    rooms: [],
+  };
 
   const {
     handleSubmit,
@@ -81,19 +80,46 @@ export const ScheduleDialog = () => {
   };
 
   const onSubmit = ({ startAt, once, days, auto, rooms }: ScheduleFormData) => {
-    const payload = {
+    console.log('scheduleLength', scheduleLength);
+    let payload: any = {
       hour: startAt.hour(),
       minute: startAt.minute(),
       repeat: once ? '0000000' : getRepeat(days),
-      index: scheduleLength > 0 ? scheduleLength - 1 : 0,
+      index: scheduleLength,
       mid,
       type: auto ? 'auto' : 'spotArea',
       value: rooms.join(',') || null,
     };
-    console.log('submit', payload);
-    socket.emit('addSched_V2', payload);
+
+    if (currentSchedule) {
+      payload = { ...payload, sid: currentSchedule.sid, enable: currentSchedule.enable };
+    }
+    const command = currentSchedule ? 'editSched_V2' : 'addSched_V2';
+    socket.emit(command, payload);
     handleClose();
   };
+
+  useEffect(() => {
+    if (isVisible) {
+      if (schedIndex !== null) {
+        const schedule = schedulesList.find((schedule) => schedule.index === schedIndex);
+        if (schedule) {
+          setCurrentSchedule(schedule);
+          reset({
+            startAt: dayjs().set('hour', schedule.hour).set('minute', schedule.minute),
+            once: schedule.repeat === '0000000',
+            days: schedule.repeat.split('').map((isActive, index) => (+isActive ? daysList[index].value : undefined)),
+            auto: schedule.content.jsonStr.content.value === null,
+            rooms: schedule.content.jsonStr.content.value.split(','),
+          });
+        }
+        console.log('reset');
+      } else {
+        reset({ ...defaultValues, startAt: dayjs() });
+      }
+      console.log(defaultValues);
+    }
+  }, [isVisible, schedIndex]);
 
   const auto = useWatch({
     control,
@@ -115,7 +141,7 @@ export const ScheduleDialog = () => {
 
   return (
     <Dialog open={isVisible} onClose={handleClose}>
-      <DialogTitle>Add a new Schedule</DialogTitle>
+      <DialogTitle>{`${schedIndex === null ? 'Add a new' : 'Edit this'} Schedule`}</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -132,7 +158,7 @@ export const ScheduleDialog = () => {
                       <TextField {...params} helperText={error ? error.message : null} error={!!error} />
                     )}
                   />
-                  {dayjs().isAfter(startAt) && (
+                  {dayjs().isAfter(startAt) && isDirty && (
                     <FormHelperText sx={{ display: 'flex' }}>
                       <Warning sx={{ marginRight: theme.typography.pxToRem(5) }} />
                       Since the selected time has already passed today, this schedule will start tomorrow or the next
@@ -149,7 +175,7 @@ export const ScheduleDialog = () => {
               name={'once'}
               control={control}
               render={({ field: { onChange, value } }) => (
-                <FormControlLabel value={value} onChange={onChange} control={<Switch defaultChecked />} label="Once" />
+                <FormControlLabel control={<Switch checked={value} onChange={onChange} />} label="Once" />
               )}
             />
           </FormGroup>
@@ -201,7 +227,7 @@ export const ScheduleDialog = () => {
             control={control}
             render={({ field: { onChange, value } }) => (
               <FormGroup>
-                <FormControlLabel value={value} onChange={onChange} control={<Switch defaultChecked />} label="Auto" />
+                <FormControlLabel control={<Switch checked={value} onChange={onChange} />} label="Auto" />
               </FormGroup>
             )}
           />
@@ -231,11 +257,13 @@ export const ScheduleDialog = () => {
                   )}
                   MenuProps={MenuProps}
                 >
-                  {roomsList.map((roomId) => (
-                    <MenuItem key={`room-${roomId}`} value={roomId}>
-                      {`Room ${roomId}`}
-                    </MenuItem>
-                  ))}
+                  {roomsList
+                    .sort((a, b) => +a - +b)
+                    .map((roomId) => (
+                      <MenuItem key={`room-${roomId}`} value={roomId}>
+                        {`Room ${roomId}`}
+                      </MenuItem>
+                    ))}
                 </Select>
                 {error && (
                   <FormHelperText sx={{ display: 'flex' }}>
@@ -251,7 +279,7 @@ export const ScheduleDialog = () => {
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button variant="contained" disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)}>
-          Add
+          {schedIndex === null ? 'Add' : 'Edit'}
         </Button>
       </DialogActions>
     </Dialog>

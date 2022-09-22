@@ -5,6 +5,8 @@ type BotCommandName =
   | 'clean_V2'
   | 'setSpeed'
   | 'setCleanCount'
+  | 'SetTime' /* yes with a capital 'S' */
+  | 'setAutoEmpty'
   | 'setRelocationState'
   | 'getSpeed'
   | 'getCleanCount'
@@ -20,9 +22,7 @@ type BotCommandName =
   | 'setSched_V2'
   | 'getBattery';
 
-export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'merge' | 'divide';
-
-// export type BotState = 'working' | 'pause' | 'idle';
+export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide';
 
 // CleanState
 export interface CleanState {

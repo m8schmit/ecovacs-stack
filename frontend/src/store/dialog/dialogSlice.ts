@@ -2,15 +2,21 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { shallowEqual } from 'react-redux';
 import { useAppSelector } from '../hooks';
 type DialogType = 'ScheduleDialog';
+type Maybe<T> = null | T;
+
+interface ScheduleDialog {
+  isVisible: boolean;
+  schedIndex: Maybe<number>;
+}
+
 interface DialogState {
-  ScheduleDialog: {
-    isVisible: boolean;
-  };
+  ScheduleDialog: ScheduleDialog;
 }
 
 const initialState: DialogState = {
   ScheduleDialog: {
     isVisible: false,
+    schedIndex: null,
   },
 };
 
@@ -23,11 +29,15 @@ export const dialogSlice = createSlice({
       hideDialog();
       state[action.payload].isVisible = true;
     },
+    showEditDialog: (state, action: PayloadAction<number>) => {
+      state.ScheduleDialog.isVisible = true;
+      state.ScheduleDialog.schedIndex = action.payload;
+    },
     hideDialog: () => initialState,
   },
 });
 
-export const { showDialog, hideDialog } = dialogSlice.actions;
+export const { showDialog, showEditDialog, hideDialog } = dialogSlice.actions;
 
-export const getDialogStatus = (dialogType: DialogType): boolean =>
-  useAppSelector((state) => state.dialog[dialogType].isVisible, shallowEqual);
+export const getDialog = (dialogType: DialogType): ScheduleDialog =>
+  useAppSelector((state) => state.dialog[dialogType], shallowEqual);

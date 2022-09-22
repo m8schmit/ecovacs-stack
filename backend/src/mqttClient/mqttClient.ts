@@ -1,7 +1,7 @@
 import { connect, MqttClient } from 'mqtt';
 
 import { WSsocket } from '../websocketServer/websocketServer';
-import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap } from './commands/commands';
+import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap, getSched_V2, setTime } from './commands/commands';
 import { decompressLZMA } from './map/LZMA.utils';
 import { parseTracePoints, VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
@@ -65,8 +65,25 @@ const mqttClient = () => {
     if (isTopic('AutoEmpty', topic)) {
       const res = getDatafromMessage(message);
       console.log('autoEmpty ', res);
-      //not sure, I receive 1 or 5
+      //not sure, I receive 1, 2 or 5
       WSsocket?.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
+    }
+
+    /* The Helperbot seems to send some information to the bot when it login :
+     * setTime, on p2p, otherwise it never trigger the schedules at the right hour
+     * 'setting2' on cfg, seems to be some indication of the compatibility with the server and video
+     * 'rcpRules' on dtgcfg, some acl information and a lua script in B64
+     * 'setting2' on dtgcfg, seems to be some indication of the compatibility with the server and video
+     * shell, on p2p, with a script to download a binary file and some assets in B64
+     */
+    if (isTopic('onFwBuryPoint', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('onFwBuryPoint ', JSON.parse(res.content));
+
+      if (JSON.parse(res.content)?.d.body?.data?.d_val?.act === 'online') {
+        console.log('Bot Ready!');
+        setTime();
+      }
     }
   });
 
@@ -93,10 +110,14 @@ const mqttClient = () => {
 
     if (isTopic('MinorMap', topic)) {
       const res = getDatafromMessage(message);
-      vacuumMap?.addPiecesIDsList(res?.pieceIndex);
-      vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
-      if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
-        vacuumMap?.buildMap();
+      if (!res?.pieceValue || !res?.pieceIndex) {
+        console.log('minor map is empty');
+      } else {
+        vacuumMap?.addPiecesIDsList(res.pieceIndex);
+        vacuumMap?.addMapDataList({ data: res.pieceValue, index: res.pieceIndex });
+        if (vacuumMap?.mapDataList.length && vacuumMap?.mapDataList.length === vacuumMap?.piecesIDsList.length) {
+          vacuumMap?.buildMap();
+        }
       }
     }
 
@@ -135,10 +156,15 @@ const mqttClient = () => {
   };
 
   const handleSchedule = (topic: string, message: Buffer) => {
-    if (isTopic('Sched_V2', topic)) {
+    if (isTopic('getSched_V2', topic) || isTopic('onSched_V2', topic)) {
       const res = getDatafromMessage(message);
-      console.log('Sched_V2 ', res);
+      console.log('getSched_V2 ', res);
       WSsocket?.emit('schedulesList', res);
+    }
+
+    if (isTopic('setSched_V2', topic)) {
+      console.log('setSched_V2 ');
+      getSched_V2();
     }
   };
 

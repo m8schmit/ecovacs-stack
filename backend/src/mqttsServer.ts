@@ -1,4 +1,5 @@
 import { Aedes, Client, Server, Subscription } from 'aedes';
+import { setTime } from './mqttClient/commands/commands';
 
 import { options } from './server.utils';
 

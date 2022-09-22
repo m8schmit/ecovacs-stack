@@ -3,7 +3,7 @@ import { Box, IconButton, Paper, Switch, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useContext, useEffect } from 'react';
 
-import { showDialog } from '../../store/dialog/dialogSlice';
+import { showDialog, showEditDialog } from '../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { Schedules as SchedulesType } from '../../store/vacuum/commands.schedules.type';
 import { geSchedulesList, getVacuumMap } from '../../store/vacuum/vacuumSlice';
@@ -15,14 +15,16 @@ import { ScheduleDialog } from './ScheduleDialog/ScheduleDialog';
 
 export const Schedules = () => {
   const socket = useContext(WebSocketContext);
-  const ScheduleList = geSchedulesList();
   const dispatch = useAppDispatch();
+  const ScheduleList = geSchedulesList();
+  const { id: mid } = getVacuumMap();
 
   useEffect(() => {
     socket.emit('getSchedulesList');
   }, []);
 
   const showAddScheduleDialog = () => dispatch(showDialog('ScheduleDialog'));
+  const showEditScheduleDialog = ({ index }: SchedulesType) => dispatch(showEditDialog(index));
 
   const getScheduleNextday = (repeat: string) => {
     const todayDay = dayjs().day();
@@ -39,12 +41,27 @@ export const Schedules = () => {
     return daysList[nextScheduleDay].label;
   };
 
+  const toggleEnable = ({
+    hour,
+    minute,
+    repeat,
+    index,
+    sid,
+    enable,
+    content: {
+      jsonStr: {
+        content: { type, value },
+      },
+    },
+  }: SchedulesType) =>
+    socket.emit('editSched_V2', { hour, minute, repeat, index, mid, type, sid, enable: !enable, value });
+
   const delSchedule = ({ sid }: SchedulesType) => socket.emit('delSched_V2', { sid });
 
   return (
     <>
       <OptionsFrame>
-        <Box sx={{ display: 'flex', mb: 1 }}>
+        <Box sx={{ display: 'flex', mb: 1, flexDirection: 'column' }}>
           {ScheduleList.map((currentSchedule) => (
             <Paper
               elevation={1}
@@ -54,6 +71,7 @@ export const Schedules = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 p: 1,
+                mb: 1,
                 borderRadius: theme.typography.pxToRem(5),
                 width: '100%',
               }}
@@ -64,7 +82,7 @@ export const Schedules = () => {
                   alignItems: 'center',
                 }}
               >
-                <Switch checked={currentSchedule.enable} />
+                <Switch checked={currentSchedule.enable} onClick={() => toggleEnable(currentSchedule)} />
                 <Typography sx={{ opacity: currentSchedule.enable ? 1 : 0.5 }}>
                   Will {currentSchedule.content.jsonStr?.content?.type === 'auto' && 'clean everywhere'}
                   {currentSchedule.content.jsonStr?.content?.type === 'spotArea' &&
@@ -77,7 +95,7 @@ export const Schedules = () => {
                 </Typography>
               </Box>
               <Box>
-                <IconButton disabled>
+                <IconButton onClick={() => showEditScheduleDialog(currentSchedule)}>
                   <Edit />
                 </IconButton>
                 {/* TODO confirm dialog */}

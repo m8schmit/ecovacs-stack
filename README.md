@@ -107,11 +107,15 @@ to send status update.
 | 'getMapInfo_V2'      | `{"mid": string (length 16),"type": string ("1, 4"),"bdTaskID": string (length 16)}`                                                                                                                                |
 | 'shell'              | `{"script": string (b64 encoded shell script)`                                                                                                                                                                      | to send bash script encoded in B64 who will be executed by the Vacuum bot     | na                                                                                                                                                                                                                                                                     | _Vacuum bot execute the script without any verification, user seem to be `root`, WTF!_                                                             |
 | onEvt                | na                                                                                                                                                                                                                  | triggered by the bot on event                                                 | `{"code": number}`                                                                                                                                                                                                                                                     |
+| SetTime              | `{"ts": number (timestamp), "tsInSed": number (timestamp in secondes)}`                                                                                                                                             | To set the time of the bot? And start his DB                                  | `{"ret": string"ok"/"fail"}`                                                                                                                                                                                                                                           | On my side event with this time is still inverted 8pm start at 8am                                                                                 |
 
-| Event            | code   |
-| ---------------- | ------ |
-| relocate success | `1071` |
-| Ozmo pro plugged | `1007` |
+| Event                                       | code    |
+| ------------------------------------------- | ------- |
+| relocate success                            | `1071`  |
+| Ozmo pro plugged                            | `1007`  |
+| task type did not support                   | `20003` |
+| ??                                          | `1015`  |
+| HandleDealMsg_setSched_packageSchedule fail | `20011` |
 
 # Video
 

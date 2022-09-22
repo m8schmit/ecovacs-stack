@@ -29,6 +29,7 @@ export interface Schedules {
   };
 }
 
+//not sure of this
 type SchedNameType = 'clean' | 'plan';
 
 type TriggerType = 'app';

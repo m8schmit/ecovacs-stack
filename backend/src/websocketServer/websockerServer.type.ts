@@ -44,6 +44,17 @@ export interface ClientToServerEvents {
     type: CleaningType;
     value?: string;
   }) => void;
+  editSched_V2: (params: {
+    hour: number;
+    minute: number;
+    repeat: string;
+    index: number;
+    mid: string;
+    type: CleaningType;
+    sid: string;
+    enable: boolean;
+    value?: string;
+  }) => void;
   delSched_V2: (params: { sid: string }) => void;
 }
 
