@@ -106,3 +106,10 @@ interface MapTrace {
   type: number /*dont know yet what it is */;
   isConnectedWithPrevious: boolean;
 }
+
+// location
+
+export interface LocationState {
+  isLoading: boolean;
+  isInvalid: boolean;
+}

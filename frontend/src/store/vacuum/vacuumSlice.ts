@@ -10,6 +10,7 @@ import {
   Devices,
   DevicesCoordinates,
   DevicesPayload,
+  LocationState,
   MapSubSet,
   MapTracesList,
   VacuumingOptionState,
@@ -35,6 +36,7 @@ interface VacuumState {
   autoEmpty: AutoEmptyState;
   vacuumingOption: VacuumingOptionState;
   schedulesList: Schedules[];
+  locationState: LocationState;
 }
 
 const initialState: VacuumState = {
@@ -84,6 +86,10 @@ const initialState: VacuumState = {
     count: 1,
   },
   schedulesList: [],
+  locationState: {
+    isLoading: false,
+    isInvalid: false,
+  },
 };
 
 export const vacuumSlice = createSlice({
@@ -104,6 +110,10 @@ export const vacuumSlice = createSlice({
     setVacuumPos: (state, { payload: { device, devicesCoordinates } }: PayloadAction<DevicesPayload>) => ({
       ...state,
       position: { ...state.position, [device]: devicesCoordinates },
+      locationState:
+        device === 'bot'
+          ? { ...state.locationState, isInvalid: !!devicesCoordinates.invalid }
+          : { ...state.locationState },
     }),
     setVacuumBattery: (state, action: PayloadAction<BatteryState>) => ({
       ...state,
@@ -171,6 +181,10 @@ export const vacuumSlice = createSlice({
         content: { ...current.content, jsonStr: JSON.parse(current.content.jsonStr) },
       })),
     }),
+    setLocationState: (state, action: PayloadAction<Partial<LocationState>>) => ({
+      ...state,
+      locationState: { ...state.locationState, ...action.payload },
+    }),
   },
 });
 
@@ -189,6 +203,7 @@ export const {
   setVacuumingOption,
   setMapTracesList,
   setSchedulesList,
+  setLocationState,
 } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);
@@ -202,3 +217,4 @@ export const getAutoEmptyState = () => useAppSelector(({ vacuum }) => vacuum.aut
 export const getVacuumingOption = () => useAppSelector(({ vacuum }) => vacuum.vacuumingOption);
 export const getMapTracesList = () => useAppSelector(({ vacuum }) => vacuum.mapTracesList);
 export const geSchedulesList = () => useAppSelector(({ vacuum }) => vacuum.schedulesList);
+export const getLocationState = () => useAppSelector(({ vacuum }) => vacuum.locationState);

@@ -1,4 +1,5 @@
 import { connect, MqttClient } from 'mqtt';
+import { inspect } from 'node:util';
 
 import { WSsocket } from '../websocketServer/websocketServer';
 import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap, getSched_V2, setTime } from './commands/commands';
@@ -22,7 +23,8 @@ const mqttClient = () => {
     client.subscribe(`iot/cfg/#`);
     client.subscribe(`iot/dtcfg/#`);
     client.subscribe(`iot/dtgcfg/#`);
-    client.subscribe(`iot/p2p/+/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/+/+/+/p/+/j`);
+    client.subscribe(`iot/p2p/+/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/+/+/+/p/+/+`);
+    client.subscribe(`iot/p2p/+/+/+/+/${process.env.BOTID}/${process.env.BOTCLASS}/${process.env.RESOURCE}/q/+/j`);
   });
 
   client.on('error', (err) => {
@@ -71,7 +73,15 @@ const mqttClient = () => {
 
     if (isTopic('onFwBuryPoint', topic)) {
       const res = getDatafromMessage(message);
-      console.log('onFwBuryPoint ', JSON.parse(res.content));
+      const parsedContent = JSON.parse(res.content);
+
+      const payload = inspect({ ...res, content: { ...parsedContent } }, false, null, true);
+      console.log('onFwBuryPoint ', payload);
+    }
+
+    if (isTopic('onEvt', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('onEvt ', inspect(res, false, null, true));
     }
   });
 

@@ -21,7 +21,5 @@ export const getFormatedCommand = ({ payload }: BotCommand) =>
 export const sendJSONCommand = (command: BotCommand, client: MqttClient, raw: boolean = false) => {
   const topic = getJSONFormatedRequestTopic(command);
   const message = raw ? JSON.stringify(command.payload) : getFormatedCommand(command);
-  client.publish(topic, message, { qos: 0, retain: false }, (err) =>
-    err ? console.log('sending err: ', err) : console.log(`${message} correctly sended to [${topic}] !`),
-  );
+  client.publish(topic, message, { qos: 0, retain: false }, (err) => err && console.log('sending err: ', err));
 };

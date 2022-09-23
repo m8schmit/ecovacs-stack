@@ -120,6 +120,7 @@ to send status update.
 # Video
 
 Obviously another protocol, the bot send some "Feiyan Info" then call https://iot-auth-global.aliyuncs.com and https://public.iot-as-mqtt.cn-shanghai.aliyuncs.com/.
+Ecovacs servers are based on https://github.com/alibaba/tengine.
 
 # Thanks to
 
