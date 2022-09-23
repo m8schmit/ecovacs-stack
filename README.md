@@ -115,12 +115,76 @@ to send status update.
 | Ozmo pro plugged                            | `1007`  |
 | task type did not support                   | `20003` |
 | ??                                          | `1015`  |
+| change the mop reminded                     | `1052`  |
 | HandleDealMsg_setSched_packageSchedule fail | `20011` |
+
+App subscribe to these channel, but it's not a complete list, `onRosNodeReady` or `onFwBuryPoint`are missing.
+The initial `onMajorMap` and `onRosNodeReady` seems to be triggered by the binary script (`dln_drawer`) sended to bot.
+
+| App atr Channel      |
+| -------------------- |
+| getPos_V2            |
+| setMapSubSet         |
+| onLiveLaunchPwdState |
+| onSched_V2           |
+| onPos                |
+| onVolume             |
+| onBreakPoint         |
+| onBattery            |
+| onMajorMap           |
+| onMapSubSetError     |
+| onRecognize          |
+| onSleep              |
+| onMinorMap           |
+| onDModule            |
+| onSched              |
+| getMapTrace          |
+| onBreakPointStatus   |
+| onEvt                |
+| onCleanPreference    |
+| onSpeed              |
+| onDusterRemind       |
+| onWarning            |
+| onCleanDataUpdate    |
+| onError              |
+| onMapState           |
+| onCachedMapInfo      |
+| onAudioCallState     |
+| onMapSet             |
+| getMapInfo           |
+| onAIMapAndMapSet     |
+| onBlock              |
+| onResetLiveLaunchPwd |
+| onOta                |
+| setMapSet            |
+| onRelocationState    |
+| onVoice              |
+| batchSetMapSubSet    |
+| onWaterInfo          |
+| onAutoEmpty          |
+| onStats              |
+| getMapSet            |
+| onNextSched          |
+| getMapSubSet         |
+| onLiveState          |
+| onCleanCount         |
+| onMapInfo_V2         |
+| onAvoidObject        |
+| onChargeState        |
+| onCleanInfo          |
+| onAdvancedMode       |
+| onNextVideoSched     |
+| onMapTrace           |
+| onMapInfo            |
+| onCleanInfo_V2       |
+| getCachedMapInfo     |
+| setCachedMapInfo     |
+| onCarpertPressure    |
 
 # Video
 
 Obviously another protocol, the bot send some "Feiyan Info" then call https://iot-auth-global.aliyuncs.com and https://public.iot-as-mqtt.cn-shanghai.aliyuncs.com/.
-Ecovacs servers are based on https://github.com/alibaba/tengine.
+Ecovacs servers are based on https://github.com/alibaba/tengine with Tomcat.
 
 # Thanks to
 

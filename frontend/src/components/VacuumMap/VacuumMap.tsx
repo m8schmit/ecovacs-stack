@@ -60,12 +60,20 @@ const VacuumMap = () => {
 
   const [traceLayer] = useState<VectorLayer<VectorSource<LineString>>>(
     new VectorLayer({
-      style: new Style({
-        stroke: new Stroke({
-          color: 'white',
-          width: 3,
+      style: [
+        new Style({
+          stroke: new Stroke({
+            color: 'white',
+            width: 3,
+          }),
         }),
-      }),
+        new Style({
+          stroke: new Stroke({
+            color: 'rgba(255,255,255,0.5)',
+            width: 28,
+          }),
+        }),
+      ],
     }),
   );
   const [roomsLayer] = useState<VectorLayer<VectorSource<Polygon>>>(new VectorLayer());

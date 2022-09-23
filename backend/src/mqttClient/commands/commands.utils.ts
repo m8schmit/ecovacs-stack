@@ -4,8 +4,8 @@ import { BotCommand } from './commands.type';
 
 export const getHeader = () => ({
   header: {
-    pri: 2,
-    tzm: 480,
+    pri: 2 /* server send on pri 2, bot answer on pri 1, dont know yet */,
+    tzm: -240 /* server send on -240, bot answer on 480, dont know yet*/,
     ts: Date.now(),
     ver: '0.0.22',
   },
