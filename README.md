@@ -186,6 +186,11 @@ The initial `onMajorMap` and `onRosNodeReady` seems to be triggered by the binar
 Obviously another protocol, the bot send some "Feiyan Info" then call https://iot-auth-global.aliyuncs.com and https://public.iot-as-mqtt.cn-shanghai.aliyuncs.com/.
 Ecovacs servers are based on https://github.com/alibaba/tengine with Tomcat.
 
+## http server
+
+After each clean, the bot send a report to
+`iotin.ecouser.net/data_collect/upload/generalData?auth.with=device&auth.name={PARAMS}&auth.did={PARAMS}&auth.mid={PARAMS}&auth.res={PARAMS}&auth.ts={PARAMS}&auth.sign={PARAMS}&rn=CleanResult&meta={PARAMS}&fmt=j&dType=string `
+
 # Thanks to
 
 https://github.com/mrbungle64/ecovacs-deebot.js  

@@ -108,6 +108,8 @@ ssl.crt
 ssl.key
 # Debug
 map.png
-ecovacs-bot.log.yml
 more-logs.json
+endReport-example.json
 VideoScript.lua
+
+bot_scripts

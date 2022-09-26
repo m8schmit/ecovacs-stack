@@ -1,6 +1,6 @@
 import { Check, GpsFixed, QuestionMark, Warning } from '@mui/icons-material';
 import { Button, CircularProgress, Typography } from '@mui/material';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
 import { getLocationState, setLocationState } from '../../store/vacuum/vacuumSlice';
@@ -11,12 +11,21 @@ export const Relocate = () => {
   const socket = useContext(WebSocketContext);
   const { isLoading, isInvalid } = getLocationState();
   const dispatch = useAppDispatch();
+  let RelocateTimeOut: number;
 
   const triggerRelocate = () => {
     socket.emit('setRelocationState');
     dispatch(setLocationState({ isLoading: true }));
-    setTimeout(() => dispatch(setLocationState({ isLoading: false, isInvalid: true })), 60000);
+    console.log('here');
+    RelocateTimeOut = window.setTimeout(() => dispatch(setLocationState({ isLoading: false, isInvalid: true })), 30000);
   };
+
+  useEffect(() => {
+    if (isLoading === false && isInvalid === false) {
+      console.log('relocate success !!');
+      clearTimeout(RelocateTimeOut);
+    }
+  }, [isInvalid]);
 
   return (
     <OptionsFrame>

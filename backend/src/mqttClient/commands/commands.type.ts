@@ -4,6 +4,7 @@ type BotCommandName =
   | 'playSound'
   | 'clean_V2'
   | 'setSpeed'
+  | 'shell'
   | 'setCleanCount'
   | 'SetTime' /* yes with a capital 'S' */
   | 'setAutoEmpty'

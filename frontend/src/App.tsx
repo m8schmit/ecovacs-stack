@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
 import {
+  onRelocateSuccess,
   setAutoEmpty,
   setChargeState,
   setMapSubsetsList,
@@ -25,8 +26,14 @@ const App = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setSocket(websocketService());
-  }, []);
+    console.log('start websocket Service.');
+    const websocket = websocketService();
+    setSocket(websocket);
+
+    return () => {
+      websocket.disconnect();
+    };
+  }, [setSocket]);
 
   useEffect(() => {
     socket &&
@@ -79,10 +86,12 @@ const App = () => {
 
     socket && socket.on('schedulesList', (payload) => dispatch(setSchedulesList(payload)));
 
+    socket && socket.on('relocateSuccess', () => dispatch(onRelocateSuccess()));
+
     socket &&
       socket.on('mapTrace', (payload) => {
         console.log('receive mapTraces ', payload);
-        //TODO get the previous Traces on load during a cleaning
+        //TODO get the previous Traces on load during a cleaning, real app get them 200 by 200
         dispatch(setMapTracesList(payload));
       });
   }, [socket]);

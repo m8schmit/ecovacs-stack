@@ -1,6 +1,6 @@
 import { Aedes, Client, Server, Subscription } from 'aedes';
-import { setTime } from './mqttClient/commands/commands';
 
+import { setTime } from './mqttClient/commands/commands.special';
 import { options } from './server.utils';
 
 const mqttsServer = (): Promise<Aedes> => {
@@ -34,7 +34,6 @@ const mqttsServer = (): Promise<Aedes> => {
          * shell, on p2p, with a script to download a binary file and some assets in B64
          */
         if (subscriptions.filter((s) => s.topic.indexOf('p2p') >= 0).length) {
-          console.log('Init Bot Time');
           setTime();
         }
       }

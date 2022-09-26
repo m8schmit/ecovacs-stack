@@ -1,4 +1,5 @@
 // CleanState
+
 export interface CleanState {
   state: BotState;
   cleanState: {
@@ -7,10 +8,13 @@ export interface CleanState {
     router?: BotRoute;
     type?: BotType;
     motionState?: BotMotionState;
-    content?: {
-      type?: BotType;
-    };
+    content?: CleanStateContent | string;
   };
+}
+
+export interface CleanStateContent {
+  value?: string;
+  type?: BotType;
 }
 
 type BotState = 'clean' | 'pause' | 'idle' | 'goCharging';

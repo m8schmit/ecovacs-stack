@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
 import { RawSchedules, Schedules } from './commands.schedules.type';
@@ -185,6 +185,7 @@ export const vacuumSlice = createSlice({
       ...state,
       locationState: { ...state.locationState, ...action.payload },
     }),
+    onRelocateSuccess: (state) => ({ ...state, locationState: { isLoading: false, isInvalid: false } }),
   },
 });
 
@@ -204,6 +205,7 @@ export const {
   setMapTracesList,
   setSchedulesList,
   setLocationState,
+  onRelocateSuccess,
 } = vacuumSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ vacuum }) => vacuum.map);

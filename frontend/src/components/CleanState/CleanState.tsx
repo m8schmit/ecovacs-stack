@@ -12,6 +12,7 @@ import {
 } from '../../store/vacuum/vacuumSlice';
 import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import { WebSocketContext } from '../../utils/socket.utils';
+import { isCleanStateContent, isString } from '../../utils/typeguard.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
 
 const CleanState = () => {
@@ -71,8 +72,14 @@ const CleanState = () => {
     return (
       <>
         {/* TODO fix this `status?.cleanState?.content` can be string|null|{} */}
-        {status?.cleanState?.type || status?.cleanState?.content?.type || status.state}{' '}
-        {status?.cleanState?.content && `on Rooms ${status?.cleanState?.content}`}
+        {status?.cleanState?.type ||
+          (isCleanStateContent(status?.cleanState?.content) && status?.cleanState?.content.type) ||
+          status.state}{' '}
+        {status?.cleanState?.content &&
+          `on Rooms ${
+            (isCleanStateContent(status?.cleanState?.content) && status?.cleanState?.content?.value) ||
+            (isString(status?.cleanState?.content) && status?.cleanState?.content)
+          }`}
       </>
     );
   };

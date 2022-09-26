@@ -25,6 +25,7 @@ export interface ServerToClientEvents {
   autoEmpty: (autoEmptyState: AutoEmptyState) => void;
   cleanCount: (value: number) => void;
   schedulesList: (schedulesList: Schedules[]) => void;
+  relocateSuccess: () => void;
 }
 
 export interface ClientToServerEvents {

@@ -2,7 +2,8 @@ import { connect, MqttClient } from 'mqtt';
 import { inspect } from 'node:util';
 
 import { WSsocket } from '../websocketServer/websocketServer';
-import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap, getSched_V2, setTime } from './commands/commands';
+import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap, getSched_V2 } from './commands/commands.get';
+import { RELOCATE_SUCCESS_EVENT } from './commands/event.type';
 import { decompressLZMA } from './map/LZMA.utils';
 import { parseTracePoints, VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
@@ -77,11 +78,20 @@ const mqttClient = () => {
 
       const payload = inspect({ ...res, content: { ...parsedContent } }, false, null, true);
       console.log('onFwBuryPoint ', payload);
+
+      if (parsedContent?.d?.body?.data?.d_val?.act === 'online') {
+        //TODO Delay some command after this trigger
+        console.log('Bot is ready!!');
+        botReady = true;
+      }
     }
 
     if (isTopic('onEvt', topic)) {
       const res = getDatafromMessage(message);
       console.log('onEvt ', inspect(res, false, null, true));
+      if (res === RELOCATE_SUCCESS_EVENT) {
+        WSsocket?.emit('relocateSuccess');
+      }
     }
   });
 
@@ -98,7 +108,6 @@ const mqttClient = () => {
           return;
         }
         vacuumMap?.piecesIDsList.forEach((pieceID) => {
-          console.log('ask minor map for ', pieceID);
           vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
         });
 
@@ -147,7 +156,7 @@ const mqttClient = () => {
 
     if (isTopic('MapSet', topic)) {
       const res = getDatafromMessage(message);
-      res.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
+      res?.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
         getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid),
       );
     }

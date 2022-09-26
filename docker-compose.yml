@@ -16,6 +16,7 @@ services:
     user: 1000:1000
     environment:
       - BASE_URL=https://localhost
+      - BASE_URL_01=https//ecovacs.com
     command: bash -c './generate_certs.sh && yarn install && yarn run dev'
 
     stdin_open: true

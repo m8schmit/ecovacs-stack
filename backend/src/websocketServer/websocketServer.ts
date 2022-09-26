@@ -1,11 +1,6 @@
 import { Server, Socket } from 'socket.io';
 
 import {
-  addSched_V2,
-  charge,
-  clean,
-  delSched_V2,
-  editSched_V2,
   getBattery,
   GetChargeState,
   getCleanCount,
@@ -13,14 +8,33 @@ import {
   getMajorMap,
   getSched_V2,
   getSpeed,
+} from '../mqttClient/commands/commands.get';
+import {
+  addSched_V2,
+  charge,
+  clean,
+  delSched_V2,
+  editSched_V2,
   setCleanCount,
   setRelocationState,
   setSpeed,
-} from '../mqttClient/commands/commands';
+} from '../mqttClient/commands/commands.set';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
+
+const intervalDuration = 60000;
+let getStatusInfoInterval: NodeJS.Timer;
+
+const getBotStatus = () => {
+  getCleanInfo();
+  GetChargeState();
+  getBattery();
+  getSpeed();
+  getCleanCount();
+};
 
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 const websocketServer = () => {
+  let count: number = 0;
   const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(3000, {
     cors: {
       origin: [`http://${process.env.HOST_IP}:4200`, 'http://localhost:4200'],
@@ -28,74 +42,66 @@ const websocketServer = () => {
     },
   });
 
-  // setInterval(() => {
-  //   console.log('BASIC INFOS');
-  //   getCleanInfo();
-  //   GetChargeState();
-  //   getBattery();
-  //   getSpeed();
-  //   getCleanCount();
-  // }, 10000);
-
   io.on('connection', (socket) => {
     WSsocket = socket;
-    console.log('New client connected', socket.id);
+    count = socket.rooms.size;
+    console.log('WebSocket client connected', socket.id, `(total: ${count})`);
 
-    //Ask all basic info when an user open the frontend app
-    // find a bettweway to do this
+    //TODO stop these query when bot is busy, with relocate for example
+    getBotStatus();
+    if (count) {
+      getStatusInfoInterval = setInterval(() => {
+        getBotStatus();
+      }, intervalDuration);
+    }
 
     socket.conn.on('close', (reason) => {
-      console.log('Client Disconeccted', socket.id, reason);
+      count = socket.rooms.size;
+      console.log('Client Disconnected', socket.id, reason, `(total: ${count})`);
+      if (!count) {
+        console.log('stop bot Status');
+        clearInterval(getStatusInfoInterval);
+      }
     });
 
     socket.on('getMajorMap', () => {
-      console.log('receive getMajorMap');
       getMajorMap();
     });
 
     socket.on('clean', (payload) => {
-      console.log('receive clean ', payload);
       clean(payload.act, payload.type, payload?.value);
     });
 
     socket.on('charge', () => {
-      console.log('receive charge');
       charge();
     });
 
     socket.on('setSpeed', (payload) => {
-      console.log('setSpeed', payload);
       setSpeed(payload);
     });
 
     socket.on('setCleanCount', (payload) => {
-      console.log('setCleanCount', payload);
       setCleanCount(payload);
     });
 
     //TODO handle `onEvt` success or fail
     socket.on('setRelocationState', () => {
-      console.log('setRelocationState');
       setRelocationState();
     });
 
     socket.on('getSchedulesList', () => {
-      console.log('getSchedulesList');
       getSched_V2();
     });
 
     socket.on('addSched_V2', ({ hour, minute, repeat, mid, type, value }) => {
-      console.log('addSched_V2');
       addSched_V2(hour, minute, repeat, mid, type, value);
     });
 
     socket.on('editSched_V2', ({ hour, minute, repeat, mid, type, sid, enable, value }) => {
-      console.log('addSched_V2');
       editSched_V2(hour, minute, repeat, mid, type, sid, +enable, value);
     });
 
     socket.on('delSched_V2', ({ sid }) => {
-      console.log('delSched_V2');
       delSched_V2(sid);
     });
   });

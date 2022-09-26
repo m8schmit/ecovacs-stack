@@ -1,11 +1,7 @@
-// ALL this may move in the frontend ?
-// TODO crop the transparent pixel
 import { createCanvas } from 'canvas';
-import fs from 'fs';
-import { WSsocket } from '../../websocketServer/websocketServer';
-import { Maybe } from '../types';
 
-import { translateCanvas, trimCanvas } from './canvas.utils';
+import { WSsocket } from '../../websocketServer/websocketServer';
+import { translateCanvas } from './canvas.utils';
 import { decompressLZMA } from './LZMA.utils';
 import { MajorMap, MapData, MapTrace } from './map.model';
 
@@ -57,7 +53,6 @@ export class VacuumMap {
   constructor(data: MajorMap) {
     this._settings = data;
     this.InitPiecesIDsList();
-    console.log('PIXEL', this._settings.pixel);
   }
 
   /**
@@ -129,10 +124,8 @@ export class VacuumMap {
     for (let rowIndex = 0; rowIndex < this._mapBuffer.length; rowIndex++) {
       let y = 0;
       for (let colIndex = 0; colIndex < this._mapBuffer[rowIndex].length; colIndex++) {
-        // if (this._mapBuffer[rowIndex][colIndex] !== null) {
         ctx.fillStyle = this._mapColors[this._mapBuffer[rowIndex][colIndex] || 0];
         ctx.fillRect(x, y, PixelRatio, PixelRatio);
-        // }
         y += PixelRatio;
       }
       x += PixelRatio;
@@ -140,7 +133,7 @@ export class VacuumMap {
     if (canvas) {
       const canvasBuffer = translateCanvas(canvas, 'y').toBuffer('image/png');
       WSsocket.emit('vacuumMap', { image: canvasBuffer.toString('base64'), id: this._settings.mid });
-      console.info('generate map.png');
+      console.info('generate map');
       // fs.writeFile(`/opt/app/src/map.png`, canvasBuffer, () => console.log);
     }
   }
