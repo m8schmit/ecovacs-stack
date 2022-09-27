@@ -92,7 +92,7 @@ const App = () => {
     socket &&
       socket.on('mapTrace', (payload) => {
         console.log('receive mapTrace: ', payload);
-        payload.isReponse && dispatch(incrementMapTracesListUpdateIndex());
+        payload.isResponse && dispatch(incrementMapTracesListUpdateIndex());
         dispatch(setMapTracesList(payload));
       });
   }, [socket]);

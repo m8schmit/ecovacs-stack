@@ -44,6 +44,7 @@ const PixelRatio = 2;
 
 const VacuumMap = () => {
   const [map, setMap] = useState<Map>();
+  const [prevTraceStart, setPrevTraceStart] = useState<number>(-1);
   const mapElement = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map>();
   const dispatch = useAppDispatch();
@@ -74,7 +75,7 @@ const VacuumMap = () => {
         new Style({
           stroke: new Stroke({
             color: 'rgba(255,255,255,0.5)',
-            width: 28,
+            width: 25,
           }),
         }),
       ],
@@ -268,12 +269,16 @@ const VacuumMap = () => {
   }, [mapTraceList.newEntriesList]);
 
   useEffect(() => {
-    if (mapTraceList.totalCount > mapTraceList.newEntriesList.length) {
-      console.log('some traces are missing');
-      socket.emit('getMapTrace', mapTraceList.updateIndex);
-    } else {
-      console.log('trace is up to Date!');
-      dispatch(resetMapTracesListUpdateIndex());
+    if (mapTraceList.updateIndex > prevTraceStart) {
+      if (mapTraceList.totalCount > mapTraceList.newEntriesList.length) {
+        console.log('some traces are missing');
+        setPrevTraceStart(mapTraceList.updateIndex);
+        socket.emit('getMapTrace', mapTraceList.updateIndex);
+      } else {
+        console.log('trace is up to Date!');
+        setPrevTraceStart(0);
+        dispatch(resetMapTracesListUpdateIndex());
+      }
     }
   }, [mapTraceList.totalCount, mapTraceList.newEntriesList]);
 

@@ -115,11 +115,9 @@ const websocketServer = () => {
       delSched_V2(sid);
     });
 
-    let wait = false;
     socket.on('getMapTrace', (traceStart) => {
       console.log('receive getMapTrace', traceStart);
-      !wait && getMapTrace(0);
-      wait = true;
+      getMapTrace(traceStart);
     });
   });
 };
