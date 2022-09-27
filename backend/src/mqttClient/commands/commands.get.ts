@@ -126,3 +126,11 @@ export const getPos = (posDevices: PosDevicesType[]) => {
   };
   sendJSONCommand(command, client);
 };
+
+export const getAutoEmpty = () => {
+  let command: BotCommand = {
+    name: 'getAutoEmpty',
+    payload: {},
+  };
+  sendJSONCommand(command, client);
+};

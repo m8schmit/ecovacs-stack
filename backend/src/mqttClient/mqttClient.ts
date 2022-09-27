@@ -67,8 +67,8 @@ const mqttClient = () => {
 
     if (isTopic('AutoEmpty', topic)) {
       const res = getDatafromMessage(message);
-      console.log('autoEmpty ', res);
-      //not sure, I receive 1, 2 or 5
+      console.log('autoEmpty ', inspect(res, false, null, true));
+      //not sure, I receive 0, 1, 2 and 5
       WSsocket?.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
     }
 

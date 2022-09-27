@@ -2,7 +2,7 @@ import { client } from '../mqttClient';
 import { get14LengthId, get16LengthId } from '../text.utils';
 import { Maybe } from '../types';
 import { CleaningType } from './commands.schedules.type';
-import { BotAct, BotType, BotCommand } from './commands.type';
+import { BotAct, BotCommand, BotType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const clean = (

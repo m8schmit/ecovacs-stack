@@ -8,6 +8,7 @@ type BotCommandName =
   | 'setCleanCount'
   | 'SetTime' /* yes with a capital 'S' */
   | 'setAutoEmpty'
+  | 'getAutoEmpty'
   | 'setRelocationState'
   | 'getPos'
   | 'getSpeed'

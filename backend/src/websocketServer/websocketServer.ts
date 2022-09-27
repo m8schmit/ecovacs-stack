@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
 import {
+  getAutoEmpty,
   getBattery,
   GetChargeState,
   getCleanCount,
@@ -37,6 +38,7 @@ const getBotStatus = () => {
 const getOneTimeBotStatus = () => {
   getMapTrace(0);
   getPos(['chargePos', 'deebotPos']);
+  getAutoEmpty();
 };
 
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
