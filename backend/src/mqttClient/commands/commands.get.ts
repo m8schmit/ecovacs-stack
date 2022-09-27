@@ -1,7 +1,7 @@
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { get16LengthId, makeId } from '../text.utils';
-import { BotCommand, MapSubSetType } from './commands.type';
+import { BotCommand, MapSubSetType, PosDevicesType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const getMajorMap = () => {
@@ -16,6 +16,17 @@ export const getMapSet = (mid: string) => {
   const command: BotCommand = {
     name: 'getMapSet',
     payload: { start: 0, mid, type: 'ar', bdTaskID: get16LengthId() },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getMapTrace = (traceStart: number) => {
+  //TODO make some test, but this is the limit used by the app.
+  const pointCount = 200;
+
+  const command: BotCommand = {
+    name: 'getMapTrace',
+    payload: { traceStart, pointCount, bdTaskID: get16LengthId() },
   };
   sendJSONCommand(command, client);
 };
@@ -104,6 +115,14 @@ export const getSched_V2 = () => {
   const command: BotCommand = {
     name: 'getSched_V2',
     payload: { type: 1, bdTaskID: get16LengthId() },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getPos = (posDevices: PosDevicesType[]) => {
+  const command: BotCommand = {
+    name: 'getPos',
+    payload: posDevices,
   };
   sendJSONCommand(command, client);
 };

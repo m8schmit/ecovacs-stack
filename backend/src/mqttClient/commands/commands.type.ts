@@ -9,12 +9,14 @@ type BotCommandName =
   | 'SetTime' /* yes with a capital 'S' */
   | 'setAutoEmpty'
   | 'setRelocationState'
+  | 'getPos'
   | 'getSpeed'
   | 'getCleanCount'
   | 'getMajorMap'
   | 'getMinorMap'
   | 'getMapSet'
   | 'getMapSubSet'
+  | 'getMapTrace'
   | 'charge'
   | 'getMapInfo_v2'
   | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */
@@ -24,6 +26,7 @@ type BotCommandName =
   | 'getBattery';
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide';
+export type PosDevicesType = 'chargePos' | 'deebotPos';
 
 // CleanState
 export interface CleanState {
@@ -82,6 +85,7 @@ export type MapSubSetType = 'ar' | 'vw' | 'mw';
 // MapTracesList
 
 export interface MapTracesList {
+  isResponse: boolean;
   totalCount: number;
   newEntriesList: MapTrace[];
 }
@@ -98,5 +102,5 @@ export interface BatteryState {
 }
 export interface BotCommand {
   name: BotCommandName;
-  payload: {};
+  payload: {} | [];
 }

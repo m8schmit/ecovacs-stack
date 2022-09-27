@@ -128,7 +128,8 @@ const mqttClient = () => {
       }
     }
 
-    if (isTopic('onPos', topic)) {
+    /* onPos, getPos */
+    if (isTopic('Pos', topic)) {
       const res = getDatafromMessage(message);
       WSsocket?.emit('chargePos', res.chargePos);
       WSsocket?.emit('botPos', res.deebotPos);
@@ -137,8 +138,12 @@ const mqttClient = () => {
     if (isTopic('MapTrace', topic)) {
       const res = getDatafromMessage(message);
       const decodedTrace = await parseTracePoints(res.traceValue, res.traceStart);
-      console.log('decodedTrace', decodedTrace);
-      WSsocket?.emit('mapTrace', { newEntriesList: decodedTrace, totalCount: res.totalCount });
+      WSsocket?.emit('mapTrace', {
+        newEntriesList: decodedTrace,
+        totalCount: res.totalCount,
+        /* if this is a response to a getMapTrace, we increment the 'traceStart' value to ask the next 200 points */
+        isResponse: !!isTopic('getMapTrace', topic),
+      });
     }
 
     if (isTopic('MapSubSet', topic)) {
@@ -165,12 +170,10 @@ const mqttClient = () => {
   const handleSchedule = (topic: string, message: Buffer) => {
     if (isTopic('getSched_V2', topic) || isTopic('onSched_V2', topic)) {
       const res = getDatafromMessage(message);
-      console.log('getSched_V2 ', res);
       WSsocket?.emit('schedulesList', res);
     }
 
     if (isTopic('setSched_V2', topic)) {
-      console.log('setSched_V2 ');
       getSched_V2();
     }
   };

@@ -54,6 +54,7 @@ export interface ClientToServerEvents {
     enable: boolean;
     value?: string;
   }) => void;
+  getMapTrace: (traceStart: number) => void;
   delSched_V2: (params: { sid: string }) => void;
 }
 

@@ -95,6 +95,7 @@ export interface VacuumingOptionState {
 // mapTrace
 
 export interface MapTracesList {
+  updateIndex: number;
   totalCount: number;
   newEntriesList: MapTrace[];
 }

@@ -6,6 +6,8 @@ import {
   getCleanCount,
   getCleanInfo,
   getMajorMap,
+  getMapTrace,
+  getPos,
   getSched_V2,
   getSpeed,
 } from '../mqttClient/commands/commands.get';
@@ -32,6 +34,11 @@ const getBotStatus = () => {
   getCleanCount();
 };
 
+const getOneTimeBotStatus = () => {
+  getMapTrace(0);
+  getPos(['chargePos', 'deebotPos']);
+};
+
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 const websocketServer = () => {
   let count: number = 0;
@@ -49,6 +56,7 @@ const websocketServer = () => {
 
     //TODO stop these query when bot is busy, with relocate for example
     getBotStatus();
+    getOneTimeBotStatus();
     if (count) {
       getStatusInfoInterval = setInterval(() => {
         getBotStatus();
@@ -103,6 +111,13 @@ const websocketServer = () => {
 
     socket.on('delSched_V2', ({ sid }) => {
       delSched_V2(sid);
+    });
+
+    let wait = false;
+    socket.on('getMapTrace', (traceStart) => {
+      console.log('receive getMapTrace', traceStart);
+      !wait && getMapTrace(0);
+      wait = true;
     });
   });
 };

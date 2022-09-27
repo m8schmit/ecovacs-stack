@@ -22,7 +22,7 @@ const mqttsServer = (): Promise<Aedes> => {
       console.log(
         `MQTT client \x1b[32m${client ? client.id : client}\x1b[0m subscribed to topics:  \x1b[32m${subscriptions
           .map((s) => s.topic)
-          .join('\n')}\x1b[0m, from broker ${broker.id}`,
+          .join(', ')}\x1b[0m, from broker ${broker.id}`,
       );
 
       if (client.id === `${process.env.BOTID}@${process.env.BOTCLASS}/${process.env.RESOURCE}`) {

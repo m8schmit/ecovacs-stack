@@ -49,6 +49,7 @@ const initialState: VacuumState = {
   },
   mapSubsetsList: [],
   mapTracesList: {
+    updateIndex: 0,
     totalCount: 0,
     newEntriesList: [],
   },
@@ -163,6 +164,7 @@ export const vacuumSlice = createSlice({
     setMapTracesList: (state, action: PayloadAction<MapTracesList>) => ({
       ...state,
       mapTracesList: {
+        updateIndex: state.mapTracesList.updateIndex,
         totalCount: action.payload.totalCount,
         newEntriesList: [
           ...state.mapTracesList.newEntriesList.filter(
@@ -172,6 +174,14 @@ export const vacuumSlice = createSlice({
           ...action.payload.newEntriesList,
         ],
       },
+    }),
+    incrementMapTracesListUpdateIndex: (state) => ({
+      ...state,
+      mapTracesList: { ...state.mapTracesList, updateIndex: state.mapTracesList.updateIndex + 200 },
+    }),
+    resetMapTracesListUpdateIndex: (state) => ({
+      ...state,
+      mapTracesList: { ...state.mapTracesList, updateIndex: initialState.mapTracesList.updateIndex },
     }),
     setSchedulesList: (state, action: PayloadAction<RawSchedules[]>) => ({
       ...state,
@@ -203,6 +213,8 @@ export const {
   setAutoEmpty,
   setVacuumingOption,
   setMapTracesList,
+  incrementMapTracesListUpdateIndex,
+  resetMapTracesListUpdateIndex,
   setSchedulesList,
   setLocationState,
   onRelocateSuccess,

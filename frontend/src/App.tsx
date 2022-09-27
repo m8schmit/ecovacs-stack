@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
 import {
+  incrementMapTracesListUpdateIndex,
   onRelocateSuccess,
   setAutoEmpty,
   setChargeState,
@@ -90,8 +91,8 @@ const App = () => {
 
     socket &&
       socket.on('mapTrace', (payload) => {
-        console.log('receive mapTraces ', payload);
-        //TODO get the previous Traces on load during a cleaning, real app get them 200 by 200
+        console.log('receive mapTrace: ', payload);
+        payload.isReponse && dispatch(incrementMapTracesListUpdateIndex());
         dispatch(setMapTracesList(payload));
       });
   }, [socket]);
