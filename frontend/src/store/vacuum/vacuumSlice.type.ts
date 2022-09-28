@@ -58,3 +58,8 @@ export interface VacuumingOptionState {
   speed: number;
   count: number;
 }
+
+export interface MoppingOptionsState {
+  amount: number;
+  sweepType: number;
+}

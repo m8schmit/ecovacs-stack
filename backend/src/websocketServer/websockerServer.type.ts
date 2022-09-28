@@ -56,6 +56,7 @@ export interface ClientToServerEvents {
   }) => void;
   getMapTrace: (traceStart: number) => void;
   delSched_V2: (params: { sid: string }) => void;
+  emptyDustBin: () => void;
 }
 
 export interface InterServerEvents {

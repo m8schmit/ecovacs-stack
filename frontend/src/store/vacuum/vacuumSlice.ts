@@ -1,8 +1,16 @@
+import { StaticDatePicker } from '@mui/x-date-pickers';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
 import { RawSchedules, Schedules } from './commands.schedules.type';
-import { AutoEmptyState, BatteryState, ChargeState, CleanState, VacuumingOptionState } from './vacuumSlice.type';
+import {
+  AutoEmptyState,
+  BatteryState,
+  ChargeState,
+  CleanState,
+  MoppingOptionsState,
+  VacuumingOptionState,
+} from './vacuumSlice.type';
 
 interface VacuumState {
   battery: BatteryState;
@@ -11,6 +19,7 @@ interface VacuumState {
   autoEmpty: AutoEmptyState;
   vacuumingOption: VacuumingOptionState;
   schedulesList: Schedules[];
+  moppingOptions: MoppingOptionsState;
 }
 
 const initialState: VacuumState = {
@@ -32,6 +41,10 @@ const initialState: VacuumState = {
   vacuumingOption: {
     speed: 0,
     count: 1,
+  },
+  moppingOptions: {
+    amount: 1,
+    sweepType: 1,
   },
   schedulesList: [],
 };
@@ -68,6 +81,13 @@ export const vacuumSlice = createSlice({
         ...action.payload,
       },
     }),
+    setMoppingOption: (state, action: PayloadAction<Partial<MoppingOptionsState>>) => ({
+      ...state,
+      moppingOptions: {
+        ...state.moppingOptions,
+        ...action.payload,
+      },
+    }),
     setSchedulesList: (state, action: PayloadAction<RawSchedules[]>) => ({
       ...state,
       schedulesList: action.payload.map((current) => ({
@@ -87,4 +107,5 @@ export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.batt
 export const getChargeState = () => useAppSelector(({ vacuum }) => vacuum.chargeState);
 export const getAutoEmptyState = () => useAppSelector(({ vacuum }) => vacuum.autoEmpty);
 export const getVacuumingOption = () => useAppSelector(({ vacuum }) => vacuum.vacuumingOption);
+export const getMoppingOption = () => useAppSelector(({ vacuum }) => vacuum.moppingOptions);
 export const geSchedulesList = () => useAppSelector(({ vacuum }) => vacuum.schedulesList);

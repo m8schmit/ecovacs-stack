@@ -65,7 +65,7 @@ const mqttClient = () => {
       WSsocket?.emit('cleanCount', res);
     }
 
-    if (isTopic('AutoEmpty', topic)) {
+    if (isTopic('onAutoEmpty', topic)) {
       const res = getDatafromMessage(message);
       console.log('autoEmpty ', inspect(res, false, null, true));
       //not sure, I receive 0, 1, 2 and 5

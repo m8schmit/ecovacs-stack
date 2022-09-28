@@ -2,6 +2,8 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 
 import Battery from '../../components/Battery/Battery';
 import CleanState from '../../components/CleanState/CleanState';
+import EmptyDustBin from '../../components/EmptyDustBin/EmptyDustBin';
+import MopOptions from '../../components/MopOptions/MopOptions';
 import Relocate from '../../components/Relocate/Relocate';
 import { Schedules } from '../../components/Schedules/Schedules';
 import VacuumMap from '../../components/VacuumMap/VacuumMap';
@@ -23,13 +25,19 @@ const Dashboard = () => {
           <Box sx={{ overflow: 'auto', maxHeight: `calc(100vh - 72px)` }}>
             <Typography variant="overline">Controls</Typography>
             <CleanState />
-            <Relocate />
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              <Relocate
+                sx={{
+                  flex: 1,
+                  marginRight: theme.typography.pxToRem(10),
+                }}
+              />
+              <EmptyDustBin sx={{ flex: 1 }} />
+            </Box>
             <Typography variant="overline">Vacuuming Options</Typography>
             <VacuumOptions />
-            <Box>
-              <Typography variant="overline">Mopping Options</Typography>
-              TODO
-            </Box>
+            <Typography variant="overline">Mopping Options</Typography>
+            <MopOptions />
             <Typography variant="overline">Schedules</Typography>
             <Schedules />
           </Box>

@@ -1,15 +1,19 @@
-import { Box } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
+import { padding, border, borderRadius } from '@mui/system';
 import { FC, ReactNode } from 'react';
 import theme from '../../../theme';
 
 interface OptionsFrameProps {
+  sx?: SxProps<Theme> | undefined;
+
   children: ReactNode;
 }
 
-export const OptionsFrame: FC<OptionsFrameProps> = ({ children }) => {
+export const OptionsFrame: FC<OptionsFrameProps> = ({ sx, children }) => {
   return (
     <Box
       sx={{
+        ...sx,
         padding: theme.typography.pxToRem(10),
         border: `solid thin ${theme.palette.grey[300]}`,
         borderRadius: theme.typography.pxToRem(5),

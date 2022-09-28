@@ -45,10 +45,9 @@ export const setSpeed = (value: number) => {
   sendJSONCommand(command, client);
 };
 
-export const setAutoEmpty = () => {
+export const EmptyDustBin = () => {
   let command: BotCommand = {
     name: 'setAutoEmpty',
-    // payload: {enable: 1},
     payload: { act: 'start' },
   };
   sendJSONCommand(command, client);
@@ -58,7 +57,6 @@ export const editAutoEmpty = (enable: number) => {
   let command: BotCommand = {
     name: 'setAutoEmpty',
     payload: { enable },
-    // payload: { act: 'start' },
   };
   sendJSONCommand(command, client);
 };

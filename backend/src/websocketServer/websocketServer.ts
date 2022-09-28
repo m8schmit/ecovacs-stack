@@ -18,6 +18,7 @@ import {
   clean,
   delSched_V2,
   editSched_V2,
+  EmptyDustBin,
   setCleanCount,
   setRelocationState,
   setSpeed,
@@ -115,6 +116,9 @@ const websocketServer = () => {
       delSched_V2(sid);
     });
 
+    socket.on('emptyDustBin', () => {
+      EmptyDustBin();
+    });
     socket.on('getMapTrace', (traceStart) => {
       console.log('receive getMapTrace', traceStart);
       getMapTrace(traceStart);
