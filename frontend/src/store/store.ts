@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { dialogSlice } from './dialog/dialogSlice';
+import { mapSlice } from './vacuum/mapSlice';
 import { vacuumSlice } from './vacuum/vacuumSlice';
 
 const rootReducer = combineReducers({
   vacuum: vacuumSlice.reducer,
+  map: mapSlice.reducer,
   dialog: dialogSlice.reducer,
 });
 

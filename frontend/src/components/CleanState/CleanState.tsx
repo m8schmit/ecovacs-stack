@@ -3,13 +3,8 @@ import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/mate
 import { useContext } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
-import {
-  getAutoEmptyState,
-  getChargeState,
-  getSelectedRoomsList,
-  getVacuumClean,
-  resetSelectedRoomsList,
-} from '../../store/vacuum/vacuumSlice';
+import { getSelectedRoomsList, resetMapTracesList, resetSelectedRoomsList } from '../../store/vacuum/mapSlice';
+import { getAutoEmptyState, getChargeState, getVacuumClean } from '../../store/vacuum/vacuumSlice';
 import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { isCleanStateContent, isString } from '../../utils/typeguard.utils';
@@ -47,6 +42,7 @@ const CleanState = () => {
     console.log('switchCleanState', status);
     const newTask = getCleanTask();
     console.log('[switch] emit clean with ', newTask);
+    newTask.act === 'start' && dispatch(resetMapTracesList());
     socket.emit('clean', newTask);
   };
 

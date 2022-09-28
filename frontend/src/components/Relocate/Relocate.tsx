@@ -3,7 +3,7 @@ import { Button, CircularProgress, Typography } from '@mui/material';
 import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
-import { getLocationState, setLocationState } from '../../store/vacuum/vacuumSlice';
+import { getLocationState, setLocationState } from '../../store/vacuum/mapSlice';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
 

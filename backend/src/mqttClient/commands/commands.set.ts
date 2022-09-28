@@ -54,6 +54,14 @@ export const setAutoEmpty = () => {
   sendJSONCommand(command, client);
 };
 
+export const editAutoEmpty = (enable: number) => {
+  let command: BotCommand = {
+    name: 'setAutoEmpty',
+    payload: { enable },
+    // payload: { act: 'start' },
+  };
+  sendJSONCommand(command, client);
+};
 export const setCleanCount = (value: number) => {
   const command: BotCommand = {
     name: 'setCleanCount',

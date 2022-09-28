@@ -7,19 +7,22 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
 import {
-  incrementMapTracesListUpdateIndex,
-  onRelocateSuccess,
-  setAutoEmpty,
-  setChargeState,
-  setMapSubsetsList,
-  setMapTracesList,
-  setSchedulesList,
-  setVacuumBattery,
-  setVacuumingOption,
   setVacuumMap,
   setVacuumPos,
+  setMapSubsetsList,
+  onRelocateSuccess,
+  incrementMapTracesListUpdateIndex,
+  setMapTracesList,
+} from './store/vacuum/mapSlice';
+import {
+  setVacuumBattery,
   setVacuumState,
+  setChargeState,
+  setVacuumingOption,
+  setAutoEmpty,
+  setSchedulesList,
 } from './store/vacuum/vacuumSlice';
+
 import { WebSocketContext } from './utils/socket.utils';
 
 const App = () => {

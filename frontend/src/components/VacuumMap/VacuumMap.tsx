@@ -26,7 +26,7 @@ import {
   getVacuumPos,
   resetMapTracesListUpdateIndex,
   updateSelectedRoomsList,
-} from '../../store/vacuum/vacuumSlice';
+} from '../../store/vacuum/mapSlice';
 import getRandomColor from '../../utils/colors.utils';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { getAngle } from './Map.utils';

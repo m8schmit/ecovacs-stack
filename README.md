@@ -117,6 +117,7 @@ to send status update.
 | ??                                          | `1015`  |
 | change the mop reminded                     | `1052`  |
 | HandleDealMsg_setSched_packageSchedule fail | `20011` |
+| get pointCount outof range                  | `2001`  |
 
 App subscribe to these channel, but it's not a complete list, `onRosNodeReady` or `onFwBuryPoint`are missing.
 The initial `onMajorMap` and `onRosNodeReady` seems to be triggered by the binary script (`dln_drawer`) sended to bot.
