@@ -26,6 +26,7 @@ export interface ServerToClientEvents {
   cleanCount: (value: number) => void;
   schedulesList: (schedulesList: Schedules[]) => void;
   relocateSuccess: () => void;
+  waterInfo: (params: { enable: boolean; amount: number; sweepType: number }) => void;
 }
 
 export interface ClientToServerEvents {
@@ -57,6 +58,7 @@ export interface ClientToServerEvents {
   getMapTrace: (traceStart: number) => void;
   delSched_V2: (params: { sid: string }) => void;
   emptyDustBin: () => void;
+  setWaterInfo: (params: { amount?: number; sweepType?: number }) => void;
 }
 
 export interface InterServerEvents {

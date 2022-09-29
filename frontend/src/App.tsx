@@ -21,6 +21,7 @@ import {
   setVacuumingOption,
   setAutoEmpty,
   setSchedulesList,
+  setMoppingOption,
 } from './store/vacuum/vacuumSlice';
 
 import { WebSocketContext } from './utils/socket.utils';
@@ -89,6 +90,8 @@ const App = () => {
     socket && socket.on('autoEmpty', (payload) => dispatch(setAutoEmpty(payload)));
 
     socket && socket.on('schedulesList', (payload) => dispatch(setSchedulesList(payload)));
+
+    socket && socket.on('waterInfo', (payload) => dispatch(setMoppingOption(payload)));
 
     socket && socket.on('relocateSuccess', () => dispatch(onRelocateSuccess()));
 

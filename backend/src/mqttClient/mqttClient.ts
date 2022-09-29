@@ -2,7 +2,14 @@ import { connect, MqttClient } from 'mqtt';
 import { inspect } from 'node:util';
 
 import { WSsocket } from '../websocketServer/websocketServer';
-import { getMapInfo_v2, getMapSet, getMapSubSet, getMinorMap, getSched_V2 } from './commands/commands.get';
+import {
+  getMapInfo_v2,
+  getMapSet,
+  getMapSubSet,
+  getMinorMap,
+  getSched_V2,
+  getWaterInfo,
+} from './commands/commands.get';
 import { RELOCATE_SUCCESS_EVENT } from './commands/event.type';
 import { decompressLZMA } from './map/LZMA.utils';
 import { parseTracePoints, VacuumMap } from './map/map';
@@ -39,6 +46,8 @@ const mqttClient = () => {
     handleMap(topic, message);
 
     handleSchedule(topic, message);
+
+    handleWaterInfo(topic, message);
 
     if (isTopic('Battery', topic)) {
       const res = getDatafromMessage(message);
@@ -175,6 +184,23 @@ const mqttClient = () => {
 
     if (isTopic('setSched_V2', topic)) {
       getSched_V2();
+    }
+  };
+
+  const handleWaterInfo = (topic: string, message: Buffer) => {
+    if (isTopic('WaterInfo', topic) && !isTopic('setWaterInfo', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('WaterInfo ', inspect(res, false, null, true));
+      WSsocket?.emit('waterInfo', { enable: !!res.enable, amount: res.amount, sweepType: res.sweepType });
+      // When mop is plugged
+      // { enable: 1, amount: 3, type: 2, sweepType: 2 }
+      // When mop is not plugged
+      // { enable: 0, amount: 3, type: 0, sweepType: 2 }
+      // Type 1 is the ozmo v1?
+    }
+
+    if (isTopic('setWaterInfo', topic)) {
+      getWaterInfo();
     }
   };
 

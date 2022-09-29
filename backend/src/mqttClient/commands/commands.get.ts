@@ -1,7 +1,7 @@
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { get16LengthId, makeId } from '../text.utils';
-import { BotCommand, MapSubSetType, PosDevicesType } from './commands.type';
+import { BotCommand, BotCommandName, MapSubSetType, PosDevicesType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const getMajorMap = () => {
@@ -131,6 +131,22 @@ export const getAutoEmpty = () => {
   let command: BotCommand = {
     name: 'getAutoEmpty',
     payload: {},
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getWaterInfo = () => {
+  let command: BotCommand = {
+    name: 'getWaterInfo',
+    payload: {},
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getInfo = (commandsList: BotCommandName[]) => {
+  let command: BotCommand = {
+    name: 'getInfo',
+    payload: commandsList,
   };
   sendJSONCommand(command, client);
 };

@@ -6,11 +6,13 @@ import {
   GetChargeState,
   getCleanCount,
   getCleanInfo,
+  getInfo,
   getMajorMap,
   getMapTrace,
   getPos,
   getSched_V2,
   getSpeed,
+  getWaterInfo,
 } from '../mqttClient/commands/commands.get';
 import {
   addSched_V2,
@@ -22,18 +24,27 @@ import {
   setCleanCount,
   setRelocationState,
   setSpeed,
+  setWaterInfo,
 } from '../mqttClient/commands/commands.set';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
 
 const intervalDuration = 60000;
 let getStatusInfoInterval: NodeJS.Timer;
 
+// TODO add the same query as the app :
+// [getSleep","getError","getSpeed","getCleanCount","getDModule","getCleanPreference","getWaterInfo","getBlock","getBreakPoint","getVoice","getVolume"]
+// then getSleep","getError","getSpeed","getCleanCount","getDModule","getCleanPreference","getWaterInfo","getBlock","getBreakPoint","getVoice","getVolume"
+// or getInfo ["getRecognization","getMapState","getBattery","getChargeState","getStats"]
 const getBotStatus = () => {
   getCleanInfo();
   GetChargeState();
   getBattery();
   getSpeed();
   getCleanCount();
+  getWaterInfo();
+
+  // TODO use GetInFO instead to limit the traffic on the channels
+  // getInfo(['getRecognization']);
 };
 
 const getOneTimeBotStatus = () => {
@@ -122,6 +133,11 @@ const websocketServer = () => {
     socket.on('getMapTrace', (traceStart) => {
       console.log('receive getMapTrace', traceStart);
       getMapTrace(traceStart);
+    });
+
+    socket.on('setWaterInfo', (payload) => {
+      console.log('receive setWaterInfo', payload);
+      setWaterInfo(payload);
     });
   });
 };

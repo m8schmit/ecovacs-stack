@@ -1,6 +1,6 @@
 import { MapTrace } from '../map/map.model';
 
-type BotCommandName =
+export type BotCommandName =
   | 'playSound'
   | 'clean_V2'
   | 'setSpeed'
@@ -8,6 +8,7 @@ type BotCommandName =
   | 'setCleanCount'
   | 'SetTime' /* yes with a capital 'S' */
   | 'setAutoEmpty'
+  | 'setWaterInfo'
   | 'getAutoEmpty'
   | 'setRelocationState'
   | 'getPos'
@@ -18,6 +19,9 @@ type BotCommandName =
   | 'getMapSet'
   | 'getMapSubSet'
   | 'getMapTrace'
+  | 'getWaterInfo'
+  | 'getInfo'
+  | 'getRecognization' /* not sure yet seems to be the type of object it recognize? */
   | 'charge'
   | 'getMapInfo_v2'
   | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */

@@ -59,6 +59,7 @@ export const Schedules = () => {
 
   return (
     <>
+      <Typography variant="overline">Schedules</Typography>
       <OptionsFrame>
         <Box sx={{ display: 'flex', mb: 1, flexDirection: 'column' }}>
           {ScheduleList.map((currentSchedule) => (

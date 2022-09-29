@@ -23,7 +23,6 @@ const Dashboard = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Box sx={{ overflow: 'auto', maxHeight: `calc(100vh - 72px)` }}>
-            <Typography variant="overline">Controls</Typography>
             <CleanState />
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
               <Relocate
@@ -34,11 +33,8 @@ const Dashboard = () => {
               />
               <EmptyDustBin sx={{ flex: 1 }} />
             </Box>
-            <Typography variant="overline">Vacuuming Options</Typography>
             <VacuumOptions />
-            <Typography variant="overline">Mopping Options</Typography>
             <MopOptions />
-            <Typography variant="overline">Schedules</Typography>
             <Schedules />
           </Box>
         </Grid>

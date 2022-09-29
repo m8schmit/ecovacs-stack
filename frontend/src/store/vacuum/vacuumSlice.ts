@@ -43,6 +43,7 @@ const initialState: VacuumState = {
     count: 1,
   },
   moppingOptions: {
+    enable: false,
     amount: 1,
     sweepType: 1,
   },
@@ -99,8 +100,15 @@ export const vacuumSlice = createSlice({
   },
 });
 
-export const { setVacuumState, setVacuumBattery, setChargeState, setAutoEmpty, setSchedulesList, setVacuumingOption } =
-  vacuumSlice.actions;
+export const {
+  setVacuumState,
+  setVacuumBattery,
+  setChargeState,
+  setAutoEmpty,
+  setSchedulesList,
+  setVacuumingOption,
+  setMoppingOption,
+} = vacuumSlice.actions;
 
 export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.status);
 export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.battery);

@@ -9,7 +9,7 @@ const WaterFlow = () => {
   const { amount } = getMoppingOption();
   const handleChange = (_: ChangeEvent<HTMLInputElement>, value: string) => {
     console.log(value);
-    socket.emit('setWaterFlow', +value);
+    socket.emit('setWaterInfo', { amount: +value });
   };
 
   return (

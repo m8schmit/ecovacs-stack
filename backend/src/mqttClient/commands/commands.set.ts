@@ -68,6 +68,14 @@ export const setCleanCount = (value: number) => {
   sendJSONCommand(command, client);
 };
 
+export const setWaterInfo = (value: { amount?: number; sweepType?: number }) => {
+  const command: BotCommand = {
+    name: 'setWaterInfo',
+    payload: { ...value, bdTaskID: get16LengthId() },
+  };
+  sendJSONCommand(command, client);
+};
+
 export const setRelocationState = () => {
   const command: BotCommand = {
     name: 'setRelocationState',

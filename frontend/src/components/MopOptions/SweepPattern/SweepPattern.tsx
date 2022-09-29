@@ -11,7 +11,7 @@ const SweepPattern = () => {
   const { sweepType } = getMoppingOption();
   const handleChange = (_: ChangeEvent<HTMLInputElement>, value: string) => {
     console.log(value);
-    socket.emit('setWaterFlow', +value);
+    socket.emit('setWaterInfo', { sweepType: +value });
   };
   return (
     <FormControl>

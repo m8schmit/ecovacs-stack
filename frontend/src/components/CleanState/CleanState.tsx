@@ -81,38 +81,42 @@ const CleanState = () => {
   };
 
   return (
-    <OptionsFrame>
-      <Typography>currently: {getTextState()}</Typography>
-      {status.state === 'idle' && (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography>
-            start an <b>{selectedRoomsList.length <= 0 ? 'auto' : 'spotArea'}</b> cleaning
-            {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
-          </Typography>
-          {selectedRoomsList.length > 0 && (
-            <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
-              reset
-            </Button>
-          )}
-        </Box>
-      )}
-      <IconButton
-        size="large"
-        color="primary"
-        disabled={status.state === 'idle' || autoEmptyActive}
-        onClick={() => reset()}
-      >
-        <Stop />
-      </IconButton>
-      <IconButton size="large" color="primary" onClick={() => switchCleanState()} disabled={autoEmptyActive}>
-        {(status?.cleanState?.motionState === 'working' ||
-          (status.state === 'goCharging' && status?.cleanState?.motionState !== 'pause')) && <Pause />}
-        {(status?.cleanState?.motionState === 'pause' || status.state === 'idle') && <PlayArrow />}
-      </IconButton>
-      <IconButton size="large" color="primary" disabled={isCharging || autoEmptyActive} onClick={() => goCharging()}>
-        <Bolt />
-      </IconButton>
-    </OptionsFrame>
+    <>
+      <Typography variant="overline">Controls</Typography>
+
+      <OptionsFrame>
+        <Typography>currently: {getTextState()}</Typography>
+        {status.state === 'idle' && (
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography>
+              start an <b>{selectedRoomsList.length <= 0 ? 'auto' : 'spotArea'}</b> cleaning
+              {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
+            </Typography>
+            {selectedRoomsList.length > 0 && (
+              <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
+                reset
+              </Button>
+            )}
+          </Box>
+        )}
+        <IconButton
+          size="large"
+          color="primary"
+          disabled={status.state === 'idle' || autoEmptyActive}
+          onClick={() => reset()}
+        >
+          <Stop />
+        </IconButton>
+        <IconButton size="large" color="primary" onClick={() => switchCleanState()} disabled={autoEmptyActive}>
+          {(status?.cleanState?.motionState === 'working' ||
+            (status.state === 'goCharging' && status?.cleanState?.motionState !== 'pause')) && <Pause />}
+          {(status?.cleanState?.motionState === 'pause' || status.state === 'idle') && <PlayArrow />}
+        </IconButton>
+        <IconButton size="large" color="primary" disabled={isCharging || autoEmptyActive} onClick={() => goCharging()}>
+          <Bolt />
+        </IconButton>
+      </OptionsFrame>
+    </>
   );
 };
 

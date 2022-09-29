@@ -60,6 +60,7 @@ export interface VacuumingOptionState {
 }
 
 export interface MoppingOptionsState {
+  enable: boolean;
   amount: number;
   sweepType: number;
 }
