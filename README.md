@@ -20,13 +20,15 @@ address=/ecovacs.net/your-local-ip-here
 address=/aliyuncs.com/your-local-ip-here
 ```
 
-- make a copy of the `.env.example` file to `.env` and add you Vacuum bot `id`, `class` and `ressources` .
+- In the `backend` folder make a copy of the `.env.example` file to `.env` and add you Vacuum bot `id`, `class` and `ressources`, and local `ip` .
+
+- In the `frontend` folder make a copy of the `.env.example` file to `.env` and add your local `ip` .
 
 - run `docker-compose up`, you should be able to access to `http://localhost:4200/`
 
 - restart your vacuum bot, it should connect to the MQTTs server and you should see something like:
 
-![alt text](2022-09-11_17-04.png 'Title')
+![alt text](2022-09-29_08-51.png 'Title')
 
 ## Topics
 
