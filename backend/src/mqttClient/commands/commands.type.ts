@@ -20,6 +20,9 @@ export type BotCommandName =
   | 'getMapSubSet'
   | 'getMapTrace'
   | 'getWaterInfo'
+  | 'getCleanPreference'
+  | 'getBreakPoint'
+  | 'getBlock'
   | 'getInfo'
   | 'getRecognization' /* not sure yet seems to be the type of object it recognize? */
   | 'charge'
@@ -28,7 +31,8 @@ export type BotCommandName =
   | 'getChargeState'
   | 'getSched_V2'
   | 'setSched_V2'
-  | 'getBattery';
+  | 'getBattery'
+  | 'getVolume';
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide';
 export type PosDevicesType = 'chargePos' | 'deebotPos';

@@ -102,6 +102,11 @@ const mqttClient = () => {
         WSsocket?.emit('relocateSuccess');
       }
     }
+
+    if (isTopic('getInfo', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('getInfo ', inspect(res, false, null, true));
+    }
   });
 
   const handleMap = async (topic: string, message: Buffer) => {
@@ -190,13 +195,7 @@ const mqttClient = () => {
   const handleWaterInfo = (topic: string, message: Buffer) => {
     if (isTopic('WaterInfo', topic) && !isTopic('setWaterInfo', topic)) {
       const res = getDatafromMessage(message);
-      console.log('WaterInfo ', inspect(res, false, null, true));
       WSsocket?.emit('waterInfo', { enable: !!res.enable, amount: res.amount, sweepType: res.sweepType });
-      // When mop is plugged
-      // { enable: 1, amount: 3, type: 2, sweepType: 2 }
-      // When mop is not plugged
-      // { enable: 0, amount: 3, type: 0, sweepType: 2 }
-      // Type 1 is the ozmo v1?
     }
 
     if (isTopic('setWaterInfo', topic)) {

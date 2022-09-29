@@ -44,7 +44,7 @@ const getBotStatus = () => {
   getWaterInfo();
 
   // TODO use GetInFO instead to limit the traffic on the channels
-  // getInfo(['getRecognization']);
+  getInfo(['getCleanPreference', 'getBlock', 'getBreakPoint', 'getVolume']);
 };
 
 const getOneTimeBotStatus = () => {
@@ -131,12 +131,10 @@ const websocketServer = () => {
       EmptyDustBin();
     });
     socket.on('getMapTrace', (traceStart) => {
-      console.log('receive getMapTrace', traceStart);
       getMapTrace(traceStart);
     });
 
     socket.on('setWaterInfo', (payload) => {
-      console.log('receive setWaterInfo', payload);
       setWaterInfo(payload);
     });
   });
