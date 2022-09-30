@@ -1,6 +1,6 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { useContext, ChangeEvent } from 'react';
-import { getMoppingOption } from '../../../store/vacuum/vacuumSlice';
+import { getMoppingOption } from '../../../store/vacuum/stateSlice';
 import { WebSocketContext } from '../../../utils/socket.utils';
 
 const WaterFlow = () => {

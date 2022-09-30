@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
 import { getSelectedRoomsList, resetMapTracesList, resetSelectedRoomsList } from '../../store/vacuum/mapSlice';
-import { getAutoEmptyState, getChargeState, getVacuumClean } from '../../store/vacuum/vacuumSlice';
+import { getAutoEmptyState, getChargeState, getVacuumClean } from '../../store/vacuum/stateSlice';
 import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { isCleanStateContent, isString } from '../../utils/typeguard.utils';

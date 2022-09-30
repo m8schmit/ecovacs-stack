@@ -1,7 +1,7 @@
 import { Repeat, Route } from '@mui/icons-material';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Typography } from '@mui/material';
 import { useContext, ChangeEvent } from 'react';
-import { getMoppingOption } from '../../../store/vacuum/vacuumSlice';
+import { getMoppingOption } from '../../../store/vacuum/stateSlice';
 import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
 

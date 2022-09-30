@@ -4,14 +4,6 @@ import { get16LengthId, makeId } from '../text.utils';
 import { BotCommand, BotCommandName, MapSubSetType, PosDevicesType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
-export const getMajorMap = () => {
-  const command: BotCommand = {
-    name: 'getMajorMap',
-    payload: {},
-  };
-  sendJSONCommand(command, client);
-};
-
 export const getMapSet = (mid: string) => {
   const command: BotCommand = {
     name: 'getMapSet',
@@ -71,46 +63,6 @@ export const getMinorMap = (pieceID: number, { mid, type }: MajorMap) => {
   sendJSONCommand(command, client);
 };
 
-export const getCleanInfo = () => {
-  const command: BotCommand = {
-    name: 'getCleanInfo',
-    payload: { id: makeId(8) },
-  };
-  sendJSONCommand(command, client);
-};
-
-export const GetChargeState = () => {
-  const command: BotCommand = {
-    name: 'getChargeState',
-    payload: { id: makeId(8) },
-  };
-  sendJSONCommand(command, client);
-};
-
-export const getBattery = () => {
-  const command: BotCommand = {
-    name: 'getBattery',
-    payload: { id: makeId(8) },
-  };
-  sendJSONCommand(command, client);
-};
-
-export const getSpeed = () => {
-  const command: BotCommand = {
-    name: 'getSpeed',
-    payload: { id: makeId(8) },
-  };
-  sendJSONCommand(command, client);
-};
-
-export const getCleanCount = () => {
-  const command: BotCommand = {
-    name: 'getCleanCount',
-    payload: { id: makeId(8) },
-  };
-  sendJSONCommand(command, client);
-};
-
 export const getSched_V2 = () => {
   const command: BotCommand = {
     name: 'getSched_V2',
@@ -127,26 +79,18 @@ export const getPos = (posDevices: PosDevicesType[]) => {
   sendJSONCommand(command, client);
 };
 
-export const getAutoEmpty = () => {
-  let command: BotCommand = {
-    name: 'getAutoEmpty',
-    payload: {},
+export const getSingleInfo = (commandsName: BotCommandName) => {
+  const command: BotCommand = {
+    name: commandsName,
+    payload: { id: makeId(8) },
   };
   sendJSONCommand(command, client);
 };
 
-export const getWaterInfo = () => {
-  let command: BotCommand = {
-    name: 'getWaterInfo',
-    payload: {},
-  };
-  sendJSONCommand(command, client);
-};
-
-export const getInfo = (commandsList: BotCommandName[]) => {
+export const getInfo = (commandsNameList: BotCommandName[]) => {
   let command: BotCommand = {
     name: 'getInfo',
-    payload: commandsList,
+    payload: commandsNameList,
   };
   sendJSONCommand(command, client);
 };

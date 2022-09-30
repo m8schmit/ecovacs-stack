@@ -7,7 +7,7 @@ import { showDialog, showEditDialog } from '../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { Schedules as SchedulesType } from '../../store/vacuum/commands.schedules.type';
 import { getVacuumMap } from '../../store/vacuum/mapSlice';
-import { geSchedulesList } from '../../store/vacuum/vacuumSlice';
+import { geSchedulesList } from '../../store/vacuum/stateSlice';
 import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';

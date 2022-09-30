@@ -8,7 +8,7 @@ import {
   getMapSubSet,
   getMinorMap,
   getSched_V2,
-  getWaterInfo,
+  getSingleInfo,
 } from './commands/commands.get';
 import { RELOCATE_SUCCESS_EVENT } from './commands/event.type';
 import { decompressLZMA } from './map/LZMA.utils';
@@ -74,6 +74,11 @@ const mqttClient = () => {
       WSsocket?.emit('cleanCount', res);
     }
 
+    if (isTopic('Block', topic) && !isTopic('setBlock', topic)) {
+      const res = getDatafromMessage(message);
+      WSsocket?.emit('doNotDisturb', { ...res, enable: res.enable === 1 });
+    }
+
     if (isTopic('onAutoEmpty', topic)) {
       const res = getDatafromMessage(message);
       console.log('autoEmpty ', inspect(res, false, null, true));
@@ -103,9 +108,33 @@ const mqttClient = () => {
       }
     }
 
+    /* Maybe find a better way to avoid code repetition */
     if (isTopic('getInfo', topic)) {
       const res = getDatafromMessage(message);
       console.log('getInfo ', inspect(res, false, null, true));
+      Object.keys(res).forEach((key) => {
+        switch (key) {
+          case 'getCleanInfo':
+            WSsocket?.emit('status', { state: res[key].data.state, cleanState: res[key].data.cleanState });
+
+          case 'getChargeState':
+            WSsocket?.emit('chargeState', res[key].data);
+          case 'getBattery':
+            WSsocket?.emit('batteryLevel', res[key].data);
+          case 'getSpeed':
+            WSsocket?.emit('speed', res[key].data);
+
+          case 'getCleanCount':
+            WSsocket?.emit('cleanCount', res[key].data);
+
+          case 'getWaterInfo':
+            WSsocket?.emit('waterInfo', {
+              enable: !!res[key].data.enable,
+              amount: res[key].data.amount,
+              sweepType: res[key].data.sweepType,
+            });
+        }
+      });
     }
   });
 
@@ -199,7 +228,7 @@ const mqttClient = () => {
     }
 
     if (isTopic('setWaterInfo', topic)) {
-      getWaterInfo();
+      getSingleInfo('getWaterInfo');
     }
   };
 

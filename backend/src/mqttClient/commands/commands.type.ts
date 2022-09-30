@@ -1,38 +1,43 @@
 import { MapTrace } from '../map/map.model';
 
 export type BotCommandName =
-  | 'playSound'
+  | 'charge'
   | 'clean_V2'
-  | 'setSpeed'
-  | 'shell'
-  | 'setCleanCount'
-  | 'SetTime' /* yes with a capital 'S' */
-  | 'setAutoEmpty'
-  | 'setWaterInfo'
   | 'getAutoEmpty'
-  | 'setRelocationState'
-  | 'getPos'
-  | 'getSpeed'
+  | 'getBattery'
+  | 'getBlock'
+  | 'getBreakPoint'
+  | 'getChargeState'
   | 'getCleanCount'
+  | 'getCleanInfo'
+  | 'getCleanPreference'
+  | 'getDModule'
+  | 'getError'
+  | 'getInfo'
   | 'getMajorMap'
-  | 'getMinorMap'
+  | 'getMapInfo_v2'
   | 'getMapSet'
+  | 'getMapState'
   | 'getMapSubSet'
   | 'getMapTrace'
-  | 'getWaterInfo'
-  | 'getCleanPreference'
-  | 'getBreakPoint'
-  | 'getBlock'
-  | 'getInfo'
-  | 'getRecognization' /* not sure yet seems to be the type of object it recognize? */
-  | 'charge'
-  | 'getMapInfo_v2'
-  | 'getCleanInfo' /* there a V2, but it only seems triggered by the bot though 'onCleanInfo_V2 */
-  | 'getChargeState'
+  | 'getMinorMap'
+  | 'getPos'
+  | 'getRecognization'
   | 'getSched_V2'
+  | 'getSpeed'
+  | 'getStats'
+  | 'getVoice'
+  | 'getVolume'
+  | 'getWaterInfo'
+  | 'playSound'
+  | 'setAutoEmpty'
+  | 'setCleanCount'
+  | 'setRelocationState'
   | 'setSched_V2'
-  | 'getBattery'
-  | 'getVolume';
+  | 'setSpeed'
+  | 'SetTime' /* keep the uppercase S */
+  | 'setWaterInfo'
+  | 'shell';
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide';
 export type PosDevicesType = 'chargePos' | 'deebotPos';

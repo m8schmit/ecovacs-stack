@@ -1,6 +1,6 @@
 import { Aedes, Client, Server, Subscription } from 'aedes';
 
-import { setTime } from './mqttClient/commands/commands.special';
+import { execShellScript, setTime } from './mqttClient/commands/commands.special';
 import { options } from './server.utils';
 
 const mqttsServer = (): Promise<Aedes> => {

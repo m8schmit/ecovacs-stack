@@ -1,19 +1,6 @@
 import { Server, Socket } from 'socket.io';
 
-import {
-  getAutoEmpty,
-  getBattery,
-  GetChargeState,
-  getCleanCount,
-  getCleanInfo,
-  getInfo,
-  getMajorMap,
-  getMapTrace,
-  getPos,
-  getSched_V2,
-  getSpeed,
-  getWaterInfo,
-} from '../mqttClient/commands/commands.get';
+import { getInfo, getMapTrace, getPos, getSched_V2, getSingleInfo } from '../mqttClient/commands/commands.get';
 import {
   addSched_V2,
   charge,
@@ -36,21 +23,14 @@ let getStatusInfoInterval: NodeJS.Timer;
 // then getSleep","getError","getSpeed","getCleanCount","getDModule","getCleanPreference","getWaterInfo","getBlock","getBreakPoint","getVoice","getVolume"
 // or getInfo ["getRecognization","getMapState","getBattery","getChargeState","getStats"]
 const getBotStatus = () => {
-  getCleanInfo();
-  GetChargeState();
-  getBattery();
-  getSpeed();
-  getCleanCount();
-  getWaterInfo();
-
-  // TODO use GetInFO instead to limit the traffic on the channels
-  getInfo(['getCleanPreference', 'getBlock', 'getBreakPoint', 'getVolume']);
+  getInfo(['getCleanInfo', 'getChargeState', 'getBattery', 'getSpeed', 'getCleanCount', 'getWaterInfo']);
 };
 
 const getOneTimeBotStatus = () => {
   getMapTrace(0);
   getPos(['chargePos', 'deebotPos']);
-  getAutoEmpty();
+  getSingleInfo('getAutoEmpty');
+  getSingleInfo('getBlock');
 };
 
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
@@ -87,7 +67,7 @@ const websocketServer = () => {
     });
 
     socket.on('getMajorMap', () => {
-      getMajorMap();
+      getSingleInfo('getMajorMap');
     });
 
     socket.on('clean', (payload) => {

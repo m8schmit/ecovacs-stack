@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 export interface DaysList {
   value: string;
@@ -6,7 +6,7 @@ export interface DaysList {
 }
 
 export interface ScheduleFormData {
-  startAt: dayjs.Dayjs;
+  startAt: Dayjs;
   once: boolean;
   days: string[];
   auto: boolean;

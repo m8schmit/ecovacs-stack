@@ -1,6 +1,8 @@
-import { StaticDatePicker } from '@mui/x-date-pickers';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
+import { shallowEqual } from 'react-redux';
 
+import { getformattedDNDDate } from '../../utils/dnd.utils';
 import { useAppSelector } from '../hooks';
 import { RawSchedules, Schedules } from './commands.schedules.type';
 import {
@@ -8,6 +10,7 @@ import {
   BatteryState,
   ChargeState,
   CleanState,
+  DoNotDisturbState,
   MoppingOptionsState,
   VacuumingOptionState,
 } from './vacuumSlice.type';
@@ -20,6 +23,7 @@ interface VacuumState {
   vacuumingOption: VacuumingOptionState;
   schedulesList: Schedules[];
   moppingOptions: MoppingOptionsState;
+  doNotDisturb: DoNotDisturbState;
 }
 
 const initialState: VacuumState = {
@@ -48,10 +52,15 @@ const initialState: VacuumState = {
     sweepType: 1,
   },
   schedulesList: [],
+  doNotDisturb: {
+    enable: false,
+    start: dayjs().format(),
+    end: dayjs().format(),
+  },
 };
 
-export const vacuumSlice = createSlice({
-  name: 'vacuum',
+export const stateSlice = createSlice({
+  name: 'state',
   initialState,
   reducers: {
     setVacuumState: (state, action: PayloadAction<CleanState>) => {
@@ -97,6 +106,15 @@ export const vacuumSlice = createSlice({
         content: { ...current.content, jsonStr: JSON.parse(current.content.jsonStr) },
       })),
     }),
+    setDoNotDisturb: (state, action: PayloadAction<DoNotDisturbState>) => ({
+      ...state,
+      doNotDisturb: {
+        ...state.doNotDisturb,
+        ...action.payload,
+        start: getformattedDNDDate(action.payload.start).format(),
+        end: getformattedDNDDate(action.payload.end, action.payload.start).format(),
+      },
+    }),
   },
 });
 
@@ -108,12 +126,14 @@ export const {
   setSchedulesList,
   setVacuumingOption,
   setMoppingOption,
-} = vacuumSlice.actions;
+  setDoNotDisturb,
+} = stateSlice.actions;
 
-export const getVacuumClean = () => useAppSelector(({ vacuum }) => vacuum.status);
-export const getVacuumBattery = () => useAppSelector(({ vacuum }) => vacuum.battery);
-export const getChargeState = () => useAppSelector(({ vacuum }) => vacuum.chargeState);
-export const getAutoEmptyState = () => useAppSelector(({ vacuum }) => vacuum.autoEmpty);
-export const getVacuumingOption = () => useAppSelector(({ vacuum }) => vacuum.vacuumingOption);
-export const getMoppingOption = () => useAppSelector(({ vacuum }) => vacuum.moppingOptions);
-export const geSchedulesList = () => useAppSelector(({ vacuum }) => vacuum.schedulesList);
+export const getVacuumClean = () => useAppSelector(({ state }) => state.status, shallowEqual);
+export const getVacuumBattery = () => useAppSelector(({ state }) => state.battery, shallowEqual);
+export const getChargeState = () => useAppSelector(({ state }) => state.chargeState, shallowEqual);
+export const getAutoEmptyState = () => useAppSelector(({ state }) => state.autoEmpty, shallowEqual);
+export const getVacuumingOption = () => useAppSelector(({ state }) => state.vacuumingOption, shallowEqual);
+export const getMoppingOption = () => useAppSelector(({ state }) => state.moppingOptions, shallowEqual);
+export const geSchedulesList = () => useAppSelector(({ state }) => state.schedulesList, shallowEqual);
+export const getDoNotDisturb = () => useAppSelector(({ state }) => state.doNotDisturb, shallowEqual);

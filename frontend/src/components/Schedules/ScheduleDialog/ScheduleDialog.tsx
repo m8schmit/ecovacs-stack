@@ -29,7 +29,7 @@ import { getDialog, hideDialog } from '../../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../../store/hooks';
 import { Schedules } from '../../../store/vacuum/commands.schedules.type';
 import { getMapSubsetsList, getVacuumMap } from '../../../store/vacuum/mapSlice';
-import { geSchedulesList } from '../../../store/vacuum/vacuumSlice';
+import { geSchedulesList } from '../../../store/vacuum/stateSlice';
 import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
 import { ScheduleFormData } from '../Schedule.type';

@@ -2,6 +2,7 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 
 import Battery from '../../components/Battery/Battery';
 import CleanState from '../../components/CleanState/CleanState';
+import DND from '../../components/DND/DND';
 import EmptyDustBin from '../../components/EmptyDustBin/EmptyDustBin';
 import MopOptions from '../../components/MopOptions/MopOptions';
 import Relocate from '../../components/Relocate/Relocate';
@@ -17,7 +18,10 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: `${theme.typography.pxToRem(15)} 0` }}>
             <Typography variant="h4">Ecovacs stack</Typography>
-            <Battery />
+            <Box sx={{ display: 'flex' }}>
+              <DND />
+              <Battery />
+            </Box>
           </Box>
           <Divider />
         </Grid>

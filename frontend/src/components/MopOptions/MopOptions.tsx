@@ -1,7 +1,7 @@
 import { Check, NotInterested } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 
-import { getMoppingOption } from '../../store/vacuum/vacuumSlice';
+import { getMoppingOption } from '../../store/vacuum/stateSlice';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
 import SweepPattern from './SweepPattern/SweepPattern';
 import WaterFlow from './WaterFlow/WaterFlow';

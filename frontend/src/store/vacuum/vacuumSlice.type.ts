@@ -1,4 +1,5 @@
 // CleanState
+import { Dayjs } from 'dayjs';
 
 export interface CleanState {
   state: BotState;
@@ -63,4 +64,10 @@ export interface MoppingOptionsState {
   enable: boolean;
   amount: number;
   sweepType: number;
+}
+
+export interface DoNotDisturbState {
+  enable: boolean;
+  start: string;
+  end: string;
 }

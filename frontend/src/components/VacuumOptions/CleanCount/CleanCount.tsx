@@ -1,7 +1,7 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { ChangeEvent, useContext } from 'react';
 
-import { getVacuumingOption } from '../../../store/vacuum/vacuumSlice';
+import { getVacuumingOption } from '../../../store/vacuum/stateSlice';
 import { WebSocketContext } from '../../../utils/socket.utils';
 
 const CleanCount = () => {

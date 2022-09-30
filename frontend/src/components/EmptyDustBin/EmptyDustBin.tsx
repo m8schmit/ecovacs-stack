@@ -4,7 +4,7 @@ import { Button, CircularProgress, SxProps } from '@mui/material';
 import { FC } from 'react';
 import { useContext } from 'react';
 
-import { getAutoEmptyState, getChargeState } from '../../store/vacuum/vacuumSlice';
+import { getAutoEmptyState, getChargeState } from '../../store/vacuum/stateSlice';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
 

@@ -1,7 +1,7 @@
 import { Bolt } from '@mui/icons-material';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-import { getChargeState, getVacuumBattery } from '../../store/vacuum/vacuumSlice';
+import { getChargeState, getVacuumBattery } from '../../store/vacuum/stateSlice';
 
 const Battery = () => {
   const { level, isLow } = getVacuumBattery();

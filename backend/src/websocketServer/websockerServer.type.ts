@@ -27,6 +27,7 @@ export interface ServerToClientEvents {
   schedulesList: (schedulesList: Schedules[]) => void;
   relocateSuccess: () => void;
   waterInfo: (params: { enable: boolean; amount: number; sweepType: number }) => void;
+  doNotDisturb: (params: { enable: boolean; start: string; end: string }) => void;
 }
 
 export interface ClientToServerEvents {
