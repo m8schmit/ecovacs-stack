@@ -111,5 +111,6 @@ map.png
 more-logs.json
 endReport-example.json
 VideoScript.lua
+botSetup.ts
 
 bot_scripts

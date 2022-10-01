@@ -1,6 +1,7 @@
 import { Aedes, Client, Server, Subscription } from 'aedes';
 
-import { execShellScript, setTime } from './mqttClient/commands/commands.special';
+import botSetup from './mqttClient/botSetup';
+import { setTime } from './mqttClient/commands/commands.special';
 import { options } from './server.utils';
 
 const mqttsServer = (): Promise<Aedes> => {
@@ -31,10 +32,10 @@ const mqttsServer = (): Promise<Aedes> => {
          * 'setting2' on cfg, seems to be some indication of the compatibility with the server and video
          * 'rcpRules' on dtgcfg, some acl information and a lua script in B64
          * 'setting2' on dtgcfg, seems to be some indication of the compatibility with the server and video
-         * shell, on p2p, with a script to download a binary file and some assets in B64
          */
         if (subscriptions.filter((s) => s.topic.indexOf('p2p') >= 0).length) {
           setTime();
+          // botSetup();
         }
       }
     });

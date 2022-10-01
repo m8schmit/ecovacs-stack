@@ -12,16 +12,3 @@ export const setTime = () => {
   };
   sendJSONCommand(command, client, true);
 };
-
-/**
- * THIS COMMAND CAN BRICK YOUR VACUMM BOT /!\
- */
-export const execShellScript = (script: string) => {
-  const command: BotCommand = {
-    name: 'shell',
-    payload: {
-      script,
-    },
-  };
-  sendJSONCommand(command, client, true);
-};
