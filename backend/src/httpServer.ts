@@ -1,11 +1,8 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { createServer } from 'https';
-
-import { options } from './server.utils';
+import { createServer, IncomingMessage, ServerResponse } from 'http';
 
 const httpsServer = () => {
   const requestListener = (req: IncomingMessage, res: ServerResponse) => {
-    console.log(' \x1b[34mHTTPS Server Receive: ', `[${req.method}]`, req.url, req.headers, ` \x1b[0m`);
+    console.log(' \x1b[34mHTTP Server Receive: ', `[${req.method}]`, req.url, req.headers, ` \x1b[0m`);
     let body = '';
     req.on('data', (chunk: Buffer) => {
       body += chunk.toString();
@@ -16,12 +13,12 @@ const httpsServer = () => {
     });
   };
 
-  const httpServer = createServer(options, requestListener);
+  const httpServer = createServer(requestListener);
 
-  const port = 443;
+  const port = 8080;
 
   httpServer.listen(port, () => {
-    console.log(`HTTPS Server is running`);
+    console.log(`HTTP Server is running`);
   });
 
   return httpServer;

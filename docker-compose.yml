@@ -29,6 +29,7 @@ services:
       - 8883:8883
       - 443:443
       - 3000:3000
+      - 80:80
     networks:
       default:
       ecovacs_stack:

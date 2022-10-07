@@ -103,7 +103,7 @@ const mqttClient = () => {
     if (isTopic('onEvt', topic)) {
       const res = getDatafromMessage(message);
       console.log('onEvt ', inspect(res, false, null, true));
-      if (res === RELOCATE_SUCCESS_EVENT) {
+      if (res.code === RELOCATE_SUCCESS_EVENT) {
         WSsocket?.emit('relocateSuccess');
       }
     }

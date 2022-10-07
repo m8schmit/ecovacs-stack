@@ -36,8 +36,9 @@ export type BotCommandName =
   | 'setSched_V2'
   | 'setSpeed'
   | 'SetTime' /* keep the uppercase S */
-  | 'setWaterInfo'
-  | 'shell';
+  | 'setLiveLaunchPwd'
+  | 'getFeiyanInfo'
+  | 'setWaterInfo';
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide';
 export type PosDevicesType = 'chargePos' | 'deebotPos';

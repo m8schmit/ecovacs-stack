@@ -106,6 +106,7 @@ dist
 #
 ssl.crt
 ssl.key
+rootCA.pem
 # Debug
 map.png
 more-logs.json

@@ -84,6 +84,14 @@ export const setRelocationState = () => {
   sendJSONCommand(command, client);
 };
 
+export const setLiveLaunchPwd = () => {
+  const command: BotCommand = {
+    name: 'setLiveLaunchPwd',
+    payload: { action: 'verify', pwd: process.env.ENCODED_PASSWORD, bdTaskID: get16LengthId() },
+  };
+  sendJSONCommand(command, client);
+};
+
 export const addSched_V2 = (
   hour: number,
   minute: number,
