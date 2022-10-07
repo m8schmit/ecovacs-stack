@@ -14,6 +14,7 @@ export type BotCommandName =
   | 'getDModule'
   | 'getError'
   | 'getInfo'
+  | 'getLifeSpan'
   | 'getMajorMap'
   | 'getMapInfo_v2'
   | 'getMapSet'
@@ -32,12 +33,12 @@ export type BotCommandName =
   | 'playSound'
   | 'setAutoEmpty'
   | 'setCleanCount'
+  | 'getFeiyanInfo'
+  | 'setLiveLaunchPwd'
   | 'setRelocationState'
   | 'setSched_V2'
   | 'setSpeed'
   | 'SetTime' /* keep the uppercase S */
-  | 'setLiveLaunchPwd'
-  | 'getFeiyanInfo'
   | 'setWaterInfo';
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide';
@@ -119,3 +120,14 @@ export interface BotCommand {
   name: BotCommandName;
   payload: {} | [];
 }
+
+//TODO is there more ? like mop or dust bag ?
+export type LifeSpanDeviceType = 'brush' | 'sideBrush' | 'heap' | 'unitCare' | 'dModule';
+
+export interface LifeSpanDevice {
+  type: LifeSpanDeviceType;
+  left: number;
+  total: number;
+}
+// ['brush', 'sideBrush', 'heap', 'unitCare', 'dModule'],
+// [{"type":"sideBrush","left":6778,"total":9000},{"type":"brush","left":16062,"total":18000},{"type":"heap","left":5262,"total":7200},{"type":"unitCare","left":-138,"total":1800},{"type":"dModule","left":3598,"total":3600}

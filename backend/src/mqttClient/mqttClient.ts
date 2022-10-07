@@ -136,6 +136,12 @@ const mqttClient = () => {
         }
       });
     }
+
+    if (isTopic('getLifeSpan', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('getLifeSpan ', res);
+      WSsocket?.emit('lifeSpanInfo', res);
+    }
   });
 
   const handleMap = async (topic: string, message: Buffer) => {

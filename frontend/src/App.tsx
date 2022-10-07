@@ -98,6 +98,8 @@ const App = () => {
 
     socket && socket.on('relocateSuccess', () => dispatch(onRelocateSuccess()));
 
+    socket && socket.on('lifeSpanInfo', (payload) => console.log('receive lifeSpanInfo', payload));
+
     socket &&
       socket.on('mapTrace', (payload) => {
         console.log('receive mapTrace: ', payload);

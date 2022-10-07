@@ -7,6 +7,7 @@ import {
   ChargeState,
   CleanState,
   DevicesCoordinates,
+  LifeSpanDevice,
   MapSubSet,
   MapTracesList,
 } from '../mqttClient/commands/commands.type';
@@ -28,6 +29,7 @@ export interface ServerToClientEvents {
   relocateSuccess: () => void;
   waterInfo: (params: { enable: boolean; amount: number; sweepType: number }) => void;
   doNotDisturb: (params: { enable: boolean; start: string; end: string }) => void;
+  lifeSpanInfo: (params: LifeSpanDevice[]) => void;
 }
 
 export interface ClientToServerEvents {
@@ -60,6 +62,7 @@ export interface ClientToServerEvents {
   delSched_V2: (params: { sid: string }) => void;
   emptyDustBin: () => void;
   setWaterInfo: (params: { amount?: number; sweepType?: number }) => void;
+  getLifeSpan: () => void;
 }
 
 export interface InterServerEvents {

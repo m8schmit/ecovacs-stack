@@ -1,17 +1,21 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Box, Divider, Grid, Tab, Typography } from '@mui/material';
+import { SyntheticEvent, useState } from 'react';
 
 import Battery from '../../components/Battery/Battery';
-import CleanState from '../../components/CleanState/CleanState';
 import DND from '../../components/DND/DND';
-import EmptyDustBin from '../../components/EmptyDustBin/EmptyDustBin';
-import MopOptions from '../../components/MopOptions/MopOptions';
-import Relocate from '../../components/Relocate/Relocate';
-import { Schedules } from '../../components/Schedules/Schedules';
 import VacuumMap from '../../components/VacuumMap/VacuumMap';
-import VacuumOptions from '../../components/VacuumOptions/VacuumOptions';
 import theme from '../../theme';
+import Commands from './Commands/Commands';
+import Notifications from './Notifications/Notifications';
 
 const Dashboard = () => {
+  const [value, setValue] = useState('2');
+
+  const handleChange = (event: SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
   return (
     <Box sx={{ margin: `0 ${theme.typography.pxToRem(15)}` }}>
       <Grid container spacing={2}>
@@ -26,20 +30,23 @@ const Dashboard = () => {
           <Divider />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Box sx={{ overflow: 'auto', maxHeight: `calc(100vh - 72px)` }}>
-            <CleanState />
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              <Relocate
-                sx={{
-                  flex: 1,
-                  marginRight: theme.typography.pxToRem(10),
-                }}
-              />
-              <EmptyDustBin sx={{ flex: 1 }} />
-            </Box>
-            <VacuumOptions />
-            <MopOptions />
-            <Schedules />
+          <Box sx={{ width: '100%', typography: 'body1' }}>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <TabList onChange={handleChange} aria-label="lab API tabs example">
+                  <Tab label="Notifications" value="1" />
+                  <Tab label="Commands" value="2" />
+                  <Tab label="Options" value="3" disabled />
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <Notifications />
+              </TabPanel>
+              <TabPanel value="2">
+                <Commands />
+              </TabPanel>
+              <TabPanel value="3">Item Three</TabPanel>
+            </TabContext>
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>

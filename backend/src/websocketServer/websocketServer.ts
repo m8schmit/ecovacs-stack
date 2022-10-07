@@ -1,6 +1,13 @@
 import { Server, Socket } from 'socket.io';
 
-import { getInfo, getMapTrace, getPos, getSched_V2, getSingleInfo } from '../mqttClient/commands/commands.get';
+import {
+  getInfo,
+  getLifeSpan,
+  getMapTrace,
+  getPos,
+  getSched_V2,
+  getSingleInfo,
+} from '../mqttClient/commands/commands.get';
 import {
   addSched_V2,
   charge,
@@ -86,7 +93,6 @@ const websocketServer = () => {
       setCleanCount(payload);
     });
 
-    //TODO handle `onEvt` success or fail
     socket.on('setRelocationState', () => {
       setRelocationState();
     });
@@ -116,6 +122,10 @@ const websocketServer = () => {
 
     socket.on('setWaterInfo', (payload) => {
       setWaterInfo(payload);
+    });
+
+    socket.on('getLifeSpan', () => {
+      getLifeSpan(['brush', 'sideBrush', 'heap', 'unitCare', 'dModule']);
     });
   });
 };

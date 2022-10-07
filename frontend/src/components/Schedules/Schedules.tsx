@@ -27,15 +27,21 @@ export const Schedules = () => {
   const showAddScheduleDialog = () => dispatch(showDialog('ScheduleDialog'));
   const showEditScheduleDialog = ({ sid }: SchedulesType) => dispatch(showEditDialog(sid));
 
-  const getScheduleNextday = (repeat: string) => {
-    const todayDay = dayjs().day();
-    const nextScheduleDay = repeat.indexOf('1');
-    if (nextScheduleDay < 0) {
-      // todo
-      return;
+  const getScheduleNextday = ({ repeat, hour, minute }: SchedulesType) => {
+    const todayDay = dayjs().get('day');
+    let nextScheduleDay = -1;
+    for (let i = todayDay; i < 6; i++) {
+      if (+repeat[i] === 1) {
+        nextScheduleDay = i;
+        break;
+      }
     }
     if (todayDay === nextScheduleDay) {
-      return 'Today';
+      if (dayjs().get('hour') < hour) {
+        if (dayjs().get('minute') < minute) return 'Today';
+      } else {
+        return 'Tomorrow';
+      }
     } else if (todayDay + 1 === nextScheduleDay) {
       return 'Tomorrow';
     }
@@ -90,7 +96,7 @@ export const Schedules = () => {
                       .split(',')
                       .map((curr: string) => `room ${curr}`)
                       .join(',')}`}{' '}
-                  {getScheduleNextday(currentSchedule.repeat)} at{' '}
+                  {getScheduleNextday(currentSchedule)} at{' '}
                   {dayjs().set('hour', currentSchedule.hour).set('minute', currentSchedule.minute).format('HH:mm')}.
                 </Typography>
               </Box>

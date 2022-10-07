@@ -1,7 +1,7 @@
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { get16LengthId, makeId } from '../text.utils';
-import { BotCommand, BotCommandName, MapSubSetType, PosDevicesType } from './commands.type';
+import { BotCommand, BotCommandName, LifeSpanDeviceType, MapSubSetType, PosDevicesType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const getMapSet = (mid: string) => {
@@ -91,6 +91,14 @@ export const getInfo = (commandsNameList: BotCommandName[]) => {
   let command: BotCommand = {
     name: 'getInfo',
     payload: commandsNameList,
+  };
+  sendJSONCommand(command, client);
+};
+
+export const getLifeSpan = (lifeSpanDeviceList: LifeSpanDeviceType[]) => {
+  const command: BotCommand = {
+    name: 'getLifeSpan',
+    payload: lifeSpanDeviceList,
   };
   sendJSONCommand(command, client);
 };
