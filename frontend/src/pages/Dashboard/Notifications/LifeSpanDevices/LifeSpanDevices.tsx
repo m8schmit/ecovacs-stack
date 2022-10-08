@@ -1,4 +1,4 @@
-import { Box, LinearProgress, List, ListItem, Typography } from '@mui/material';
+import { Box, Button, LinearProgress, List, ListItem, Paper, Typography } from '@mui/material';
 import { FC } from 'react';
 
 import { getLifeSpanDeviceList } from '../../../../store/vacuum/notificationSlice';
@@ -23,20 +23,34 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
   const color = getColor(percentageValue);
 
   return (
-    <ListItem sx={{ display: 'flex' }}>
-      <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
-        {type}
-      </Typography>
-      <Box sx={{ width: '100%', mr: 1, flex: '1 1 85%' }}>
-        <Typography variant="body2" sx={{ color: theme.palette[color].main }}>
-          {hoursLeft > 0
-            ? `Should be clean in: ${hoursLeft}hours.`
-            : `Should have be cleaned ${hoursLeft * -1}hours ago.`}
+    <Paper
+      elevation={1}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 1,
+        mb: 1,
+        borderRadius: theme.typography.pxToRem(5),
+        width: '100%',
+      }}
+    >
+      <ListItem sx={{ display: 'flex' }}>
+        <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+          {type}
         </Typography>
+        <Box sx={{ width: '100%', mr: 1, flex: '1 1 85%' }}>
+          <Typography variant="body2" sx={{ color: theme.palette[color].main }}>
+            {hoursLeft > 0
+              ? `Should be clean in: ${hoursLeft}hours.`
+              : `Should have be cleaned ${hoursLeft * -1}hours ago.`}
+          </Typography>
 
-        <LinearProgress color={color} variant="determinate" value={percentageValue || 0} />
-      </Box>
-    </ListItem>
+          <LinearProgress color={color} variant="determinate" value={percentageValue || 0} />
+        </Box>
+        <Button disabled>Reset</Button>
+      </ListItem>
+    </Paper>
   );
 };
 
@@ -46,43 +60,69 @@ const DustBagState = () => {
   const { bagFull } = getAutoEmptyState();
 
   return (
-    <ListItem sx={{ display: 'flex' }}>
-      <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
-        Dust Bag
-      </Typography>
-      <Typography
-        variant="body2"
-        sx={{
-          width: '100%',
-          mr: 1,
-          flex: '1 1 85%',
-          color: bagFull ? theme.palette.warning.main : theme.palette.success.main,
-        }}
-      >
-        {bagFull ? 'time to change the Dust Bag.' : 'There still place in the Dust Bag.'}
-      </Typography>
-    </ListItem>
+    <Paper
+      elevation={1}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 1,
+        mb: 1,
+        borderRadius: theme.typography.pxToRem(5),
+        width: '100%',
+      }}
+    >
+      <ListItem sx={{ display: 'flex' }}>
+        <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+          Dust Bag
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            width: '100%',
+            mr: 1,
+            flex: '1 1 85%',
+            color: bagFull ? theme.palette.warning.main : theme.palette.success.main,
+          }}
+        >
+          {bagFull ? 'time to change the Dust Bag.' : 'There still place in the Dust Bag.'}
+        </Typography>
+      </ListItem>
+    </Paper>
   );
 };
 
 // TODO there only the event 1007 maybe implement a DB to keep it.
 const MopState = () => {
   return (
-    <ListItem sx={{ display: 'flex' }}>
-      <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
-        Mop
-      </Typography>
-      <Typography
-        variant="body2"
-        sx={{
-          width: '100%',
-          mr: 1,
-          flex: '1 1 85%',
-        }}
-      >
-        todo
-      </Typography>
-    </ListItem>
+    <Paper
+      elevation={1}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 1,
+        mb: 1,
+        borderRadius: theme.typography.pxToRem(5),
+        width: '100%',
+      }}
+    >
+      <ListItem sx={{ display: 'flex' }}>
+        <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+          Mop
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            width: '100%',
+            mr: 1,
+            flex: '1 1 85%',
+          }}
+        >
+          todo
+        </Typography>
+      </ListItem>
+    </Paper>
   );
 };
 const LifeSpanDevices = () => {
