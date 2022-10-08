@@ -11,6 +11,7 @@ export type BotCommandName =
   | 'getCleanCount'
   | 'getCleanInfo'
   | 'getCleanPreference'
+  | 'getDusterRemind'
   | 'getDModule'
   | 'getError'
   | 'getInfo'

@@ -79,7 +79,7 @@ const mqttClient = () => {
       WSsocket?.emit('doNotDisturb', { ...res, enable: res.enable === 1 });
     }
 
-    if (isTopic('onAutoEmpty', topic)) {
+    if (isTopic('AutoEmpty', topic)) {
       const res = getDatafromMessage(message);
       console.log('autoEmpty ', inspect(res, false, null, true));
       /**

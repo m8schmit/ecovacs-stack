@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import { useContext, useEffect } from 'react';
 
 import { WebSocketContext } from '../../../utils/socket.utils';
@@ -14,6 +15,8 @@ export const Notifications = () => {
   return (
     <>
       <LifeSpanDevices />
+      <Typography variant="h6">Errors and Events</Typography>
+      todo
     </>
   );
 };

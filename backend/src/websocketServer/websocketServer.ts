@@ -37,6 +37,7 @@ const getOneTimeBotStatus = () => {
   getMapTrace(0);
   getPos(['chargePos', 'deebotPos']);
   getSingleInfo('getAutoEmpty');
+  getSingleInfo('getDusterRemind');
   getSingleInfo('getBlock');
 };
 
