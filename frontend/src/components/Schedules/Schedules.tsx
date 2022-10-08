@@ -29,13 +29,18 @@ export const Schedules = () => {
 
   const getScheduleNextday = ({ repeat, hour, minute }: SchedulesType) => {
     const todayDay = dayjs().get('day');
-    let nextScheduleDay = -1;
-    for (let i = todayDay; i < 6; i++) {
-      if (+repeat[i] === 1) {
-        nextScheduleDay = i;
+    let nextScheduleDay = todayDay;
+
+    while (+repeat[nextScheduleDay] !== 1) {
+      if (+repeat[nextScheduleDay] === 1) {
         break;
       }
+      if (nextScheduleDay === repeat.length) {
+        nextScheduleDay = 0;
+      }
+      nextScheduleDay++;
     }
+
     if (todayDay === nextScheduleDay) {
       if (dayjs().get('hour') < hour) {
         if (dayjs().get('minute') < minute) return 'Today';
@@ -45,6 +50,7 @@ export const Schedules = () => {
     } else if (todayDay + 1 === nextScheduleDay) {
       return 'Tomorrow';
     }
+    console.log(nextScheduleDay);
     return daysList[nextScheduleDay].label;
   };
 

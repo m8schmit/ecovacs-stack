@@ -41,6 +41,7 @@ const initialState: VacuumState = {
   autoEmpty: {
     active: false,
     enable: false,
+    bagFull: false,
   },
   vacuumingOption: {
     speed: 0,

@@ -7,24 +7,24 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
 import {
+  incrementMapTracesListUpdateIndex,
+  onRelocateSuccess,
+  setMapSubsetsList,
+  setMapTracesList,
   setVacuumMap,
   setVacuumPos,
-  setMapSubsetsList,
-  onRelocateSuccess,
-  incrementMapTracesListUpdateIndex,
-  setMapTracesList,
 } from './store/vacuum/mapSlice';
+import { setLifeSpanDeviceList } from './store/vacuum/notificationSlice';
 import {
-  setVacuumBattery,
-  setVacuumState,
-  setChargeState,
-  setVacuumingOption,
   setAutoEmpty,
-  setSchedulesList,
-  setMoppingOption,
+  setChargeState,
   setDoNotDisturb,
+  setMoppingOption,
+  setSchedulesList,
+  setVacuumBattery,
+  setVacuumingOption,
+  setVacuumState,
 } from './store/vacuum/stateSlice';
-
 import { WebSocketContext } from './utils/socket.utils';
 
 const App = () => {
@@ -98,11 +98,10 @@ const App = () => {
 
     socket && socket.on('relocateSuccess', () => dispatch(onRelocateSuccess()));
 
-    socket && socket.on('lifeSpanInfo', (payload) => console.log('receive lifeSpanInfo', payload));
+    socket && socket.on('lifeSpanInfo', (payload) => dispatch(setLifeSpanDeviceList(payload)));
 
     socket &&
       socket.on('mapTrace', (payload) => {
-        console.log('receive mapTrace: ', payload);
         payload.isResponse && dispatch(incrementMapTracesListUpdateIndex());
         dispatch(setMapTracesList(payload));
       });

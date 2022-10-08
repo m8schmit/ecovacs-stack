@@ -68,6 +68,7 @@ const CleanState = () => {
     return (
       <>
         {/* TODO fix this `status?.cleanState?.content` can be string|null|{} */}
+        {/* TODO handle the 'continue cleaning' state */}
         {status?.cleanState?.type ||
           (isCleanStateContent(status?.cleanState?.content) && status?.cleanState?.content.type) ||
           status.state}{' '}

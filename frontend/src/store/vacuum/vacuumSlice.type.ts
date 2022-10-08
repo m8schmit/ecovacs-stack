@@ -1,6 +1,4 @@
 // CleanState
-import { Dayjs } from 'dayjs';
-
 export interface CleanState {
   state: BotState;
   cleanState: {
@@ -51,6 +49,7 @@ export interface BatteryState {
 export interface AutoEmptyState {
   active: boolean;
   enable: boolean;
+  bagFull: boolean;
 }
 
 //  VacuumingOptionState

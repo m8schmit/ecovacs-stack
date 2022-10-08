@@ -82,8 +82,15 @@ const mqttClient = () => {
     if (isTopic('onAutoEmpty', topic)) {
       const res = getDatafromMessage(message);
       console.log('autoEmpty ', inspect(res, false, null, true));
-      //not sure, I receive 0, 1, 2 and 5
-      WSsocket?.emit('autoEmpty', { active: res.status === 1, enable: res.enable === 1 });
+      /**
+       *
+       * status
+       * 0 disable
+       * 1 enable
+       * 2 ??
+       * 5 dust bag need to be changed
+       */
+      WSsocket?.emit('autoEmpty', { active: res.status !== 0, enable: res.enable === 1, bagFull: res.status === 5 });
     }
 
     if (isTopic('onFwBuryPoint', topic)) {

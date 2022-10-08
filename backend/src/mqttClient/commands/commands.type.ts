@@ -77,6 +77,7 @@ type botMode = 'slot' | 'autoEmpty';
 export interface AutoEmptyState {
   active: boolean;
   enable: boolean;
+  bagFull: boolean;
 }
 
 // MapSubSet
