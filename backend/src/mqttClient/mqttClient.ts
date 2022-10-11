@@ -90,7 +90,9 @@ const mqttClient = () => {
        * 2 ??
        * 5 dust bag need to be changed
        */
-      WSsocket?.emit('autoEmpty', { active: res.status !== 0, enable: res.enable === 1, bagFull: res.status === 5 });
+      if (res) {
+        WSsocket?.emit('autoEmpty', { active: res.status !== 0, enable: res.enable === 1, bagFull: res.status === 5 });
+      }
     }
 
     if (isTopic('onFwBuryPoint', topic)) {
@@ -193,13 +195,17 @@ const mqttClient = () => {
 
     if (isTopic('MapTrace', topic)) {
       const res = getDatafromMessage(message);
-      const decodedTrace = await parseTracePoints(res.traceValue, res.traceStart);
-      WSsocket?.emit('mapTrace', {
-        newEntriesList: decodedTrace,
-        totalCount: res.totalCount,
-        /* if this is a response to a getMapTrace, we increment the 'traceStart' value to ask the next 200 points */
-        isResponse: !!isTopic('getMapTrace', topic),
-      });
+      if (res) {
+        const decodedTrace = await parseTracePoints(res.traceValue, res.traceStart);
+        WSsocket?.emit('mapTrace', {
+          newEntriesList: decodedTrace,
+          totalCount: res.totalCount,
+          /* if this is a response to a getMapTrace, we increment the 'traceStart' value to ask the next 200 points */
+          isResponse: !!isTopic('getMapTrace', topic),
+        });
+      } else {
+        console.log('TODO fix error 20012');
+      }
     }
 
     if (isTopic('MapSubSet', topic)) {

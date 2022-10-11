@@ -42,7 +42,7 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
         <Box sx={{ width: '100%', mr: 1, flex: '1 1 85%' }}>
           <Typography variant="body2" sx={{ color: theme.palette[color].main }}>
             {hoursLeft > 0
-              ? `Should be clean in: ${hoursLeft}hours.`
+              ? `Should be cleaned in ${hoursLeft}hours.`
               : `Should have be cleaned ${hoursLeft * -1}hours ago.`}
           </Typography>
 

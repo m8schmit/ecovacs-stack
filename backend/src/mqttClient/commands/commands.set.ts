@@ -29,10 +29,10 @@ export const charge = () => {
   sendJSONCommand(command, client);
 };
 
-export const playSound = () => {
+export const playSound = (sid: number) => {
   const command: BotCommand = {
-    name: 'getMajorMap',
-    payload: {},
+    name: 'playSound',
+    payload: { sid },
   };
   sendJSONCommand(command, client);
 };

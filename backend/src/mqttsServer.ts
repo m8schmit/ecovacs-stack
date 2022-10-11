@@ -2,7 +2,7 @@ import { Aedes, Client, Server, Subscription } from 'aedes';
 
 import botSetup from './mqttClient/botSetup';
 import { getSingleInfo } from './mqttClient/commands/commands.get';
-import { setLiveLaunchPwd } from './mqttClient/commands/commands.set';
+import { playSound, setLiveLaunchPwd } from './mqttClient/commands/commands.set';
 import { setTime } from './mqttClient/commands/commands.special';
 import { options } from './server.utils';
 
@@ -37,7 +37,8 @@ const mqttsServer = (): Promise<Aedes> => {
          */
         if (subscriptions.filter((s) => s.topic.indexOf('p2p') >= 0).length) {
           setTime();
-          // botSetup();
+          botSetup();
+          // playSound(1);
           // setTimeout(() => {
           //   setLiveLaunchPwd();
           //   getSingleInfo('getFeiyanInfo');

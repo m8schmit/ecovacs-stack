@@ -113,5 +113,7 @@ more-logs.json
 endReport-example.json
 VideoScript.lua
 botSetup.ts
+ASL.json
+dlnDrawer.sh
 
 bot_scripts
