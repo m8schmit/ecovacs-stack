@@ -1,10 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
-import { Devices, DevicesCoordinates, DevicesPayload, LocationState, MapSubSet, MapTracesList } from './mapSlice.type';
+import {
+  Devices,
+  DevicesCoordinates,
+  DevicesPayload,
+  LocationState,
+  MapSubSet,
+  MapTracesList,
+  SelectionType,
+} from './mapSlice.type';
+import { Extent } from 'ol/extent';
 
 interface MapState {
   selectedRoomsList: number[];
+  selectedZonesList: Extent[];
+  selectionType: SelectionType;
   map: {
     isLoading: boolean;
     isFetching: boolean;
@@ -22,6 +33,8 @@ interface MapState {
 
 const initialState: MapState = {
   selectedRoomsList: [],
+  selectedZonesList: [],
+  selectionType: 'zone',
   map: {
     isLoading: true,
     isFetching: false,
@@ -87,12 +100,33 @@ export const mapSlice = createSlice({
         ],
       };
     },
+    updateSelectedZonesList: (state, action: PayloadAction<Extent>) => {
+      console.log('EHERE ', action.payload);
+      return {
+        ...state,
+        selectedZonesList: [...state.selectedZonesList, action.payload],
+      };
+    },
+
+    resetSelectedZonesList: (state) => {
+      return {
+        ...state,
+        selectedZonesList: initialState.selectedZonesList,
+      };
+    },
+
     resetSelectedRoomsList: (state) => {
       return {
         ...state,
         selectedRoomsList: initialState.selectedRoomsList,
       };
     },
+
+    setSelectionType: (state, action: PayloadAction<SelectionType>) => ({
+      ...state,
+      selectionType: action.payload,
+    }),
+
     setMapTracesList: (state, action: PayloadAction<MapTracesList>) => ({
       ...state,
       mapTracesList: {
@@ -133,6 +167,9 @@ export const {
   updateSelectedRoomsList,
   resetSelectedRoomsList,
 
+  updateSelectedZonesList,
+  resetSelectedZonesList,
+
   setMapTracesList,
   incrementMapTracesListUpdateIndex,
   resetMapTracesList,
@@ -150,3 +187,5 @@ export const getVacuumPos = (device: Devices) => useAppSelector(({ map }) => map
 
 export const getMapSubsetsList = () => useAppSelector(({ map }) => map.mapSubsetsList);
 export const getSelectedRoomsList = () => useAppSelector(({ map }) => map.selectedRoomsList);
+export const getSelectedZonesList = () => useAppSelector(({ map }) => map.selectedZonesList);
+export const getSelectionType = () => useAppSelector(({ map }) => map.selectionType);

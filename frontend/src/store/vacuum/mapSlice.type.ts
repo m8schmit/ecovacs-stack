@@ -62,3 +62,5 @@ interface MapTrace {
   type: number /*dont know yet what it is */;
   isConnectedWithPrevious: boolean;
 }
+
+export type SelectionType = 'zone' | 'room';

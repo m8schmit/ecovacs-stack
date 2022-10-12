@@ -3,7 +3,13 @@ import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/mate
 import { useContext } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
-import { getSelectedRoomsList, resetMapTracesList, resetSelectedRoomsList } from '../../store/vacuum/mapSlice';
+import {
+  getSelectedRoomsList,
+  getSelectedZonesList,
+  getSelectionType,
+  resetMapTracesList,
+  resetSelectedRoomsList,
+} from '../../store/vacuum/mapSlice';
 import { getAutoEmptyState, getChargeState, getVacuumClean } from '../../store/vacuum/stateSlice';
 import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import { WebSocketContext } from '../../utils/socket.utils';
@@ -13,8 +19,11 @@ import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
 const CleanState = () => {
   const status = getVacuumClean();
   const selectedRoomsList = getSelectedRoomsList();
+  const selectedZonesList = getSelectedZonesList();
+  const selectionType = getSelectionType();
   const { isCharging } = getChargeState();
   const { active: autoEmptyActive } = getAutoEmptyState();
+
   const dispatch = useAppDispatch();
 
   const socket = useContext(WebSocketContext);
@@ -33,8 +42,8 @@ const CleanState = () => {
   const getCleanTask = (act: BotAct | null = null): CleanTask => {
     return {
       act: act ? act : getNextAct(),
-      type: !selectedRoomsList.length ? 'auto' : 'spotArea',
-      value: selectedRoomsList.join(',') || null,
+      type: selectedRoomsList.length ? 'spotArea' : selectedZonesList.length ? 'customArea' : 'auto',
+      value: selectedRoomsList.join(',') || `${selectedZonesList.join(';')};` || null,
     };
   };
   const switchCleanState = () => {
@@ -87,11 +96,14 @@ const CleanState = () => {
 
       <OptionsFrame>
         <Typography>currently: {getTextState()}</Typography>
+        <Typography variant="body2">(mode: '{selectionType}')</Typography>
         {status.state === 'idle' && (
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography>
-              start an <b>{selectedRoomsList.length <= 0 ? 'auto' : 'spotArea'}</b> cleaning
+              start an <b>{selectedRoomsList.length ? 'spotArea' : selectedZonesList.length ? 'customArea' : 'auto'}</b>{' '}
+              cleaning
               {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
+              {selectedZonesList.length > 0 && ` on Zones [${selectedZonesList.join('][')}].`}
             </Typography>
             {selectedRoomsList.length > 0 && (
               <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
