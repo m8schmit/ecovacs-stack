@@ -34,7 +34,7 @@ interface MapState {
 const initialState: MapState = {
   selectedRoomsList: [],
   selectedZonesList: [],
-  selectionType: 'zone',
+  selectionType: 'room',
   map: {
     isLoading: true,
     isFetching: false,
@@ -101,7 +101,6 @@ export const mapSlice = createSlice({
       };
     },
     updateSelectedZonesList: (state, action: PayloadAction<Extent>) => {
-      console.log('EHERE ', action.payload);
       return {
         ...state,
         selectedZonesList: [...state.selectedZonesList, action.payload],
@@ -170,6 +169,7 @@ export const {
   updateSelectedZonesList,
   resetSelectedZonesList,
 
+  setSelectionType,
   setMapTracesList,
   incrementMapTracesListUpdateIndex,
   resetMapTracesList,

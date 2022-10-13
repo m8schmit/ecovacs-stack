@@ -24,6 +24,7 @@ import {
   getMapSubsetsList,
   getMapTracesList,
   getSelectedRoomsList,
+  getSelectedZonesList,
   getSelectionType,
   getVacuumMap,
   getVacuumPos,
@@ -60,6 +61,7 @@ const VacuumMap = () => {
   const botPosition = getVacuumPos('bot');
   const mapSubsetsList = getMapSubsetsList();
   const selectedRoomsList = getSelectedRoomsList();
+  const selectedZonesList = getSelectedZonesList();
   const mapTraceList = getMapTracesList();
   const [mainLayer] = useState<ImageLayer<ImageSource>>(new ImageLayer());
   const extent = [0, 0, mapWidth, mapHeight];
@@ -69,21 +71,17 @@ const VacuumMap = () => {
    ** convert Bot coordinate to OpenLayer Coordinates
    */
   const getCoordinates = (value: number, axis: 'x' | 'y') =>
-    (value / pixelWidth) * PixelRatio + (axis === 'x' ? mapWidth : mapHeight) / 2;
+    ((value / pixelWidth) * PixelRatio + (axis === 'x' ? mapWidth : mapHeight) / 2) >> 0;
 
   /*
    ** convert OL coordinate to Bot Coordinates
    ** `[minx, miny, maxx, maxy]`.
    */
-  const setCoordinates = (extend: Extent) => {
-    console.log('here');
-    return extend.map((value, index) => {
-      const formattedCoordinates =
-        ((value - (index === 0 || index === 2 ? mapWidth : mapHeight / 2)) * pixelWidth) / PixelRatio;
-      //TODO find something less hackish
-      return formattedCoordinates >= 0 ? formattedCoordinates : formattedCoordinates + 20000;
-    });
-  };
+  const setCoordinates = (extend: Extent) =>
+    extend.map(
+      (value, index) =>
+        (((value - (index === 0 || index === 2 ? mapWidth : mapHeight) / 2) * pixelWidth) / PixelRatio) >> 0,
+    );
 
   const [traceLayer] = useState<VectorLayer<VectorSource<LineString>>>(
     new VectorLayer({
@@ -171,12 +169,13 @@ const VacuumMap = () => {
 
   const source = new VectorSource({ wrapX: false });
 
-  const customZonesLayer = new VectorLayer({
-    source: source,
-  });
+  const [customZonesLayer] = useState(
+    new VectorLayer({
+      source,
+    }),
+  );
 
   useEffect(() => {
-    console.log('init', botLayer.getSource());
     if (!initialized) {
       initialized = true;
       const initialMap = new Map({
@@ -191,14 +190,16 @@ const VacuumMap = () => {
         }),
       });
 
-      const initialDraw = new Draw({
+      const newDraw = new Draw({
         source,
         type: 'Circle',
+        stopClick: true,
         geometryFunction: createBox(),
       });
 
-      initialMap.addInteraction(initialDraw);
-      setDraw(initialDraw);
+      initialMap.addInteraction(newDraw);
+
+      setDraw(newDraw);
       setMap(initialMap);
       mapRef.current = initialMap;
     }
@@ -240,8 +241,9 @@ const VacuumMap = () => {
   }, [mapData, map]);
 
   useEffect(() => {
-    console.log('register event ', map);
     if (!map) return;
+    map.getInteractions().forEach((interaction) => interaction instanceof Draw && interaction.setActive(false));
+
     map.on('click', (event: MapBrowserEvent<any>) => {
       const feature = map.forEachFeatureAtPixel(event.pixel, (feature) => feature);
       if (selectionType === 'room') {
@@ -257,19 +259,25 @@ const VacuumMap = () => {
   }, [map]);
 
   useEffect(() => {
-    console.log('register draw event ', draw);
-    if (!draw) return;
+    if (!map) return;
+    if (selectionType === 'zone') {
+      console.log('register draw feature');
+      map.getInteractions().forEach((interaction) => interaction instanceof Draw && interaction.setActive(true));
+    } else {
+      map.getInteractions().forEach((interaction) => interaction instanceof Draw && interaction.setActive(false));
+    }
+  }, [selectionType, map]);
 
+  useEffect(() => {
+    if (!draw) return;
     draw.on('drawend' as any, (event: DrawEvent) => {
-      if (selectionType === 'zone') {
-        const extend = event.feature.getGeometry()?.getExtent();
-        const coordinate = extend !== undefined ? setCoordinates(extend) : [];
-        if (coordinate.length) {
-          console.log('coordinate: ', coordinate, 'raw: ', extend);
-          dispatch(updateSelectedZonesList(coordinate));
-        } else {
-          console.error('corrdinates null');
-        }
+      const extend = event.feature.getGeometry()?.getExtent();
+      const coordinate = extend !== undefined ? setCoordinates(extend) : [];
+
+      if (coordinate.length) {
+        dispatch(updateSelectedZonesList(coordinate));
+      } else {
+        console.error('coordinates null');
       }
     });
   }, [draw]);
@@ -339,6 +347,12 @@ const VacuumMap = () => {
       }
     }
   }, [mapTraceList.totalCount, mapTraceList.newEntriesList]);
+
+  useEffect(() => {
+    if (!selectedZonesList.length) {
+      customZonesLayer.getSource()?.clear();
+    }
+  }, [selectedZonesList]);
 
   return (
     <>
