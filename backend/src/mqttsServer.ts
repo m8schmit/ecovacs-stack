@@ -37,7 +37,7 @@ const mqttsServer = (): Promise<Aedes> => {
          */
         if (subscriptions.filter((s) => s.topic.indexOf('p2p') >= 0).length) {
           setTime();
-          botSetup();
+          // botSetup();
           // playSound(1);
           // setTimeout(() => {
           //   setLiveLaunchPwd();

@@ -15,6 +15,7 @@ import {
   delSched_V2,
   editSched_V2,
   EmptyDustBin,
+  resetLifeSpan,
   setCleanCount,
   setRelocationState,
   setSpeed,
@@ -126,6 +127,11 @@ const websocketServer = () => {
 
     socket.on('getLifeSpan', () => {
       getLifeSpan(['brush', 'sideBrush', 'heap', 'unitCare', 'dModule']);
+    });
+
+    socket.on('resetLifeSpan', (type) => {
+      console.log('resetLifeSpan of ', type);
+      resetLifeSpan(type);
     });
   });
 };

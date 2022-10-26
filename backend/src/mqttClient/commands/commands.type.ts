@@ -35,6 +35,7 @@ export type BotCommandName =
   | 'setAutoEmpty'
   | 'setCleanCount'
   | 'getFeiyanInfo'
+  | 'resetLifeSpan'
   | 'setLiveLaunchPwd'
   | 'setRelocationState'
   | 'setSched_V2'

@@ -1,10 +1,11 @@
 import { Box, Button, LinearProgress, List, ListItem, Paper, Typography } from '@mui/material';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 
 import { getLifeSpanDeviceList } from '../../../../store/vacuum/notificationSlice';
 import { LifeSpanDeviceType } from '../../../../store/vacuum/notificationSlice.type';
 import { getAutoEmptyState } from '../../../../store/vacuum/stateSlice';
 import theme from '../../../../theme';
+import { WebSocketContext } from '../../../../utils/socket.utils';
 
 interface LifeSpanDeviceItemProps {
   type: LifeSpanDeviceType;
@@ -13,6 +14,8 @@ interface LifeSpanDeviceItemProps {
 }
 
 const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) => {
+  const socket = useContext(WebSocketContext);
+
   const getColor = (percentageValue: number) =>
     percentageValue <= 33 ? 'error' : percentageValue <= 66 ? 'warning' : 'success';
 
@@ -22,6 +25,7 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
   const hoursLeft = (left / 60) >> 0;
   const color = getColor(percentageValue);
 
+  const handleReset = (type: string) => socket.emit('resetLifeSpan', type);
   return (
     <Paper
       elevation={1}
@@ -48,7 +52,7 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
 
           <LinearProgress color={color} variant="determinate" value={percentageValue || 0} />
         </Box>
-        <Button disabled>Reset</Button>
+        <Button onClick={() => handleReset(type)}>Reset</Button>
       </ListItem>
     </Paper>
   );

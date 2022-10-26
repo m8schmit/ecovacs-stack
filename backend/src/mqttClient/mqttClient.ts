@@ -3,6 +3,7 @@ import { inspect } from 'node:util';
 
 import { WSsocket } from '../websocketServer/websocketServer';
 import {
+  getLifeSpan,
   getMapInfo_v2,
   getMapSet,
   getMapSubSet,
@@ -41,7 +42,7 @@ const mqttClient = () => {
 
   client.on('message', (topic, message) => {
     // log message
-    console.log(getColoredConsoleLog(topic), message.toString());
+    console.log(`${new Date().toUTCString()}`, getColoredConsoleLog(topic), message.toString());
 
     handleMap(topic, message);
 
@@ -150,6 +151,12 @@ const mqttClient = () => {
       const res = getDatafromMessage(message);
       console.log('getLifeSpan ', res);
       WSsocket?.emit('lifeSpanInfo', res);
+    }
+
+    if (isTopic('resetLifeSpan', topic)) {
+      const res = getDatafromMessage(message);
+      console.log('resetLifeSpan ', res);
+      getLifeSpan(['brush', 'sideBrush', 'heap', 'unitCare', 'dModule']);
     }
   });
 

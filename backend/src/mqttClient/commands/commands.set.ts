@@ -2,7 +2,7 @@ import { client } from '../mqttClient';
 import { get14LengthId, get16LengthId } from '../text.utils';
 import { Maybe } from '../types';
 import { CleaningType } from './commands.schedules.type';
-import { BotAct, BotCommand, BotType } from './commands.type';
+import { BotAct, BotCommand, BotType, LifeSpanDeviceType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const clean = (
@@ -154,6 +154,16 @@ export const delSched_V2 = (sid: string) => {
     payload: {
       act: 'del',
       sid,
+    },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const resetLifeSpan = (type: LifeSpanDeviceType) => {
+  const command: BotCommand = {
+    name: 'resetLifeSpan',
+    payload: {
+      type,
     },
   };
   sendJSONCommand(command, client);

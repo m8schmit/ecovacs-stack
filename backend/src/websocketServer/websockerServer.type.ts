@@ -8,6 +8,7 @@ import {
   CleanState,
   DevicesCoordinates,
   LifeSpanDevice,
+  LifeSpanDeviceType,
   MapSubSet,
   MapTracesList,
 } from '../mqttClient/commands/commands.type';
@@ -63,6 +64,7 @@ export interface ClientToServerEvents {
   emptyDustBin: () => void;
   setWaterInfo: (params: { amount?: number; sweepType?: number }) => void;
   getLifeSpan: () => void;
+  resetLifeSpan: (type: LifeSpanDeviceType) => void;
 }
 
 export interface InterServerEvents {
