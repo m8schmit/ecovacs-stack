@@ -52,7 +52,9 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
 
           <LinearProgress color={color} variant="determinate" value={percentageValue || 0} />
         </Box>
-        <Button onClick={() => handleReset(type)}>Reset</Button>
+        <Button onClick={() => handleReset(type)} disabled={left === total}>
+          Reset
+        </Button>
       </ListItem>
     </Paper>
   );
