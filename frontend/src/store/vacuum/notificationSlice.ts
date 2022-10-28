@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useAppSelector } from '../hooks';
 
-import { LifeSpanDevice } from './notificationSlice.type';
+import { useAppSelector } from '../hooks';
+import { BotEvent, LifeSpanDevice } from './notificationSlice.type';
 
 interface NotificationState {
   lifeSpanDeviceList: LifeSpanDevice[];
+  eventsList: BotEvent[];
 }
 
-const initialState: NotificationState = { lifeSpanDeviceList: [] };
+const initialState: NotificationState = { lifeSpanDeviceList: [], eventsList: [] };
 
 export const notificationSlice = createSlice({
   name: 'notification',
@@ -17,9 +18,14 @@ export const notificationSlice = createSlice({
       ...state,
       lifeSpanDeviceList: action.payload,
     }),
+    setEventsList: (state, action: PayloadAction<BotEvent[]>) => ({
+      ...state,
+      eventsList: action.payload,
+    }),
   },
 });
 
-export const { setLifeSpanDeviceList } = notificationSlice.actions;
+export const { setLifeSpanDeviceList, setEventsList } = notificationSlice.actions;
 
 export const getLifeSpanDeviceList = () => useAppSelector(({ notification }) => notification.lifeSpanDeviceList);
+export const getEventsList = () => useAppSelector(({ notification }) => notification.eventsList);

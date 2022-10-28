@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
@@ -14,7 +14,7 @@ import {
   setVacuumMap,
   setVacuumPos,
 } from './store/vacuum/mapSlice';
-import { setLifeSpanDeviceList } from './store/vacuum/notificationSlice';
+import { setEventsList, setLifeSpanDeviceList } from './store/vacuum/notificationSlice';
 import {
   setAutoEmpty,
   setChargeState,
@@ -100,6 +100,7 @@ const App = () => {
 
     socket && socket.on('lifeSpanInfo', (payload) => dispatch(setLifeSpanDeviceList(payload)));
 
+    socket && socket.on('eventList', (payload) => dispatch(setEventsList(payload)));
     socket &&
       socket.on('mapTrace', (payload) => {
         payload.isResponse && dispatch(incrementMapTracesListUpdateIndex());
@@ -112,10 +113,12 @@ const App = () => {
       {socket && (
         <WebSocketContext.Provider value={socket}>
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <Box sx={{ minHeight: '100vh', display: 'flex', width: '100%' }}>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Box>
           </BrowserRouter>
         </WebSocketContext.Provider>
       )}

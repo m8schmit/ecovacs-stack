@@ -21,6 +21,7 @@ import {
   setSpeed,
   setWaterInfo,
 } from '../mqttClient/commands/commands.set';
+import { getBotEvent } from '../mysqlHelper/botEvent.query';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
 
 const intervalDuration = 60000;
@@ -132,6 +133,13 @@ const websocketServer = () => {
     socket.on('resetLifeSpan', (type) => {
       console.log('resetLifeSpan of ', type);
       resetLifeSpan(type);
+    });
+
+    socket.on('getEventsList', () => {
+      getBotEvent().then((res) => {
+        console.log('RES ', res);
+        socket.emit('eventList', res[0] as any);
+      });
     });
   });
 };

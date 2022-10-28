@@ -17,7 +17,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Box sx={{ margin: `0 ${theme.typography.pxToRem(15)}` }}>
+    <Box sx={{ margin: `0 ${theme.typography.pxToRem(15)}`, width: '100%' }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: `${theme.typography.pxToRem(15)} 0` }}>

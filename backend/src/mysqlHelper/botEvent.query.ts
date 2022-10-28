@@ -1,13 +1,12 @@
 import { BotEventType } from '../mqttClient/commands/event.type';
-import { connection, mysqlLog } from './mysql';
+import { connection, execMysqlQuery } from './mysql';
 
 // Errors
 export const addBotEvent = (code: BotEventType) =>
-  connection.query(`INSERT INTO \`bot_events\` (\`evt_code\`, \`timestamp\`) VALUES ('${code}', now());`, mysqlLog);
+  execMysqlQuery(`INSERT INTO \`bot_events\` (\`evt_code\`, \`timestamp\`) VALUES ('${code}', now());`);
 
-export const delBotEvent = (id: number) =>
-  connection.query(`DELETE FROM \`bot_events\` WHERE ((\`id\` = '${id}'));`, mysqlLog);
+export const delBotEvent = (id: number) => execMysqlQuery(`DELETE FROM \`bot_events\` WHERE ((\`id\` = '${id}'));`);
 
-export const delAllBotEvent = () => connection.query(`DROP TABLE  \`bot_events\``, mysqlLog);
+export const delAllBotEvent = () => execMysqlQuery(`DROP TABLE  \`bot_events\``);
 
-export const getBotEvent = () => connection.query('SELECT * FROM `bot_events` LIMIT 50', mysqlLog);
+export const getBotEvent = () => execMysqlQuery('SELECT * FROM `bot_events` LIMIT 50');

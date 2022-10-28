@@ -1,4 +1,4 @@
-import { createConnection, QueryError } from 'mysql2';
+import { createConnection } from 'mysql2';
 
 const connection = createConnection({
   host: 'mysql',
@@ -11,10 +11,10 @@ const mysqlConnection = () => {
   connection.connect((e) => console.log(e ? `MYSQL connection error: ${e}` : 'MYSQL connection successfull!'));
 };
 
-const mysqlLog = (err: QueryError, results: any, fields: any) => {
-  console.log(`[MYSQL] error:`, err);
-  console.log(`[MYSQL] resuls:`, results);
-  console.log(`[MYSQL] fields:`, fields);
-};
+const execMysqlQuery = (query: string) =>
+  connection
+    .promise()
+    .query(query)
+    .then((res) => res);
 
-export { mysqlConnection, mysqlLog, connection };
+export { mysqlConnection, connection, execMysqlQuery };

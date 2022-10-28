@@ -10,7 +10,7 @@ import theme from '../../../theme';
 
 const Commands = () => {
   return (
-    <Box sx={{ overflow: 'auto', maxHeight: `calc(100vh - 72px)` }}>
+    <Box>
       <CleanState />
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
         <Relocate
