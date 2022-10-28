@@ -1,6 +1,6 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 
-const httpsServer = () => {
+const httpServer = () => {
   const requestListener = (req: IncomingMessage, res: ServerResponse) => {
     console.log(' \x1b[34mHTTP Server Receive: ', `[${req.method}]`, req.url, req.headers, ` \x1b[0m`);
     let body = '';
@@ -24,4 +24,4 @@ const httpsServer = () => {
   return httpServer;
 };
 
-export default httpsServer;
+export default httpServer;

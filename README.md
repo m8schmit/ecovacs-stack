@@ -47,13 +47,13 @@ iot/cfg/${bot_id}/${bot_class}/${bot_resource}/+/+
 to... ?
 
 ```typescript
-iot/dtcfg/${bot_id}/${bot_class}/${bot_resource}/+/+
+iot/dtcfg/${bot_class}/222/+/+
 ```
 
 to... ?
 
 ```typescript
-iot/dtgcfg/${bot_id}/${bot_class}/${bot_resource}/+/+
+iot/dtgcfg/${bot_class}/${bot_id}/${bot_resource}/+/+
 ```
 
 to... ?

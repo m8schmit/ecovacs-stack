@@ -107,6 +107,8 @@ dist
 ssl.crt
 ssl.key
 rootCA.pem
+mysql/data
+mysql/mysql.conf.d
 # Debug
 map.png
 more-logs.json

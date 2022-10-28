@@ -4,7 +4,27 @@ networks:
   ecovacs_stack:
     internal: true
 services:
+  mysql:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=dev
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=dev
+      - MYSQL_DATABASE=dev
+      - TZ=Atlantic
+    networks:
+      ecovacs_stack:
+      default:
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/mysql.conf.d:/etc/mysql/conf.d
+      - ./mysql/scripts/init.sql:/docker-entrypoint-initdb.d/1.sql
+
   backend:
+    depends_on:
+      - mysql
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -17,6 +37,10 @@ services:
     environment:
       - BASE_URL=https://localhost
       - BASE_URL_01=https//ecovacs.com
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=dev
+      - MYSQL_DATABASE=dev
+      - TZ=Atlantic
     command: bash -c './generate_certs.sh && yarn install && yarn run dev'
 
     stdin_open: true
@@ -37,6 +61,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./nginx/:/etc/nginx:ro
+
   frontend:
     depends_on:
       - nginx
