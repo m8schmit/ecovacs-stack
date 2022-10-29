@@ -1,6 +1,6 @@
 import { connect, MqttClient } from 'mqtt';
 import { inspect } from 'node:util';
-import { addBotError } from '../mysqlHelper/botError.query';
+import { addBotError, getBotError } from '../mysqlHelper/botError.query';
 import { addBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 
 import { WSsocket } from '../websocketServer/websocketServer';
@@ -119,7 +119,7 @@ const mqttClient = () => {
         WSsocket?.emit('relocateSuccess');
       }
       addBotEvent(res.code);
-      getBotEvent();
+      getBotEvent().then((res) => WSsocket?.emit('eventList', res[0]));
     }
 
     if (isTopic('onError', topic)) {
@@ -127,6 +127,9 @@ const mqttClient = () => {
       console.log('onError ', inspect(res, false, null, true));
       const errorArray = res.code.filter((curr: number) => curr !== 0);
       errorArray.length && addBotError(errorArray);
+      getBotError().then((res) => {
+        console.log('error list', res);
+      });
     }
 
     /* Maybe find a better way to avoid code repetition */

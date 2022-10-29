@@ -138,7 +138,7 @@ const websocketServer = () => {
     socket.on('getEventsList', () => {
       getBotEvent().then((res) => {
         console.log('RES ', res);
-        socket.emit('eventList', res[0] as any);
+        socket.emit('eventList', res[0]);
       });
     });
   });

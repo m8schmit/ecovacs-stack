@@ -9,4 +9,4 @@ export const delBotEvent = (id: number) => execMysqlQuery(`DELETE FROM \`bot_eve
 
 export const delAllBotEvent = () => execMysqlQuery(`DROP TABLE  \`bot_events\``);
 
-export const getBotEvent = () => execMysqlQuery('SELECT * FROM `bot_events` LIMIT 50');
+export const getBotEvent = () => execMysqlQuery('SELECT * FROM `bot_events` ORDER BY `timestamp` DESC LIMIT 50');

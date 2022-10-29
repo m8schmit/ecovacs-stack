@@ -14,8 +14,6 @@ import {
 } from '../mqttClient/commands/commands.type';
 import { Maybe } from '../mqttClient/types';
 
-import { RowDataPacket } from 'mysql2';
-
 export interface ServerToClientEvents {
   vacuumMap: (params: { image: string; id: string }) => void;
   chargePos: (coordinates: DevicesCoordinates[]) => void;
@@ -33,7 +31,7 @@ export interface ServerToClientEvents {
   waterInfo: (params: { enable: boolean; amount: number; sweepType: number }) => void;
   doNotDisturb: (params: { enable: boolean; start: string; end: string }) => void;
   lifeSpanInfo: (params: LifeSpanDevice[]) => void;
-  eventList: (eventList: RowDataPacket[]) => void;
+  eventList: (eventList: any /*todo*/) => void;
 }
 
 export interface ClientToServerEvents {

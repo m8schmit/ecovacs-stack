@@ -39,13 +39,24 @@ const Dashboard = () => {
                   <Tab label="Options" value="3" disabled />
                 </TabList>
               </Box>
-              <TabPanel value="1">
+              <TabPanel
+                value="1"
+                sx={value === '1' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+              >
                 <Notifications />
               </TabPanel>
-              <TabPanel value="2">
+              <TabPanel
+                value="2"
+                sx={value === '2' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+              >
                 <Commands />
               </TabPanel>
-              <TabPanel value="3">Item Three</TabPanel>
+              <TabPanel
+                value="3"
+                sx={value === '3' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+              >
+                Item Three
+              </TabPanel>
             </TabContext>
           </Box>
         </Grid>
