@@ -5,7 +5,7 @@ All this as only be tested on my T9 Aivi.
 ![alt text](wip-stack.png 'Title')
 
 Bot make request on port 8883 (MQTTs) and 443 (MQTTs too, but, I've put an HTTPS server with a listener to be sure)
-Frontend as difficulties with MQTT protocol, so it listen to the events trought a WS server on port 3000.
+Frontend as difficulties with MQTT protocol, so it listen to the events trought a WS server on port 3000, finally there a DB on port 3306 to uniformise the way we display events, errors and lifespan.
 
 ## How to install
 

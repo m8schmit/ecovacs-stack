@@ -60,77 +60,6 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
   );
 };
 
-//TODO the state to 5 doesnt seem pesistent.
-// Check if thre another way to get this info
-const DustBagState = () => {
-  const { bagFull } = getAutoEmptyState();
-
-  return (
-    <Paper
-      elevation={1}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        p: 1,
-        mb: 1,
-        borderRadius: theme.typography.pxToRem(5),
-        width: '100%',
-      }}
-    >
-      <ListItem sx={{ display: 'flex' }}>
-        <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
-          Dust Bag
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            width: '100%',
-            mr: 1,
-            flex: '1 1 85%',
-            color: bagFull ? theme.palette.warning.main : theme.palette.success.main,
-          }}
-        >
-          {bagFull ? 'time to change the Dust Bag.' : 'There still place in the Dust Bag.'}
-        </Typography>
-      </ListItem>
-    </Paper>
-  );
-};
-
-// TODO there only the event 1007 maybe implement a DB to keep it.
-const MopState = () => {
-  return (
-    <Paper
-      elevation={1}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        p: 1,
-        mb: 1,
-        borderRadius: theme.typography.pxToRem(5),
-        width: '100%',
-      }}
-    >
-      <ListItem sx={{ display: 'flex' }}>
-        <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
-          Mop
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            width: '100%',
-            mr: 1,
-            flex: '1 1 85%',
-          }}
-        >
-          todo
-        </Typography>
-      </ListItem>
-    </Paper>
-  );
-};
 const LifeSpanDevices = () => {
   const lifeSpanDevicesList = getLifeSpanDeviceList();
 
@@ -139,8 +68,6 @@ const LifeSpanDevices = () => {
       {lifeSpanDevicesList.map((device) => (
         <LifeSpanDeviceItem key={device.type} type={device.type} left={device.left} total={device.total} />
       ))}
-      <DustBagState />
-      <MopState />
     </List>
   );
 };

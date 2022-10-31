@@ -14,7 +14,12 @@ import {
   setVacuumMap,
   setVacuumPos,
 } from './store/vacuum/mapSlice';
-import { setEventsList, setLifeSpanDeviceList } from './store/vacuum/notificationSlice';
+import {
+  setErrorsList,
+  setEventsList,
+  setLifeSpanAccessory,
+  setLifeSpanDeviceList,
+} from './store/vacuum/notificationSlice';
 import {
   setAutoEmpty,
   setChargeState,
@@ -100,7 +105,21 @@ const App = () => {
 
     socket && socket.on('lifeSpanInfo', (payload) => dispatch(setLifeSpanDeviceList(payload)));
 
-    socket && socket.on('eventList', (payload) => dispatch(setEventsList(payload)));
+    socket &&
+      socket.on('lifeSpanReminder', (payload) => {
+        console.log('LIFESPAN', payload);
+        dispatch(setLifeSpanAccessory(payload));
+      });
+
+    socket &&
+      socket.on('eventList', (payload) =>
+        dispatch(setEventsList(payload.map((botEvent: any) => ({ ...botEvent, code: botEvent.evt_code })))),
+      );
+    socket &&
+      socket.on('errorList', (payload) =>
+        dispatch(setErrorsList(payload.map((botError: any) => ({ ...botError, code: botError.error_code })))),
+      );
+
     socket &&
       socket.on('mapTrace', (payload) => {
         payload.isResponse && dispatch(incrementMapTracesListUpdateIndex());

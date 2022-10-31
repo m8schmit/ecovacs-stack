@@ -10,7 +10,7 @@ import theme from '../../../theme';
 
 const Commands = () => {
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       <CleanState />
       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
         <Relocate

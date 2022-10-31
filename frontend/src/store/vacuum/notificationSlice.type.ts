@@ -1,4 +1,5 @@
 export type LifeSpanDeviceType = 'brush' | 'sideBrush' | 'heap' | 'unitCare' | 'dModule';
+export type LifeSpanAccessoryType = 'mop' | 'dust_bag';
 
 export interface LifeSpanDevice {
   type: LifeSpanDeviceType;
@@ -6,28 +7,45 @@ export interface LifeSpanDevice {
   total: number;
 }
 
-export type BotEventType = 1007 | 1015 | 1021 | 1052 | 1053 | 1071 | 1061 | 1062 | 1068 | 1088;
+export interface LifespanAccessory {
+  name: LifeSpanAccessoryType;
+  needToBeChanged: boolean;
+}
 
-export interface BotEvent {
+export type BotEventType = 1007 | 1015 | 1021 | 1027 | 1052 | 1053 | 1071 | 1070 | 1061 | 1062 | 1068 | 1088;
+
+export interface BotNotification<T> {
   id: number;
-  evt_code: BotEventType;
+  code: T;
   timestamp: string;
 }
 
-type BotEventLabel = {
-  [key in BotEventType]: string;
+export type BotNotificationLabel<T extends string | number | symbol> = {
+  [key in T]: string;
 };
 
 //TODO replace by key for i18n
-export const EVENT_LABEL_LIST: BotEventLabel = {
+export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1007: 'Mop plugged.',
   1015: 'unkown (1015).',
   1052: 'Time to change the mop.',
   1053: 'Obstacle? (1053)',
-  1021: 'unkown (1021).',
+  1021: 'Returning to charge? (1021).',
+  1027: 'Unable de find the charging dock, returning to starting position.',
   1071: 'Position updated.',
+  1070: 'Position retrieved after being lift? (1070)',
   1062: 'Unable de locate, starting new map.',
   1061: 'Resuming cleaning after position retrieved.',
   1068: 'Failed to find position, returning to charge.',
   1088: 'Failed to find position.',
+};
+
+export type BotErrorType = 0 | 102 | 20003 | 20011 | 20012;
+
+export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorType> = {
+  0: 'All good.',
+  102: 'Robot as been lift off.',
+  20003: 'Task type not supported.',
+  20011: 'Handle deal message fail.',
+  20012: 'Get point count out of range.',
 };

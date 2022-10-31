@@ -1,5 +1,5 @@
 import { BotEventType } from '../mqttClient/commands/event.type';
-import { connection, execMysqlQuery } from './mysql';
+import { execMysqlQuery } from './mysql';
 
 // Errors
 export const addBotEvent = (code: BotEventType) =>

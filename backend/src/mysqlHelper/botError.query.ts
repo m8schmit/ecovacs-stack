@@ -13,4 +13,4 @@ export const delBotError = (id: number) => execMysqlQuery(`DELETE FROM \`bot_err
 
 export const delAllBotError = () => execMysqlQuery(`DROP TABLE  \`bot_errors\``);
 
-export const getBotError = () => execMysqlQuery('SELECT * FROM `bot_errors` LIMIT 50');
+export const getBotError = () => execMysqlQuery('SELECT * FROM `bot_errors` ORDER BY `timestamp` DESC LIMIT 50');

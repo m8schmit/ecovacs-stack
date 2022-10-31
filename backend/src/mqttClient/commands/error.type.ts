@@ -1,4 +1,4 @@
-type BotErrorType = 0 | 102 | 20003 | 20011 | 20012;
+type BotErrorType = 0 | 102 | 109 | 20003 | 20011 | 20012;
 
 const NO_ERROR: BotErrorType = 0;
 const OFF_THE_FLOOR_ERROR: BotErrorType = 102;

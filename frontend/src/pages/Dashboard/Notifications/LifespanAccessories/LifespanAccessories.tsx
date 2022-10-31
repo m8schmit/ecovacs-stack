@@ -1,0 +1,94 @@
+import { List, ListItem, Paper, Typography } from '@mui/material';
+import { getLifeSpanAccessoryList } from '../../../../store/vacuum/notificationSlice';
+import theme from '../../../../theme';
+
+const DustBagState = () => {
+  const dustBag = getLifeSpanAccessoryList().find((accessory) => accessory.name === 'dust_bag');
+
+  return (
+    <>
+      {dustBag && (
+        <Paper
+          elevation={1}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            p: 1,
+            mb: 1,
+            borderRadius: theme.typography.pxToRem(5),
+            width: '100%',
+          }}
+        >
+          <ListItem sx={{ display: 'flex' }}>
+            <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+              Dust Bag
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                width: '100%',
+                mr: 1,
+                flex: '1 1 85%',
+                color: dustBag.needToBeChanged ? theme.palette.warning.main : theme.palette.success.main,
+              }}
+            >
+              {dustBag.needToBeChanged ? 'time to change the Dust Bag.' : 'There still place in the Dust Bag.'}
+            </Typography>
+          </ListItem>
+        </Paper>
+      )}
+    </>
+  );
+};
+
+const MopState = () => {
+  const mop = getLifeSpanAccessoryList().find((accessory) => accessory.name === 'mop');
+
+  return (
+    <>
+      {mop && (
+        <Paper
+          elevation={1}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            p: 1,
+            mb: 1,
+            borderRadius: theme.typography.pxToRem(5),
+            width: '100%',
+          }}
+        >
+          <ListItem sx={{ display: 'flex' }}>
+            <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+              Mop
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                width: '100%',
+                mr: 1,
+                flex: '1 1 85%',
+                color: mop.needToBeChanged ? theme.palette.warning.main : theme.palette.success.main,
+              }}
+            >
+              {mop.needToBeChanged ? 'time to change the mop.' : 'Mop is not too dirty.'}
+            </Typography>
+          </ListItem>
+        </Paper>
+      )}
+    </>
+  );
+};
+
+const LifespanAccessories = () => {
+  return (
+    <List>
+      <DustBagState />
+      <MopState />
+    </List>
+  );
+};
+
+export default LifespanAccessories;

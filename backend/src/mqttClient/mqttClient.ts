@@ -2,6 +2,7 @@ import { connect, MqttClient } from 'mqtt';
 import { inspect } from 'node:util';
 import { addBotError, getBotError } from '../mysqlHelper/botError.query';
 import { addBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
+import { updateReminder } from '../mysqlHelper/botReminder.query';
 
 import { WSsocket } from '../websocketServer/websocketServer';
 import {
@@ -13,7 +14,7 @@ import {
   getSched_V2,
   getSingleInfo,
 } from './commands/commands.get';
-import { RELOCATE_SUCCESS_EVENT } from './commands/event.type';
+import { CHANGE_MOP_REMINDER_EVENT, RELOCATE_SUCCESS_EVENT } from './commands/event.type';
 import { decompressLZMA } from './map/LZMA.utils';
 import { parseTracePoints, VacuumMap } from './map/map';
 import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
@@ -94,6 +95,11 @@ const mqttClient = () => {
        * 5 dust bag need to be changed
        */
       if (res) {
+        if (res.status === 5) {
+          updateReminder('dust_bag', true).then(() =>
+            WSsocket?.emit('lifeSpanReminder', { name: 'dust_bag', needToBeChanged: true }),
+          );
+        }
         WSsocket?.emit('autoEmpty', { active: res.status !== 0, enable: res.enable === 1, bagFull: res.status === 5 });
       }
     }
@@ -117,6 +123,11 @@ const mqttClient = () => {
       console.log('onEvt ', inspect(res, false, null, true));
       if (res.code === RELOCATE_SUCCESS_EVENT) {
         WSsocket?.emit('relocateSuccess');
+      }
+      if (res.code === CHANGE_MOP_REMINDER_EVENT) {
+        updateReminder('mop', true).then(() =>
+          WSsocket?.emit('lifeSpanReminder', { name: 'mop', needToBeChanged: true }),
+        );
       }
       addBotEvent(res.code);
       getBotEvent().then((res) => WSsocket?.emit('eventList', res[0]));

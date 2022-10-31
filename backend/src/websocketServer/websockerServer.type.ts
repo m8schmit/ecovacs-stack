@@ -31,7 +31,9 @@ export interface ServerToClientEvents {
   waterInfo: (params: { enable: boolean; amount: number; sweepType: number }) => void;
   doNotDisturb: (params: { enable: boolean; start: string; end: string }) => void;
   lifeSpanInfo: (params: LifeSpanDevice[]) => void;
+  lifeSpanReminder: (params: any /*todo*/) => void;
   eventList: (eventList: any /*todo*/) => void;
+  errorList: (errorList: any /*todo*/) => void;
 }
 
 export interface ClientToServerEvents {
@@ -64,9 +66,13 @@ export interface ClientToServerEvents {
   delSched_V2: (params: { sid: string }) => void;
   emptyDustBin: () => void;
   setWaterInfo: (params: { amount?: number; sweepType?: number }) => void;
-  getLifeSpan: () => void;
+  getLifeSpanDevice: () => void;
+  getLifeSpanAccessory: () => void;
   resetLifeSpan: (type: LifeSpanDeviceType) => void;
   getEventsList: () => void;
+  dismissEvent: (id: number | null) => void;
+  getErrorsList: () => void;
+  dismissError: (id: number | null) => void;
 }
 
 export interface InterServerEvents {
