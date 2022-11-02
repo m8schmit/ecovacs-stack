@@ -53,8 +53,22 @@ export const NotificationsList = <T extends BotEventType | BotErrorType>({
           </ListItem>
         </Paper>
       ))}
+      {!list.length && (
+        <Typography
+          component="em"
+          variant="body2"
+          sx={{
+            ml: 0.5,
+            color: theme.palette.action.disabled,
+          }}
+        >
+          Log is empty!
+        </Typography>
+      )}
       <ListItem>
-        <Button onClick={() => handleDismiss(null)}>Dismiss All</Button>
+        <Button color={'warning'} onClick={() => handleDismiss(null)}>
+          Dismiss All
+        </Button>
       </ListItem>
     </List>
   );

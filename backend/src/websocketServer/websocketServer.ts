@@ -142,9 +142,9 @@ const websocketServer = () => {
         console.log('getLifeSpanAccessory ', res);
         socket.emit(
           'lifeSpanReminder',
-          (res[0] as any).map((current: any) => ({
+          (res as any).map((current: any) => ({
             name: current.name,
-            needToBeChanged: current.need_to_change === 0,
+            needToBeChanged: current.need_to_change === 1,
           })),
         );
       });
@@ -153,27 +153,23 @@ const websocketServer = () => {
     socket.on('getEventsList', () => {
       getBotEvent().then((res) => {
         console.log('getEventsList ', res);
-        socket.emit('eventList', res[0]);
+        socket.emit('eventList', res);
       });
     });
 
     socket.on('getErrorsList', () => {
       getBotError().then((res) => {
         console.log('getErrorsList ', res);
-        socket.emit('errorList', res[0]);
+        socket.emit('errorList', res);
       });
     });
 
     socket.on('dismissEvent', (id) => {
-      (id ? delBotEvent(id) : delAllBotEvent()).then(() =>
-        getBotEvent().then((res) => socket.emit('eventList', res[0])),
-      );
+      (id ? delBotEvent(id) : delAllBotEvent()).then(() => getBotEvent().then((res) => socket.emit('eventList', res)));
     });
 
     socket.on('dismissError', (id) => {
-      (id ? delBotError(id) : delAllBotError()).then(() =>
-        getBotError().then((res) => socket.emit('errorList', res[0])),
-      );
+      (id ? delBotError(id) : delAllBotError()).then(() => getBotError().then((res) => socket.emit('errorList', res)));
     });
   });
 };

@@ -130,7 +130,7 @@ const mqttClient = () => {
         );
       }
       addBotEvent(res.code);
-      getBotEvent().then((res) => WSsocket?.emit('eventList', res[0]));
+      getBotEvent().then((res) => WSsocket?.emit('eventList', res));
     }
 
     if (isTopic('onError', topic)) {
@@ -163,8 +163,10 @@ const mqttClient = () => {
             WSsocket?.emit('cleanCount', res[key].data);
 
           case 'getWaterInfo':
+            console.log('HERE getWaterInfo');
+            const enable = !!res[key].data.enable;
             WSsocket?.emit('waterInfo', {
-              enable: !!res[key].data.enable,
+              enable,
               amount: res[key].data.amount,
               sweepType: res[key].data.sweepType,
             });
@@ -276,6 +278,9 @@ const mqttClient = () => {
     if (isTopic('WaterInfo', topic) && !isTopic('setWaterInfo', topic)) {
       const res = getDatafromMessage(message);
       WSsocket?.emit('waterInfo', { enable: !!res.enable, amount: res.amount, sweepType: res.sweepType });
+      if (!res.enable) {
+        updateReminder('mop', false);
+      }
     }
 
     if (isTopic('setWaterInfo', topic)) {

@@ -1,5 +1,7 @@
 import { List, ListItem, Paper, Typography } from '@mui/material';
+
 import { getLifeSpanAccessoryList } from '../../../../store/vacuum/notificationSlice';
+import { getMoppingOption } from '../../../../store/vacuum/stateSlice';
 import theme from '../../../../theme';
 
 const DustBagState = () => {
@@ -44,6 +46,31 @@ const DustBagState = () => {
 
 const MopState = () => {
   const mop = getLifeSpanAccessoryList().find((accessory) => accessory.name === 'mop');
+  const { enable } = getMoppingOption();
+
+  const getTextColor = () => {
+    let color = theme.palette.action.disabled;
+    if (enable) {
+      if (mop?.needToBeChanged) {
+        color = theme.palette.warning.main;
+      } else {
+        color = theme.palette.success.main;
+      }
+    }
+    return color;
+  };
+
+  const getLabel = () => {
+    let label = 'Mop is not plugged';
+    if (enable) {
+      if (mop?.needToBeChanged) {
+        label = 'Time to change the mop.';
+      } else {
+        label = 'Mop is still clean.';
+      }
+    }
+    return label;
+  };
 
   return (
     <>
@@ -70,10 +97,10 @@ const MopState = () => {
                 width: '100%',
                 mr: 1,
                 flex: '1 1 85%',
-                color: mop.needToBeChanged ? theme.palette.warning.main : theme.palette.success.main,
+                color: getTextColor(),
               }}
             >
-              {mop.needToBeChanged ? 'time to change the mop.' : 'Mop is not too dirty.'}
+              {getLabel()}
             </Typography>
           </ListItem>
         </Paper>

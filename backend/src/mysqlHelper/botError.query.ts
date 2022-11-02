@@ -1,5 +1,5 @@
 import { BotErrorType } from '../mqttClient/commands/error.type';
-import { connection, execMysqlQuery } from './mysql';
+import { execMysqlQuery } from './mysql';
 
 // Errors
 export const addBotError = (codesList: BotErrorType[]) =>
@@ -11,6 +11,6 @@ export const addBotError = (codesList: BotErrorType[]) =>
 
 export const delBotError = (id: number) => execMysqlQuery(`DELETE FROM \`bot_errors\` WHERE ((\`id\` = '${id}'));`);
 
-export const delAllBotError = () => execMysqlQuery(`DROP TABLE  \`bot_errors\``);
+export const delAllBotError = () => execMysqlQuery(`DELETE FROM \`bot_errors\``);
 
 export const getBotError = () => execMysqlQuery('SELECT * FROM `bot_errors` ORDER BY `timestamp` DESC LIMIT 50');
