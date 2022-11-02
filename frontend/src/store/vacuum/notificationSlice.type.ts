@@ -12,7 +12,21 @@ export interface LifespanAccessory {
   needToBeChanged: boolean;
 }
 
-export type BotEventType = 1007 | 1015 | 1021 | 1026 | 1027 | 1052 | 1053 | 1071 | 1070 | 1061 | 1062 | 1068 | 1088;
+export type BotEventType =
+  | 1007
+  | 1011
+  | 1015
+  | 1021
+  | 1026
+  | 1027
+  | 1052
+  | 1053
+  | 1071
+  | 1070
+  | 1061
+  | 1062
+  | 1068
+  | 1088;
 
 export interface BotNotification<T> {
   id: number;
@@ -27,6 +41,7 @@ export type BotNotificationLabel<T extends string | number | symbol> = {
 //TODO replace by key for i18n
 export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1007: 'Mop plugged.',
+  1011: 'unkown (1011).',
   1015: 'unkown (1015).',
   1052: 'Time to change the mop.',
   1053: 'Obstacle? (1053)',

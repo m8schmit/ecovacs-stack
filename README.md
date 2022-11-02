@@ -195,6 +195,9 @@ Ecovacs servers are based on https://github.com/alibaba/tengine with Tomcat.
 After each clean, the bot send a report to
 `iotin.ecouser.net/data_collect/upload/generalData?auth.with=device&auth.name={PARAMS}&auth.did={PARAMS}&auth.mid={PARAMS}&auth.res={PARAMS}&auth.ts={PARAMS}&auth.sign={PARAMS}&rn=CleanResult&meta={PARAMS}&fmt=j&dType=string `
 
+Once a day the bot call
+`portal.ecouser.net/api/ota/products/wukong/class/{CLASS}/firmware/latest.json?sn={???}&ver=1.4.5&mac={MAC ADDRESS}&plat={???}&module=fw0 `
+
 # Thanks to
 
 https://github.com/mrbungle64/ecovacs-deebot.js  

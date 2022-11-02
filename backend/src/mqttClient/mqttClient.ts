@@ -163,7 +163,6 @@ const mqttClient = () => {
             WSsocket?.emit('cleanCount', res[key].data);
 
           case 'getWaterInfo':
-            console.log('HERE getWaterInfo');
             const enable = !!res[key].data.enable;
             WSsocket?.emit('waterInfo', {
               enable,
