@@ -48,7 +48,9 @@ export const NotificationsList = <T extends BotEventType | BotErrorType>({
               <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
                 {dayjs(timestamp).format('YYYY/M/D - HH:mm')}
               </Typography>
-              <Button onClick={() => handleDismiss(id)}>Dismiss</Button>
+              <Button sx={{ ml: 1 }} onClick={() => handleDismiss(id)}>
+                Dismiss
+              </Button>
             </Box>
           </ListItem>
         </Paper>

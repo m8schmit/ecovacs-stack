@@ -1,9 +1,9 @@
 import { connect, MqttClient } from 'mqtt';
 import { inspect } from 'node:util';
+
 import { addBotError, getBotError } from '../mysqlHelper/botError.query';
 import { addBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 import { updateReminder } from '../mysqlHelper/botReminder.query';
-
 import { WSsocket } from '../websocketServer/websocketServer';
 import {
   getLifeSpan,
@@ -17,7 +17,7 @@ import {
 import { CHANGE_MOP_REMINDER_EVENT, RELOCATE_SUCCESS_EVENT } from './commands/event.type';
 import { decompressLZMA } from './map/LZMA.utils';
 import { parseTracePoints, VacuumMap } from './map/map';
-import { getColoredConsoleLog, getDatafromMessage, isTopic } from './mqtt.utils';
+import { getDatafromMessage, getLogs, isTopic } from './mqtt.utils';
 import { Maybe } from './types';
 
 export let client: MqttClient;
@@ -45,7 +45,7 @@ const mqttClient = () => {
 
   client.on('message', (topic, message) => {
     // log message
-    console.log(`${new Date().toUTCString()}`, getColoredConsoleLog(topic), message.toString());
+    getLogs(topic, message);
 
     handleMap(topic, message);
 
@@ -85,7 +85,7 @@ const mqttClient = () => {
 
     if (isTopic('AutoEmpty', topic)) {
       const res = getDatafromMessage(message);
-      console.log('autoEmpty ', inspect(res, false, null, true));
+      // console.log('autoEmpty ', inspect(res, false, null, true));
       /**
        *
        * status
@@ -108,8 +108,8 @@ const mqttClient = () => {
       const res = getDatafromMessage(message);
       const parsedContent = JSON.parse(res.content);
 
-      const payload = inspect({ ...res, content: { ...parsedContent } }, false, null, true);
-      console.log('onFwBuryPoint ', payload);
+      // const payload = inspect({ ...res, content: { ...parsedContent } }, false, null, true);
+      // console.log('onFwBuryPoint ', payload);
 
       if (parsedContent?.d?.body?.data?.d_val?.act === 'online') {
         //TODO Delay some command after this trigger
@@ -120,7 +120,7 @@ const mqttClient = () => {
 
     if (isTopic('onEvt', topic)) {
       const res = getDatafromMessage(message);
-      console.log('onEvt ', inspect(res, false, null, true));
+      // console.log('onEvt ', inspect(res, false, null, true));
       if (res.code === RELOCATE_SUCCESS_EVENT) {
         WSsocket?.emit('relocateSuccess');
       }
@@ -135,7 +135,7 @@ const mqttClient = () => {
 
     if (isTopic('onError', topic)) {
       const res = getDatafromMessage(message);
-      console.log('onError ', inspect(res, false, null, true));
+      // console.log('onError ', inspect(res, false, null, true));
       const errorArray = res.code.filter((curr: number) => curr !== 0);
       errorArray.length && addBotError(errorArray);
       getBotError().then((res) => {
@@ -146,7 +146,7 @@ const mqttClient = () => {
     /* Maybe find a better way to avoid code repetition */
     if (isTopic('getInfo', topic)) {
       const res = getDatafromMessage(message);
-      console.log('getInfo ', inspect(res, false, null, true));
+      // console.log('getInfo ', inspect(res, false, null, true));
       Object.keys(res).forEach((key) => {
         switch (key) {
           case 'getCleanInfo':
@@ -175,13 +175,13 @@ const mqttClient = () => {
 
     if (isTopic('getLifeSpan', topic)) {
       const res = getDatafromMessage(message);
-      console.log('getLifeSpan ', res);
+      // console.log('getLifeSpan ', res);
       WSsocket?.emit('lifeSpanInfo', res);
     }
 
     if (isTopic('resetLifeSpan', topic)) {
       const res = getDatafromMessage(message);
-      console.log('resetLifeSpan ', res);
+      // console.log('resetLifeSpan ', res);
       getLifeSpan(['brush', 'sideBrush', 'heap', 'unitCare', 'dModule']);
     }
   });
