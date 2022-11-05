@@ -17,10 +17,14 @@ export type BotEventType =
   | 1011
   | 1015
   | 1021
+  | 1032
+  | 1024
   | 1026
   | 1027
+  | 1051
   | 1052
   | 1053
+  | 1067
   | 1071
   | 1070
   | 1061
@@ -41,13 +45,17 @@ export type BotNotificationLabel<T extends string | number | symbol> = {
 //TODO replace by key for i18n
 export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1007: 'Mop plugged.',
-  1011: 'unkown (1011).',
-  1015: 'unkown (1015).',
+  1011: 'Stopped current activity to start scheduled clean? (1011).',
+  1015: 'unknown (1015).',
+  1032: 'unknown (1032).',
   1052: 'Time to change the mop.',
-  1053: 'Obstacle? (1053)',
+  1053: 'Task complete, returning to charge.',
   1021: 'Cleaning complete.',
-  1026: 'unkown (1026).',
+  1024: 'Low battery, returning to charge.',
+  1026: 'unknown (1026).',
   1027: 'Unable de find the charging dock, returning to starting position.',
+  1051: 'unknown (1051).',
+  1067: 'Resuming recharging after position retrieved.',
   1071: 'Position updated.',
   1070: 'Position retrieved after being lift? (1070)',
   1062: 'Unable de locate, starting new map.',
@@ -62,7 +70,7 @@ export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorType> = {
   0: 'All good.',
   102: 'Robot as been lift off.',
   104: 'Please clean the anti-drop sensor.',
-  109: 'unkown error (109).',
+  109: 'Main Brush is tangled.',
   20003: 'Task type not supported.',
   20011: 'Handle deal message fail.',
   20012: 'Get point count out of range.',

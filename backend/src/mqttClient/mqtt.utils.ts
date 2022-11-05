@@ -1,7 +1,7 @@
 import { inspect } from 'node:util';
 
 export const getColoredConsoleLog = (topic: string) => {
-  let color = 32;
+  let color = 31;
   if (topic.includes('p2p')) {
     if (topic.includes('/p/')) {
       color = 36;

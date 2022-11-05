@@ -19,12 +19,12 @@ export const requestListener = (req: IncomingMessage, res: ServerResponse) => {
     try {
       body = JSON.parse(body);
     } catch {}
-    console.log(`\x1b[34mHTTPS BODY: \x1b[0m`, body);
+    console.log(`\x1b[34mHTTPS BODY: \x1b[0m [`, body, `]`);
     //temporary to prevent a firmware download success then a bot crash when the bot call "https://portal.ecouser.net/api/ota/products/wukong/class/{ressources}/firmware/latest.json?"
-    if (typeof body === 'string' && body.search('wukong') >= 0) {
+    if (url && url.search('wukong') >= 0) {
       statusCode = 404;
     }
-    res.writeHead(statusCode, { 'Content-Type': 'text/plain' });
-    res.end('ok');
+    res.writeHead(statusCode);
+    res.end();
   });
 };
