@@ -45,7 +45,7 @@ export type BotNotificationLabel<T extends string | number | symbol> = {
 //TODO replace by key for i18n
 export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1007: 'Mop plugged.',
-  1011: 'Stopped current activity to start scheduled clean? (1011).',
+  1011: 'Starting scheduled task.',
   1015: 'unknown (1015).',
   1032: 'unknown (1032).',
   1052: 'Time to change the mop.',

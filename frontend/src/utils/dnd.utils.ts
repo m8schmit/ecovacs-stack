@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-
+//Do Not Disturb
 // the received string should looks like 8:0 or 20:0
 export const getformattedDNDDate = (hour: string, start?: string): Dayjs => {
   const splittedHour = hour.split(':');

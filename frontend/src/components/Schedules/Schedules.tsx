@@ -31,14 +31,18 @@ export const Schedules = () => {
     const todayDay = dayjs().get('day');
     let nextScheduleDay = todayDay;
 
-    while (+repeat[nextScheduleDay] !== 1) {
-      if (+repeat[nextScheduleDay] === 1) {
-        break;
+    if (repeat.search('1') >= 0) {
+      while (+repeat[nextScheduleDay] !== 1) {
+        // console.log('repeat in ', repeat[nextScheduleDay]);
+
+        if (+repeat[nextScheduleDay] === 1) {
+          break;
+        }
+        if (nextScheduleDay === repeat.length) {
+          nextScheduleDay = 0;
+        }
+        nextScheduleDay++;
       }
-      if (nextScheduleDay === repeat.length) {
-        nextScheduleDay = 0;
-      }
-      nextScheduleDay++;
     }
 
     if (todayDay === nextScheduleDay) {
