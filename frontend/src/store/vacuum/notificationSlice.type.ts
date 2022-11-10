@@ -64,11 +64,12 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1088: 'Failed to find position.',
 };
 
-export type BotErrorType = 0 | 102 | 104 | 109 | 20003 | 20011 | 20012;
+export type BotErrorType = 0 | 102 | 103 | 104 | 109 | 20003 | 20011 | 20012;
 
 export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorType> = {
   0: 'All good.',
   102: 'Robot as been lift off.',
+  103: 'Driving Wheel malfunction.',
   104: 'Please clean the anti-drop sensor.',
   109: 'Main Brush is tangled.',
   20003: 'Task type not supported.',

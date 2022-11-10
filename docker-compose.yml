@@ -13,7 +13,7 @@ services:
       - MYSQL_USER=dev
       - MYSQL_PASSWORD=dev
       - MYSQL_DATABASE=dev
-      - TZ=Atlantic
+      - TZ=America/New_York
     networks:
       ecovacs_stack:
       default:
@@ -40,7 +40,7 @@ services:
       - MYSQL_USER=dev
       - MYSQL_PASSWORD=dev
       - MYSQL_DATABASE=dev
-      - TZ=Atlantic
+      - TZ=America/New_York
     command: bash -c './generate_certs.sh && yarn install && yarn run dev'
 
     stdin_open: true
@@ -70,6 +70,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - WDS_SOCKET_PORT=0
+      - TZ=America/New_York
+
     networks:
       default:
     volumes:
