@@ -106,7 +106,14 @@ export const mapSlice = createSlice({
         selectedZonesList: [...state.selectedZonesList, action.payload],
       };
     },
-
+    setSelectedRoomsList: (state, action: PayloadAction<number[]>) => ({
+      ...state,
+      selectedRoomsList: action.payload,
+    }),
+    setSelectedZonesList: (state, action: PayloadAction<Extent[]>) => ({
+      ...state,
+      selectedZonesList: action.payload,
+    }),
     resetSelectedZonesList: (state) => {
       return {
         ...state,
@@ -164,9 +171,11 @@ export const {
   setMapSubsetsList,
 
   updateSelectedRoomsList,
+  setSelectedRoomsList,
   resetSelectedRoomsList,
 
   updateSelectedZonesList,
+  setSelectedZonesList,
   resetSelectedZonesList,
 
   setSelectionType,

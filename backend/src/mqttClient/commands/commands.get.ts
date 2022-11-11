@@ -102,3 +102,18 @@ export const getLifeSpan = (lifeSpanDeviceList: LifeSpanDeviceType[]) => {
   };
   sendJSONCommand(command, client);
 };
+
+export const getAIMap = () => {
+  const command: BotCommand = {
+    name: 'getAIMap',
+    //pointCount always seems to be 15
+    // this a start and an end index for an array lookin like:
+    // [
+    //   { x: 1775, y: -6125, type: 3, pid: 0, status: 0 },
+    //   { x: 6575, y: -4550, type: 3, pid: 1, status: 0 },
+    // ],
+    // from 'getRecognization:' it seems to be able to recognize 5 object, "type [1, 3, 4, 5, 6]"
+    payload: { pointCount: 15, pointStart: 0, bdTaskID: get16LengthId() },
+  };
+  sendJSONCommand(command, client);
+};

@@ -70,3 +70,12 @@ export interface DoNotDisturbState {
   start: string;
   end: string;
 }
+
+export interface BotPattern {
+  id: number;
+  pattern: {
+    selected: string;
+    type: string;
+    name: string;
+  };
+}

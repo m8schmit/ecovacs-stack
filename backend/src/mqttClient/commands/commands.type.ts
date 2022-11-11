@@ -3,6 +3,7 @@ import { MapTrace } from '../map/map.model';
 export type BotCommandName =
   | 'charge'
   | 'clean_V2'
+  | 'getAIMap'
   | 'getAutoEmpty'
   | 'getBattery'
   | 'getBlock'

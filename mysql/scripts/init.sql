@@ -17,5 +17,11 @@ CREATE TABLE IF NOT EXISTS bot_reminders (
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS bot_saved_pattern (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pattern JSON NOT NULL
+);
+
+
 INSERT INTO `bot_reminders` (`name`, `need_to_change`) VALUES ('dust_bag', '0');
 INSERT INTO `bot_reminders` (`name`, `need_to_change`) VALUES ('mop, '0');

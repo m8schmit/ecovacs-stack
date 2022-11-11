@@ -14,6 +14,11 @@ const execMysqlQuery = (query: string) =>
   connection
     .promise()
     .query(query)
-    .then(([rows, fields]) => rows);
+    .then(([rows, fields]) => {
+      // console.log(fields, rows);
+      return rows;
+    });
 
 export { connection, execMysqlQuery };
+
+// TODO refactor the error/Notification to have only one table with the two types

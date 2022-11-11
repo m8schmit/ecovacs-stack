@@ -25,6 +25,7 @@ import {
   setChargeState,
   setDoNotDisturb,
   setMoppingOption,
+  setSavedPatternList,
   setSchedulesList,
   setVacuumBattery,
   setVacuumingOption,
@@ -119,6 +120,8 @@ const App = () => {
       socket.on('errorList', (payload) =>
         dispatch(setErrorsList(payload.map((botError: any) => ({ ...botError, code: botError.error_code })))),
       );
+
+    socket && socket.on('savedPatternList', (payload) => dispatch(setSavedPatternList(payload)));
 
     socket &&
       socket.on('mapTrace', (payload) => {

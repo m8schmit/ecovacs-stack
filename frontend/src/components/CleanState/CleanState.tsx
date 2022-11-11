@@ -1,4 +1,4 @@
-import { Bolt, Close, Pause, PlayArrow, Stop } from '@mui/icons-material';
+import { Bolt, Close, Pause, PlayArrow, Save, Stop } from '@mui/icons-material';
 import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
 import { useContext } from 'react';
 
@@ -16,6 +16,7 @@ import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { isCleanStateContent, isString } from '../../utils/typeguard.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
+import SavedPatternSelect from './SavedPattern/SavedPatternSelect/SavedPatternSelect';
 import SelectTypeSwitch from './SelectTypeSwitch/SelectTypeSwitch';
 
 const CleanState = () => {
@@ -67,6 +68,14 @@ const CleanState = () => {
     socket.emit('clean', getCleanTask('stop'));
   };
 
+  const save = () => {
+    socket.emit('savePattern', {
+      selected: JSON.stringify(selectedRoomsList.length ? selectedRoomsList : selectedZonesList),
+      type: selectedRoomsList.length ? 'spotArea' : 'customArea',
+      name: 'todo',
+    });
+  };
+
   const getTextState = () => {
     if (autoEmptyActive) {
       return (
@@ -97,12 +106,18 @@ const CleanState = () => {
 
       <OptionsFrame>
         <SelectTypeSwitch />
+        <SavedPatternSelect />
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography>currently: {getTextState()}</Typography>
           {(selectedRoomsList.length > 0 || selectedZonesList.length > 0) && (
-            <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
-              reset
-            </Button>
+            <Box>
+              <Button size="small" variant="outlined" onClick={() => save()} startIcon={<Save />}>
+                save
+              </Button>
+              <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
+                reset
+              </Button>
+            </Box>
           )}
         </Box>
 

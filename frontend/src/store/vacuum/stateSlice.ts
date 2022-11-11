@@ -8,6 +8,7 @@ import { RawSchedules, Schedules } from './commands.schedules.type';
 import {
   AutoEmptyState,
   BatteryState,
+  BotPattern,
   ChargeState,
   CleanState,
   DoNotDisturbState,
@@ -24,6 +25,7 @@ interface VacuumState {
   schedulesList: Schedules[];
   moppingOptions: MoppingOptionsState;
   doNotDisturb: DoNotDisturbState;
+  savedPatternList: BotPattern[];
 }
 
 const initialState: VacuumState = {
@@ -58,6 +60,7 @@ const initialState: VacuumState = {
     start: dayjs().format(),
     end: dayjs().format(),
   },
+  savedPatternList: [],
 };
 
 export const stateSlice = createSlice({
@@ -116,6 +119,10 @@ export const stateSlice = createSlice({
         end: getformattedDNDDate(action.payload.end, action.payload.start).format(),
       },
     }),
+    setSavedPatternList: (state, action: PayloadAction<BotPattern[]>) => ({
+      ...state,
+      savedPatternList: action.payload,
+    }),
   },
 });
 
@@ -128,6 +135,7 @@ export const {
   setVacuumingOption,
   setMoppingOption,
   setDoNotDisturb,
+  setSavedPatternList,
 } = stateSlice.actions;
 
 export const getVacuumClean = () => useAppSelector(({ state }) => state.status, shallowEqual);
@@ -138,3 +146,4 @@ export const getVacuumingOption = () => useAppSelector(({ state }) => state.vacu
 export const getMoppingOption = () => useAppSelector(({ state }) => state.moppingOptions, shallowEqual);
 export const geSchedulesList = () => useAppSelector(({ state }) => state.schedulesList, shallowEqual);
 export const getDoNotDisturb = () => useAppSelector(({ state }) => state.doNotDisturb, shallowEqual);
+export const getSavedPattern = () => useAppSelector(({ state }) => state.savedPatternList, shallowEqual);

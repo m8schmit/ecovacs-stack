@@ -22,5 +22,5 @@ export const getLogs = (topic: string, message: Buffer) => {
   if (isTopic('onFwBuryPoint', topic)) {
     formattedRes.body.data.content = JSON.parse(formattedRes.body.data.content);
   }
-  console.log(`${new Date().toUTCString()}`, getColoredConsoleLog(topic), inspect(formattedRes, true, null, true));
+  console.log(`${new Date().toLocaleString()}`, getColoredConsoleLog(topic), inspect(formattedRes, true, null, true));
 };

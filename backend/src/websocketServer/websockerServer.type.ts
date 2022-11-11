@@ -13,6 +13,7 @@ import {
   MapTracesList,
 } from '../mqttClient/commands/commands.type';
 import { Maybe } from '../mqttClient/types';
+import { BotPattern } from '../mysqlHelper/query.type';
 
 export interface ServerToClientEvents {
   vacuumMap: (params: { image: string; id: string }) => void;
@@ -34,6 +35,7 @@ export interface ServerToClientEvents {
   lifeSpanReminder: (params: any /*todo*/) => void;
   eventList: (eventList: any /*todo*/) => void;
   errorList: (errorList: any /*todo*/) => void;
+  savedPatternList: (patternList: BotPattern[]) => void;
 }
 
 export interface ClientToServerEvents {
@@ -73,6 +75,8 @@ export interface ClientToServerEvents {
   dismissEvent: (id: number | null) => void;
   getErrorsList: () => void;
   dismissError: (id: number | null) => void;
+  savePattern: (pattern: BotPattern) => void;
+  getSavedPattern: () => void;
 }
 
 export interface InterServerEvents {

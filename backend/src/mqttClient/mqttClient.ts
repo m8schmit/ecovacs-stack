@@ -1,5 +1,4 @@
 import { connect, MqttClient } from 'mqtt';
-import { inspect } from 'node:util';
 
 import { addBotError, getBotError } from '../mysqlHelper/botError.query';
 import { addBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
@@ -147,41 +146,40 @@ const mqttClient = () => {
     if (isTopic('getInfo', topic)) {
       const res = getDatafromMessage(message);
       // console.log('getInfo ', inspect(res, false, null, true));
-      Object.keys(res).forEach((key) => {
-        switch (key) {
-          case 'getCleanInfo':
-            WSsocket?.emit('status', { state: res[key].data.state, cleanState: res[key].data.cleanState });
+      res &&
+        Object.keys(res).forEach((key) => {
+          switch (key) {
+            case 'getCleanInfo':
+              WSsocket?.emit('status', { state: res[key].data.state, cleanState: res[key].data.cleanState });
 
-          case 'getChargeState':
-            WSsocket?.emit('chargeState', res[key].data);
-          case 'getBattery':
-            WSsocket?.emit('batteryLevel', res[key].data);
-          case 'getSpeed':
-            WSsocket?.emit('speed', res[key].data);
+            case 'getChargeState':
+              WSsocket?.emit('chargeState', res[key].data);
+            case 'getBattery':
+              WSsocket?.emit('batteryLevel', res[key].data);
+            case 'getSpeed':
+              WSsocket?.emit('speed', res[key].data);
 
-          case 'getCleanCount':
-            WSsocket?.emit('cleanCount', res[key].data);
+            case 'getCleanCount':
+              WSsocket?.emit('cleanCount', res[key].data);
 
-          case 'getWaterInfo':
-            const enable = !!res[key].data.enable;
-            WSsocket?.emit('waterInfo', {
-              enable,
-              amount: res[key].data.amount,
-              sweepType: res[key].data.sweepType,
-            });
-        }
-      });
+            case 'getWaterInfo':
+              const enable = !!res[key].data.enable;
+              WSsocket?.emit('waterInfo', {
+                enable,
+                amount: res[key].data.amount,
+                sweepType: res[key].data.sweepType,
+              });
+          }
+        });
     }
 
     if (isTopic('getLifeSpan', topic)) {
       const res = getDatafromMessage(message);
-      // console.log('getLifeSpan ', res);
       WSsocket?.emit('lifeSpanInfo', res);
     }
 
     if (isTopic('resetLifeSpan', topic)) {
-      const res = getDatafromMessage(message);
-      // console.log('resetLifeSpan ', res);
+      // const res = getDatafromMessage(message);
       getLifeSpan(['brush', 'sideBrush', 'heap', 'unitCare', 'dModule']);
     }
   });

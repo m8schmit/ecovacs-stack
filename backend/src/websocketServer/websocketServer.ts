@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
 import {
+  getAIMap,
   getInfo,
   getLifeSpan,
   getMapTrace,
@@ -24,6 +25,7 @@ import {
 import { delAllBotError, delBotError, getBotError } from '../mysqlHelper/botError.query';
 import { delAllBotEvent, delBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 import { getAllReminders } from '../mysqlHelper/botReminder.query';
+import { addBotPattern, getBotPattern } from '../mysqlHelper/botSavedPattern';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
 
 const intervalDuration = 60000;
@@ -34,7 +36,17 @@ let getStatusInfoInterval: NodeJS.Timer;
 // then getSleep","getError","getSpeed","getCleanCount","getDModule","getCleanPreference","getWaterInfo","getBlock","getBreakPoint","getVoice","getVolume"
 // or getInfo ["getRecognization","getMapState","getBattery","getChargeState","getStats"]
 const getBotStatus = () => {
-  getInfo(['getCleanInfo', 'getChargeState', 'getBattery', 'getSpeed', 'getCleanCount', 'getWaterInfo']);
+  getInfo([
+    'getCleanInfo',
+    'getChargeState',
+    'getBattery',
+    'getSpeed',
+    'getCleanCount',
+    'getWaterInfo',
+    'getRecognization',
+    'getStats',
+  ]);
+  getAIMap();
 };
 
 const getOneTimeBotStatus = () => {
@@ -128,6 +140,10 @@ const websocketServer = () => {
       setWaterInfo(payload);
     });
 
+    /*
+     ** LifeSpan, errors and notifications
+     */
+
     socket.on('getLifeSpanDevice', () => {
       getLifeSpan(['brush', 'sideBrush', 'heap', 'unitCare', 'dModule']);
     });
@@ -171,6 +187,16 @@ const websocketServer = () => {
     socket.on('dismissError', (id) => {
       (id ? delBotError(id) : delAllBotError()).then(() => getBotError().then((res) => socket.emit('errorList', res)));
     });
+
+    /*
+     ** Saved clean pattern
+     */
+
+    const sendBotSavedPatternList = () => getBotPattern().then((res) => socket.emit('savedPatternList', res as any[]));
+
+    socket.on('getSavedPattern', () => sendBotSavedPatternList());
+
+    socket.on('savePattern', (pattern) => addBotPattern(JSON.stringify(pattern)).then(() => sendBotSavedPatternList()));
   });
 };
 

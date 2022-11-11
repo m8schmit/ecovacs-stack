@@ -5,3 +5,9 @@ export interface Event {
   evt_code: BotEventType;
   timestamp: string;
 }
+
+export interface BotPattern {
+  selected: string;
+  type: string;
+  name: string;
+}
