@@ -26,6 +26,7 @@ interface VacuumState {
   moppingOptions: MoppingOptionsState;
   doNotDisturb: DoNotDisturbState;
   savedPatternList: BotPattern[];
+  selectedSavedPatternId: string;
 }
 
 const initialState: VacuumState = {
@@ -61,6 +62,7 @@ const initialState: VacuumState = {
     end: dayjs().format(),
   },
   savedPatternList: [],
+  selectedSavedPatternId: '',
 };
 
 export const stateSlice = createSlice({
@@ -123,6 +125,14 @@ export const stateSlice = createSlice({
       ...state,
       savedPatternList: action.payload,
     }),
+    setSelectedSavedPatternId: (state, action: PayloadAction<string>) => ({
+      ...state,
+      selectedSavedPatternId: action.payload,
+    }),
+    resetSelectedSavedPatternId: (state) => ({
+      ...state,
+      selectedSavedPatternId: initialState.selectedSavedPatternId,
+    }),
   },
 });
 
@@ -136,6 +146,8 @@ export const {
   setMoppingOption,
   setDoNotDisturb,
   setSavedPatternList,
+  setSelectedSavedPatternId,
+  resetSelectedSavedPatternId,
 } = stateSlice.actions;
 
 export const getVacuumClean = () => useAppSelector(({ state }) => state.status, shallowEqual);
@@ -147,3 +159,5 @@ export const getMoppingOption = () => useAppSelector(({ state }) => state.moppin
 export const geSchedulesList = () => useAppSelector(({ state }) => state.schedulesList, shallowEqual);
 export const getDoNotDisturb = () => useAppSelector(({ state }) => state.doNotDisturb, shallowEqual);
 export const getSavedPattern = () => useAppSelector(({ state }) => state.savedPatternList, shallowEqual);
+export const getSelectedSavedPatternId = () =>
+  useAppSelector(({ state }) => state.selectedSavedPatternId, shallowEqual);

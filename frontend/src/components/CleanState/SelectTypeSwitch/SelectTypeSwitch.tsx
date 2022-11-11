@@ -8,6 +8,7 @@ import {
   resetSelectedZonesList,
   setSelectionType,
 } from '../../../store/vacuum/mapSlice';
+import { resetSelectedSavedPatternId } from '../../../store/vacuum/stateSlice';
 
 const SelectTypeSwitch = () => {
   const selectionType = getSelectionType();
@@ -17,6 +18,7 @@ const SelectTypeSwitch = () => {
     console.log(value);
     dispatch(resetSelectedRoomsList());
     dispatch(resetSelectedZonesList());
+    dispatch(resetSelectedSavedPatternId());
     dispatch(setSelectionType(value));
   };
 

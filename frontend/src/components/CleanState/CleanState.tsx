@@ -11,7 +11,12 @@ import {
   resetSelectedRoomsList,
   resetSelectedZonesList,
 } from '../../store/vacuum/mapSlice';
-import { getAutoEmptyState, getChargeState, getVacuumClean } from '../../store/vacuum/stateSlice';
+import {
+  getAutoEmptyState,
+  getChargeState,
+  getVacuumClean,
+  resetSelectedSavedPatternId,
+} from '../../store/vacuum/stateSlice';
 import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { isCleanStateContent, isString } from '../../utils/typeguard.utils';
@@ -65,6 +70,7 @@ const CleanState = () => {
   const reset = () => {
     dispatch(resetSelectedRoomsList());
     dispatch(resetSelectedZonesList());
+    dispatch(resetSelectedSavedPatternId());
     socket.emit('clean', getCleanTask('stop'));
   };
 
@@ -105,13 +111,15 @@ const CleanState = () => {
       <Typography variant="overline">Controls</Typography>
 
       <OptionsFrame>
-        <SelectTypeSwitch />
-        <SavedPatternSelect />
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <SelectTypeSwitch />
+          <SavedPatternSelect />
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography>currently: {getTextState()}</Typography>
           {(selectedRoomsList.length > 0 || selectedZonesList.length > 0) && (
             <Box>
-              <Button size="small" variant="outlined" onClick={() => save()} startIcon={<Save />}>
+              <Button size="small" variant="outlined" sx={{ mr: 1 }} onClick={() => save()} startIcon={<Save />}>
                 save
               </Button>
               <Button size="small" variant="outlined" onClick={() => reset()} startIcon={<Close />}>
@@ -122,7 +130,7 @@ const CleanState = () => {
         </Box>
 
         {status.state === 'idle' && (
-          <Typography>
+          <Typography sx={{ mt: 2 }}>
             start an <b>{selectedRoomsList.length ? 'spotArea' : selectedZonesList.length ? 'customArea' : 'auto'}</b>{' '}
             cleaning
             {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
