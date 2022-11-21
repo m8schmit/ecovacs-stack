@@ -10,10 +10,8 @@ import VectorLayer from 'ol/layer/Vector';
 import { Projection } from 'ol/proj';
 import ImageSource from 'ol/source/Image';
 import Static from 'ol/source/ImageStatic';
-import VectorSource from 'ol/source/Vector';
 import Vector from 'ol/source/Vector';
 import Fill from 'ol/style/Fill';
-import Circle from 'ol/style/Circle';
 import Icon from 'ol/style/Icon';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
@@ -34,10 +32,11 @@ import {
   updateSelectedRoomsList,
   updateSelectedZonesList,
 } from '../../store/vacuum/mapSlice';
+import { AiMapObstacle } from '../../store/vacuum/mapSlice.type';
 import getRandomColor from '../../utils/colors.utils';
 import { WebSocketContext } from '../../utils/socket.utils';
-import { BOT_ICON, CHARGING_DOCK_ICON, getAngle } from './Map.utils';
-import { AiMapObstacle, OBSTACLE_LABEL_LIST } from '../../store/vacuum/mapSlice.type';
+import { BOT_ICON, CHARGING_DOCK_ICON, getAngle, RECONIZED_OBJECTS_ICON_LIST } from './Map.utils';
+import VectorSource from 'ol/source/Vector';
 
 // TODO get all this from backend
 const mapWidth = 1600;
@@ -320,13 +319,15 @@ const VacuumMap = () => {
   }, [map]);
 
   useEffect(() => {
+    // don't know yet where it come from
+    const OFFSET = 2;
+
     roomsLayer.setSource(
       new Vector({
         features: mapSubsetsList.map(({ value, mssid }) => {
           return new Feature({
-            //TODO there an offset, some polygon are overlaping
             geometry: new Polygon([
-              value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y')]),
+              value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y') + OFFSET]),
             ]),
             name: `Room ${mssid}`,
           });
@@ -366,28 +367,20 @@ const VacuumMap = () => {
       );
 
     obstacleLayer.setStyle(
-      obstaclesList.map(
-        (obstacle: AiMapObstacle) =>
-          new Style({
-            image: new Circle({
-              radius: 15,
-              stroke: new Stroke({
-                color: 'cadetblue',
-                width: 1,
-              }),
-              fill: new Fill({
-                color: 'cadetblue',
-              }),
-            }),
-            text: new Text({
-              text: OBSTACLE_LABEL_LIST[obstacle.type] ? OBSTACLE_LABEL_LIST[obstacle.type] : obstacle.type.toString(),
-              fill: new Fill({
-                color: 'white',
-              }),
-            }),
-            geometry: new Point([getCoordinates(obstacle.x, 'x'), getCoordinates(obstacle.y, 'y')]),
+      obstaclesList.map((obstacle: AiMapObstacle) => {
+        console.log('type: ', obstacle.type, ' found? ', !!RECONIZED_OBJECTS_ICON_LIST[obstacle.type]);
+        return new Style({
+          image: new Icon({
+            anchor: [0.5, 0.5],
+            scale: 0.5,
+            rotation: getAngle(botPosition.a),
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            src: `data:image/png;base64,${RECONIZED_OBJECTS_ICON_LIST[obstacle.type]}`,
           }),
-      ),
+          geometry: new Point([getCoordinates(obstacle.x, 'x'), getCoordinates(obstacle.y, 'y')]),
+        });
+      }),
     );
   }, [obstaclesList]);
 

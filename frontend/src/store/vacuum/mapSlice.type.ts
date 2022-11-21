@@ -83,10 +83,10 @@ export type BotObstacleLabel = {
   [key in BotObstacleType]: string;
 };
 
-export const OBSTACLE_LABEL_LIST: BotObstacleLabel = {
-  1: 'unkown (1)',
-  3: 'cloth',
-  4: 'chair',
-  5: 'shoe',
-  6: 'cable',
-};
+// export const OBSTACLE_LABEL_LIST: BotObstacleLabel = {
+//   1: 'mat',
+//   3: 'cloth',
+//   4: 'chair',
+//   5: 'shoe',
+//   6: 'wire',
+// };
