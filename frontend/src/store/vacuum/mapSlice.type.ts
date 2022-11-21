@@ -64,3 +64,29 @@ interface MapTrace {
 }
 
 export type SelectionType = 'zone' | 'room';
+
+/**
+ * AI map
+ */
+
+export interface AiMapObstacle {
+  x: number;
+  y: number;
+  type: BotObstacleType;
+  pid: number;
+  status: number;
+}
+
+export type BotObstacleType = 1 | 3 | 4 | 5 | 6;
+
+export type BotObstacleLabel = {
+  [key in BotObstacleType]: string;
+};
+
+export const OBSTACLE_LABEL_LIST: BotObstacleLabel = {
+  1: 'unkown (1)',
+  3: 'cloth',
+  4: 'chair',
+  5: 'shoe',
+  6: 'cable',
+};

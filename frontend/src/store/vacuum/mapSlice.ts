@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Extent } from 'ol/extent';
 
 import { useAppSelector } from '../hooks';
 import {
+  AiMapObstacle,
   Devices,
   DevicesCoordinates,
   DevicesPayload,
@@ -10,7 +12,6 @@ import {
   MapTracesList,
   SelectionType,
 } from './mapSlice.type';
-import { Extent } from 'ol/extent';
 
 interface MapState {
   selectedRoomsList: number[];
@@ -24,6 +25,7 @@ interface MapState {
   };
   mapSubsetsList: MapSubSet[];
   mapTracesList: MapTracesList;
+  obstaclesList: AiMapObstacle[];
   position: {
     dock: DevicesCoordinates;
     bot: DevicesCoordinates;
@@ -47,6 +49,7 @@ const initialState: MapState = {
     totalCount: 0,
     newEntriesList: [],
   },
+  obstaclesList: [],
   position: {
     dock: {
       x: 0,
@@ -162,6 +165,11 @@ export const mapSlice = createSlice({
       locationState: { ...state.locationState, ...action.payload },
     }),
     onRelocateSuccess: (state) => ({ ...state, locationState: { isLoading: false, isInvalid: false } }),
+
+    setObstaclesList: (state, action: PayloadAction<AiMapObstacle[]>) => ({
+      ...state,
+      obstaclesList: action.payload,
+    }),
   },
 });
 
@@ -186,6 +194,8 @@ export const {
 
   setLocationState,
   onRelocateSuccess,
+
+  setObstaclesList,
 } = mapSlice.actions;
 
 export const getVacuumMap = () => useAppSelector(({ map }) => map.map);
@@ -198,3 +208,5 @@ export const getMapSubsetsList = () => useAppSelector(({ map }) => map.mapSubset
 export const getSelectedRoomsList = () => useAppSelector(({ map }) => map.selectedRoomsList);
 export const getSelectedZonesList = () => useAppSelector(({ map }) => map.selectedZonesList);
 export const getSelectionType = () => useAppSelector(({ map }) => map.selectionType);
+
+export const getObstaclesList = () => useAppSelector(({ map }) => map.obstaclesList);

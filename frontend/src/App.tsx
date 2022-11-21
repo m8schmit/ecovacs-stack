@@ -11,6 +11,7 @@ import {
   onRelocateSuccess,
   setMapSubsetsList,
   setMapTracesList,
+  setObstaclesList,
   setVacuumMap,
   setVacuumPos,
 } from './store/vacuum/mapSlice';
@@ -106,7 +107,7 @@ const App = () => {
 
     socket && socket.on('lifeSpanInfo', (payload) => dispatch(setLifeSpanDeviceList(payload)));
 
-    socket && socket.on('obstacleList', (payload) => console.log('obstacleList: ', payload));
+    socket && socket.on('obstacleList', (payload) => dispatch(setObstaclesList(payload)));
 
     socket &&
       socket.on('lifeSpanReminder', (payload) => {
