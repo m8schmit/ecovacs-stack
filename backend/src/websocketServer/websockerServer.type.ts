@@ -1,5 +1,6 @@
 import { CleaningType, Schedules } from '../mqttClient/commands/commands.schedules.type';
 import {
+  AiMapObstacle,
   AutoEmptyState,
   BatteryState,
   BotAct,
@@ -36,6 +37,7 @@ export interface ServerToClientEvents {
   eventList: (eventList: any /*todo*/) => void;
   errorList: (errorList: any /*todo*/) => void;
   savedPatternList: (patternList: BotPattern[]) => void;
+  obstacleList: (obstacleList: AiMapObstacle[]) => void;
 }
 
 export interface ClientToServerEvents {

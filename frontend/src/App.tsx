@@ -106,6 +106,8 @@ const App = () => {
 
     socket && socket.on('lifeSpanInfo', (payload) => dispatch(setLifeSpanDeviceList(payload)));
 
+    socket && socket.on('obstacleList', (payload) => console.log('obstacleList: ', payload));
+
     socket &&
       socket.on('lifeSpanReminder', (payload) => {
         console.log('LIFESPAN', payload);

@@ -8,6 +8,7 @@ export type BotCommandName =
   | 'getBattery'
   | 'getBlock'
   | 'getBreakPoint'
+  | 'getCachedMapInfo'
   | 'getChargeState'
   | 'getCleanCount'
   | 'getCleanInfo'
@@ -132,6 +133,14 @@ export interface LifeSpanDevice {
   type: LifeSpanDeviceType;
   left: number;
   total: number;
+}
+
+export interface AiMapObstacle {
+  x: number;
+  y: number;
+  type: number;
+  pid: number;
+  status: number;
 }
 // ['brush', 'sideBrush', 'heap', 'unitCare', 'dModule'],
 // [{"type":"sideBrush","left":6778,"total":9000},{"type":"brush","left":16062,"total":18000},{"type":"heap","left":5262,"total":7200},{"type":"unitCare","left":-138,"total":1800},{"type":"dModule","left":3598,"total":3600}

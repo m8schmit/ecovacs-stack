@@ -30,7 +30,8 @@ export type BotEventType =
   | 1061
   | 1062
   | 1068
-  | 1088;
+  | 1088
+  | 1092;
 
 export interface BotNotification<T> {
   id: number;
@@ -47,12 +48,12 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1007: 'Mop plugged.',
   1011: 'Starting scheduled task.',
   1015: 'unknown (1015).',
-  1032: 'unknown (1032).',
+  1032: 'Work Interrupted, returning to charge.',
   1052: 'Time to change the mop.',
   1053: 'Task complete, returning to charge.',
   1021: 'Cleaning complete.',
   1024: 'Low battery, returning to charge.',
-  1026: 'unknown (1026).',
+  1026: 'Work interrupted, robot was blocked.',
   1027: 'Unable de find the charging dock, returning to starting position.',
   1051: 'unknown (1051).',
   1067: 'Resuming recharging after position retrieved.',
@@ -62,6 +63,7 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1061: 'Resuming cleaning after position retrieved.',
   1068: 'Failed to find position, returning to charge.',
   1088: 'Failed to find position.',
+  1092: 'Failed to find position after being lift.',
 };
 
 export type BotErrorType = 0 | 102 | 103 | 104 | 109 | 20003 | 20011 | 20012;

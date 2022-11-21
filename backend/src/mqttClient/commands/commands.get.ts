@@ -113,7 +113,16 @@ export const getAIMap = () => {
     //   { x: 6575, y: -4550, type: 3, pid: 1, status: 0 },
     // ],
     // from 'getRecognization:' it seems to be able to recognize 5 object, "type [1, 3, 4, 5, 6]"
-    payload: { pointCount: 15, pointStart: 0, bdTaskID: get16LengthId() },
+    // maybe more there type '9' in `aitypes`
+    // 1: ??
+    // 3: cloths?
+    // 4: chairs?
+    // 5: shoes?
+    // 6: cables?
+    // 9: ??
+
+    // is only updted afterv clening complete
+    payload: { pointCount: 30, pointStart: 0, bdTaskID: get16LengthId() },
   };
   sendJSONCommand(command, client);
 };

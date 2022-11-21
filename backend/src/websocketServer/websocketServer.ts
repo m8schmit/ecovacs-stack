@@ -44,9 +44,9 @@ const getBotStatus = () => {
     'getCleanCount',
     'getWaterInfo',
     'getRecognization',
-    'getStats',
   ]);
-  getAIMap();
+  getInfo(['getStats']);
+  // getInfo(['getCachedMapInfo']);
 };
 
 const getOneTimeBotStatus = () => {
@@ -54,6 +54,7 @@ const getOneTimeBotStatus = () => {
   getPos(['chargePos', 'deebotPos']);
   getSingleInfo('getAutoEmpty');
   getSingleInfo('getBlock');
+  getAIMap();
 };
 
 export let WSsocket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;

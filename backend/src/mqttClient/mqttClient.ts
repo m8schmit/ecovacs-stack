@@ -44,7 +44,10 @@ const mqttClient = () => {
 
   client.on('message', (topic, message) => {
     // log message
-    getLogs(topic, message);
+    // filters some message I don't need
+    if (!isTopic('onMapTrace', topic) && !isTopic('onMinorMap', topic) && !isTopic('onPos', topic)) {
+      getLogs(topic, message);
+    }
 
     handleMap(topic, message);
 
@@ -90,13 +93,17 @@ const mqttClient = () => {
        * status
        * 0 disable
        * 1 enable
-       * 2 ??
+       * 2 dust bag not full
        * 5 dust bag need to be changed
        */
       if (res) {
         if (res.status === 5) {
           updateReminder('dust_bag', true).then(() =>
             WSsocket?.emit('lifeSpanReminder', { name: 'dust_bag', needToBeChanged: true }),
+          );
+        } else if (res.status === 2) {
+          updateReminder('dust_bag', false).then(() =>
+            WSsocket?.emit('lifeSpanReminder', { name: 'dust_bag', needToBeChanged: false }),
           );
         }
         WSsocket?.emit('autoEmpty', { active: res.status !== 0, enable: res.enable === 1, bagFull: res.status === 5 });
@@ -181,6 +188,14 @@ const mqttClient = () => {
     if (isTopic('resetLifeSpan', topic)) {
       // const res = getDatafromMessage(message);
       getLifeSpan(['brush', 'sideBrush', 'heap', 'unitCare', 'dModule']);
+    }
+
+    if (isTopic('getAIMap', topic)) {
+      const res = getDatafromMessage(message);
+      console.log(res);
+      if (res.pointValue.length) {
+        WSsocket.emit('obstacleList', res.pointValue);
+      }
     }
   });
 
