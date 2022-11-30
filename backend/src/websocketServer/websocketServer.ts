@@ -22,6 +22,7 @@ import {
   setSpeed,
   setWaterInfo,
 } from '../mqttClient/commands/commands.set';
+import { decompressLZMA } from '../mqttClient/map/LZMA.utils';
 import { delAllBotError, delBotError, getBotError } from '../mysqlHelper/botError.query';
 import { delAllBotEvent, delBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 import { getAllReminders } from '../mysqlHelper/botReminder.query';
@@ -75,8 +76,10 @@ const websocketServer = () => {
     //TODO stop these query when bot is busy, with relocate for example
     getBotStatus();
     getOneTimeBotStatus();
+
     if (count) {
       getStatusInfoInterval = setInterval(() => {
+        console.log('trigger bot status');
         getBotStatus();
       }, intervalDuration);
     }

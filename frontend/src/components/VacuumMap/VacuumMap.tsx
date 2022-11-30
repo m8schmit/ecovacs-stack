@@ -319,15 +319,13 @@ const VacuumMap = () => {
   }, [map]);
 
   useEffect(() => {
-    // don't know yet where it come from
-    const OFFSET = 2;
-
     roomsLayer.setSource(
       new Vector({
         features: mapSubsetsList.map(({ value, mssid }) => {
           return new Feature({
             geometry: new Polygon([
-              value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y') + OFFSET]),
+              // need to add the PixelRatio as an offset to Y
+              value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y') + PixelRatio]),
             ]),
             name: `Room ${mssid}`,
           });
