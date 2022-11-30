@@ -65,7 +65,7 @@ export interface CleanState {
 
 type BotState = 'clean' | 'pause' | 'idle' | 'goCharging';
 type BotRoute = 'plan';
-export type BotType = 'auto' | 'spotArea' | 'customArea';
+export type BotType = 'auto' | 'spotArea' | 'customArea' | 'mapPoint';
 type BotMotionState = 'working' | 'pause';
 
 // ChargeState

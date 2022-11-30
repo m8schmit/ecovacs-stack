@@ -21,6 +21,17 @@ export const clean = (
   sendJSONCommand(command, client);
 };
 
+export const go = (params: BotAct, value: Maybe<string> = null /* four numbers */) => {
+  const content = { total: 0, donotClean: 0, count: 0, type: 'mapPoint', bdTaskID: get16LengthId() };
+  const command: BotCommand = {
+    name: 'clean_V2',
+    payload: {
+      act: params,
+      content: value ? { ...content, value } : content,
+    },
+  };
+  sendJSONCommand(command, client);
+};
 export const charge = () => {
   const command: BotCommand = {
     name: 'charge',

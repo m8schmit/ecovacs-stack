@@ -269,7 +269,9 @@ const VacuumMap = () => {
         if (featureName) {
           const mssid = +featureName.split(' ')[1];
           dispatch(updateSelectedRoomsList(mssid));
-          console.log('event ', event);
+          console.log('event: ', event);
+
+          socket.emit('go', { act: 'start', value: setCoordinates(event.coordinate).join(', ') });
         }
       }
     });

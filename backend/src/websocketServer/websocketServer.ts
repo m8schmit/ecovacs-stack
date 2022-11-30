@@ -16,6 +16,7 @@ import {
   delSched_V2,
   editSched_V2,
   EmptyDustBin,
+  go,
   resetLifeSpan,
   setCleanCount,
   setRelocationState,
@@ -99,6 +100,10 @@ const websocketServer = () => {
 
     socket.on('clean', (payload) => {
       clean(payload.act, payload.type, payload?.value);
+    });
+
+    socket.on('go', (payload) => {
+      go(payload.act, payload?.value);
     });
 
     socket.on('charge', () => {
