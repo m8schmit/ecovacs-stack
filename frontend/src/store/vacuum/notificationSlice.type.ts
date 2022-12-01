@@ -24,6 +24,7 @@ export type BotEventType =
   | 1051
   | 1052
   | 1053
+  | 1057
   | 1067
   | 1071
   | 1070
@@ -56,6 +57,7 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1026: 'Work interrupted, robot was blocked.',
   1027: 'Unable de find the charging dock, returning to starting position.',
   1051: 'unknown (1051).',
+  1057: 'Work complete, idle.',
   1067: 'Resuming recharging after position retrieved.',
   1071: 'Position updated.',
   1070: 'Position retrieved after being lift? (1070)',
