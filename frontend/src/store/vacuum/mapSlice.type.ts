@@ -63,7 +63,7 @@ interface MapTrace {
   isConnectedWithPrevious: boolean;
 }
 
-export type SelectionType = 'zone' | 'room';
+export type SelectionType = 'zone' | 'room' | 'point';
 
 /**
  * AI map
