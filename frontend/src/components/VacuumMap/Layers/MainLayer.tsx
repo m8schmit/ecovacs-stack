@@ -5,12 +5,13 @@ import Static from 'ol/source/ImageStatic';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { getVacuumMap } from '../../../store/vacuum/mapSlice';
-import { MapContext } from '../../Map/MapContex';
+import { MapContext } from '../Map/MapContex';
 
 export interface MainLayerProps {
   projection?: Projection;
+  ZIndex?: number;
 }
-const MainLayer: FC<MainLayerProps> = ({ projection = null }) => {
+const MainLayer: FC<MainLayerProps> = ({ projection, ZIndex }) => {
   const map = useContext(MapContext);
   const [mainLayer] = useState<ImageLayer<ImageSource>>(new ImageLayer());
   const { data } = getVacuumMap();
@@ -19,7 +20,7 @@ const MainLayer: FC<MainLayerProps> = ({ projection = null }) => {
     if (!map) return;
 
     map.addLayer(mainLayer);
-    mainLayer.setZIndex(0);
+    mainLayer.setZIndex(ZIndex || 0);
     console.log('add mainLayer');
     return () => {
       map && map.removeLayer(mainLayer);

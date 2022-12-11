@@ -3,19 +3,24 @@ import { Map as OlMap, View } from 'ol';
 import { getCenter } from 'ol/extent';
 import { Projection } from 'ol/proj';
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from 'react';
-import { MainLayerProps } from '../VacuumMap/Layers/MainLayer';
+import { MainLayerProps } from '../Layers/MainLayer';
+import { RoomsLayerProps } from '../Layers/RoomsLayer';
 
 import { MapContext } from './MapContex';
 
 interface MapProps {
   children?: ReactNode;
   zoom: number;
+  minZoom: number;
+  maxZoom: number;
   projection: Projection;
 }
 
-const Map: FC<MapProps> = ({ children, zoom, projection }) => {
+const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => {
   const mapRef = useRef<HTMLDivElement>();
   const [map, setMap] = useState<OlMap>();
+
+  const getZIndex = (index: number) => Children.count(children) - 1 - index;
 
   useEffect(() => {
     const initialMap = new OlMap({
@@ -24,14 +29,14 @@ const Map: FC<MapProps> = ({ children, zoom, projection }) => {
         projection,
         center: getCenter(projection.getExtent()),
         zoom,
+        minZoom,
+        maxZoom,
       }),
     });
 
     initialMap.setTarget(mapRef.current);
     setMap(initialMap);
-    initialMap.getView().fit(projection.getExtent(), {
-      padding: [100, 100, 100, 100],
-    });
+    initialMap.getView().fit(projection.getExtent());
     return () => initialMap.setTarget(undefined);
   }, []);
 
@@ -39,9 +44,13 @@ const Map: FC<MapProps> = ({ children, zoom, projection }) => {
     <>
       <MapContext.Provider value={map}>
         <Box sx={{ height: '90vh' }} ref={mapRef}>
-          {Children.map(children, (child) => {
-            if (isValidElement<MainLayerProps>(child)) {
-              return cloneElement<MainLayerProps>(child, { projection });
+          {Children.map(children, (child, index) => {
+            console.log(children, Children.count(children));
+            if (isValidElement<MainLayerProps & RoomsLayerProps>(child)) {
+              return cloneElement<MainLayerProps & RoomsLayerProps>(child, {
+                projection,
+                ZIndex: getZIndex(index),
+              });
             }
           })}
         </Box>

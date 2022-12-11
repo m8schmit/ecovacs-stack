@@ -1,4 +1,13 @@
-// import '../../../node_modules/ol/ol.css';
+import '../../../node_modules/ol/ol.css';
+
+import Projection from 'ol/proj/Projection';
+
+import { getSelectionType } from '../../store/vacuum/mapSlice';
+import SelectRoomInteraction from './Interactions/SelectRoomInteraction';
+import MainLayer from './Layers/MainLayer';
+import RoomsLayer from './Layers/RoomsLayer';
+import { mapHeight, mapWidth } from './Map.utils';
+import Map from './Map/Map';
 
 // import { Box } from '@mui/system';
 // import { Feature, Map as OlMap, MapBrowserEvent, View } from 'ol';
@@ -450,24 +459,19 @@
 //   );
 // };
 
-import Projection from 'ol/proj/Projection';
-
-import Map from '../Map/Map';
-import MainLayer from './Layers/MainLayer';
-
 const VacuumMap = () => {
-  const mapWidth = 1600;
-  const mapHeight = 1600;
-
   const projection = new Projection({
     code: 'custom-base64-image',
     units: 'pixels',
     extent: [0, 0, mapWidth, mapHeight],
   });
+  const selectionType = getSelectionType();
 
   return (
-    <Map zoom={3} projection={projection}>
-      <MainLayer></MainLayer>
+    <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
+      {selectionType === 'room' && <SelectRoomInteraction />}
+      <RoomsLayer />
+      <MainLayer />
     </Map>
   );
 };
