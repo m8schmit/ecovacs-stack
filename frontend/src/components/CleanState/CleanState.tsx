@@ -4,9 +4,11 @@ import { useContext } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
 import {
+  getGoToCoordinates,
   getSelectedRoomsList,
   getSelectedZonesList,
   getSelectionType,
+  resetGoToCoordinates,
   resetMapTracesList,
   resetSelectedRoomsList,
   resetSelectedZonesList,
@@ -28,6 +30,7 @@ const CleanState = () => {
   const status = getVacuumClean();
   const selectedRoomsList = getSelectedRoomsList();
   const selectedZonesList = getSelectedZonesList();
+  const goToCoordinates = getGoToCoordinates();
   const selectionType = getSelectionType();
   const { isCharging } = getChargeState();
   const { active: autoEmptyActive } = getAutoEmptyState();
@@ -47,11 +50,37 @@ const CleanState = () => {
     }
   };
 
+  const getCleanType = () => {
+    if (selectionType === 'room' && selectedRoomsList.length) {
+      return 'spotArea';
+    } else if (selectionType === 'zone' && selectedZonesList.length) {
+      return 'customArea';
+    } else if (selectionType === 'point' && goToCoordinates.length) {
+      return 'mapPoint';
+    } else {
+      return 'auto';
+    }
+  };
+
+  const getCleanValue = () => {
+    const cleanType = getCleanType();
+
+    if (cleanType === 'spotArea') {
+      return selectedRoomsList.join(',');
+    } else if (cleanType === 'customArea') {
+      return `${selectedZonesList.join(';')};`;
+    } else if (cleanType === 'mapPoint') {
+      return `${goToCoordinates.join(',')};`;
+    }
+    return null;
+  };
+
   const getCleanTask = (act: BotAct | null = null): CleanTask => {
+    console.log('value', getCleanType(), getCleanValue());
     return {
       act: act ? act : getNextAct(),
-      type: selectedRoomsList.length ? 'spotArea' : selectedZonesList.length ? 'customArea' : 'auto',
-      value: selectedRoomsList.join(',') || `${selectedZonesList.join(';')};` || null,
+      type: getCleanType(),
+      value: getCleanValue(),
     };
   };
   const switchCleanState = () => {
@@ -70,6 +99,7 @@ const CleanState = () => {
   const reset = () => {
     dispatch(resetSelectedRoomsList());
     dispatch(resetSelectedZonesList());
+    dispatch(resetGoToCoordinates());
     dispatch(resetSelectedSavedPatternId());
     socket.emit('clean', getCleanTask('stop'));
   };
@@ -131,10 +161,10 @@ const CleanState = () => {
 
         {status.state === 'idle' && (
           <Typography sx={{ mt: 2 }}>
-            start an <b>{selectedRoomsList.length ? 'spotArea' : selectedZonesList.length ? 'customArea' : 'auto'}</b>{' '}
-            cleaning
+            start an <b>{getCleanType()}</b> cleaning
             {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
             {selectedZonesList.length > 0 && ` on Zones [${selectedZonesList.join('], [')}].`}
+            {goToCoordinates.length > 0 && ` on Coordinates [${goToCoordinates[0]}, ${goToCoordinates[1]}].`}
           </Typography>
         )}
         <IconButton

@@ -16,6 +16,7 @@ import {
 interface MapState {
   selectedRoomsList: number[];
   selectedZonesList: Extent[];
+  goToCoordinates: Extent;
   selectionType: SelectionType;
   map: {
     isLoading: boolean;
@@ -36,6 +37,7 @@ interface MapState {
 const initialState: MapState = {
   selectedRoomsList: [],
   selectedZonesList: [],
+  goToCoordinates: [],
   selectionType: 'room',
   map: {
     isLoading: true,
@@ -117,6 +119,12 @@ export const mapSlice = createSlice({
       ...state,
       selectedZonesList: action.payload,
     }),
+    setGoToCoordinates: (state, action: PayloadAction<Extent>) => {
+      return {
+        ...state,
+        goToCoordinates: action.payload,
+      };
+    },
     resetSelectedZonesList: (state) => {
       return {
         ...state,
@@ -128,6 +136,13 @@ export const mapSlice = createSlice({
       return {
         ...state,
         selectedRoomsList: initialState.selectedRoomsList,
+      };
+    },
+
+    resetGoToCoordinates: (state) => {
+      return {
+        ...state,
+        goToCoordinates: initialState.goToCoordinates,
       };
     },
 
@@ -186,6 +201,9 @@ export const {
   setSelectedZonesList,
   resetSelectedZonesList,
 
+  setGoToCoordinates,
+  resetGoToCoordinates,
+
   setSelectionType,
   setMapTracesList,
   incrementMapTracesListUpdateIndex,
@@ -207,6 +225,7 @@ export const getVacuumPos = (device: Devices) => useAppSelector(({ map }) => map
 export const getMapSubsetsList = () => useAppSelector(({ map }) => map.mapSubsetsList);
 export const getSelectedRoomsList = () => useAppSelector(({ map }) => map.selectedRoomsList);
 export const getSelectedZonesList = () => useAppSelector(({ map }) => map.selectedZonesList);
+export const getGoToCoordinates = () => useAppSelector(({ map }) => map.goToCoordinates);
 export const getSelectionType = () => useAppSelector(({ map }) => map.selectionType);
 
 export const getObstaclesList = () => useAppSelector(({ map }) => map.obstaclesList);

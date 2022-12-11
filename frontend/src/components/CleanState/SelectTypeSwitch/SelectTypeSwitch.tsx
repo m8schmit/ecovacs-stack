@@ -4,6 +4,7 @@ import { ChangeEvent } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import {
   getSelectionType,
+  resetGoToCoordinates,
   resetSelectedRoomsList,
   resetSelectedZonesList,
   setSelectionType,
@@ -18,6 +19,7 @@ const SelectTypeSwitch = () => {
     console.log(value);
     dispatch(resetSelectedRoomsList());
     dispatch(resetSelectedZonesList());
+    dispatch(resetGoToCoordinates());
     dispatch(resetSelectedSavedPatternId());
     dispatch(setSelectionType(value));
   };

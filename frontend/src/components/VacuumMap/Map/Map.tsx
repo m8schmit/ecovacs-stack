@@ -3,9 +3,8 @@ import { Map as OlMap, View } from 'ol';
 import { getCenter } from 'ol/extent';
 import { Projection } from 'ol/proj';
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from 'react';
-import { MainLayerProps } from '../Layers/MainLayer';
-import { RoomsLayerProps } from '../Layers/RoomsLayer';
 
+import { LayerProps } from '../Layers/Layer.type';
 import { MapContext } from './MapContex';
 
 interface MapProps {
@@ -45,9 +44,8 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
       <MapContext.Provider value={map}>
         <Box sx={{ height: '90vh' }} ref={mapRef}>
           {Children.map(children, (child, index) => {
-            console.log(children, Children.count(children));
-            if (isValidElement<MainLayerProps & RoomsLayerProps>(child)) {
-              return cloneElement<MainLayerProps & RoomsLayerProps>(child, {
+            if (isValidElement<LayerProps>(child)) {
+              return cloneElement<LayerProps>(child, {
                 projection,
                 ZIndex: getZIndex(index),
               });

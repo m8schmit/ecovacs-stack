@@ -1,7 +1,6 @@
 import { Feature } from 'ol';
 import { Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
-import Projection from 'ol/proj/Projection';
 import Vector from 'ol/source/Vector';
 import VectorSource from 'ol/source/Vector';
 import Fill from 'ol/style/Fill';
@@ -12,14 +11,11 @@ import { FC, useContext, useEffect, useState } from 'react';
 
 import { getMapSubsetsList, getSelectedRoomsList } from '../../../store/vacuum/mapSlice';
 import getRandomColor from '../../../utils/colors.utils';
-import { MapContext } from '../Map/MapContex';
 import { getCoordinates, PixelRatio } from '../Map.utils';
+import { MapContext } from '../Map/MapContex';
+import { LayerProps } from './Layer.type';
 
-export interface RoomsLayerProps {
-  projection?: Projection;
-  ZIndex?: number;
-}
-const RoomsLayer: FC<RoomsLayerProps> = ({ ZIndex }) => {
+const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
   const [roomsLayer] = useState<VectorLayer<VectorSource<Polygon>>>(new VectorLayer());
   const selectedRoomsList = getSelectedRoomsList();
