@@ -1,17 +1,20 @@
+import { Feature } from 'ol';
+import { Point } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
-import { setGoToCoordinates } from '../../../store/vacuum/mapSlice';
+import { getGoToCoordinates, setGoToCoordinates } from '../../../store/vacuum/mapSlice';
 import { LayerProps } from '../Layers/Layer.type';
-import { setCoordinates } from '../Map.utils';
+import { getCoordinatesFromExtend, setCoordinates } from '../Map.utils';
 import { MapContext } from '../Map/MapContex';
 
 const GoToInteraction: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
   const dispatch = useAppDispatch();
+  const goToCoordinates = getGoToCoordinates();
 
   const source = new VectorSource({ wrapX: false });
 
@@ -31,7 +34,7 @@ const GoToInteraction: FC<LayerProps> = ({ ZIndex }) => {
     goToLayer.getSource()?.clear();
     const extend = event.feature.getGeometry()?.getExtent();
     const coordinate = extend !== undefined ? setCoordinates(extend) : [];
-    coordinate.length && dispatch(setGoToCoordinates(coordinate));
+    coordinate.length && dispatch(setGoToCoordinates([coordinate[0], coordinate[1]]));
   };
 
   useEffect(() => {
@@ -48,8 +51,15 @@ const GoToInteraction: FC<LayerProps> = ({ ZIndex }) => {
   useEffect(() => {
     if (!pointDrawer) return;
     pointDrawer.on('drawend', drawNewPoint);
-    return () => pointDrawer.un('drawend', drawNewPoint);
-  }, [pointDrawer]);
+    return () => {
+      pointDrawer.un('drawend', drawNewPoint);
+    };
+  }, []);
+
+  useEffect(() => {
+    goToLayer.getSource()?.clear();
+    goToLayer.getSource()?.addFeature(new Feature({ geometry: new Point(getCoordinatesFromExtend(goToCoordinates)) }));
+  }, [goToCoordinates]);
 
   return null;
 };

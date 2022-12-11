@@ -40,15 +40,19 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
   useEffect(() => {
     roomsLayer.setSource(
       new Vector({
-        features: mapSubsetsList.map(({ value, mssid }) => {
-          return new Feature({
-            geometry: new Polygon([
-              // need to add the PixelRatio as an offset to Y
-              value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y') + PixelRatio]),
-            ]),
-            name: `Room ${mssid}`,
-          });
-        }),
+        features: mapSubsetsList.map(
+          ({ value, mssid }) =>
+            new Feature({
+              geometry: new Polygon([
+                // need to add the PixelRatio as an offset to Y
+                value.map((current) => [
+                  getCoordinates(+current[0], 'x'),
+                  getCoordinates(+current[1], 'y') + PixelRatio,
+                ]),
+              ]),
+              name: `Room ${mssid}`,
+            }),
+        ),
       }),
     );
   }, [mapSubsetsList]);

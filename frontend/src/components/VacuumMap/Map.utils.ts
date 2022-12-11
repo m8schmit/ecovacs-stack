@@ -29,6 +29,12 @@ export const getAngle = (angle: number) => angle * -1 * (Math.PI / 180);
 export const getCoordinates = (value: number, axis: 'x' | 'y') =>
   ((value / pixelWidth) * PixelRatio + (axis === 'x' ? mapWidth : mapHeight) / 2) >> 0;
 
+export const getCoordinatesFromExtend = (extend: Extent) =>
+  extend.map(
+    (value, index) =>
+      ((value / pixelWidth) * PixelRatio + (index === 0 || index === 2 ? mapWidth : mapHeight) / 2) >> 0,
+  );
+
 /*
  ** convert OL coordinate to Bot Coordinates
  ** `[minx, miny, maxx, maxy]`.

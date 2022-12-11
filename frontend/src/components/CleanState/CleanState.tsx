@@ -164,7 +164,7 @@ const CleanState = () => {
             start an <b>{getCleanType()}</b> cleaning
             {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
             {selectedZonesList.length > 0 && ` on Zones [${selectedZonesList.join('], [')}].`}
-            {goToCoordinates.length > 0 && ` on Coordinates [${goToCoordinates[0]}, ${goToCoordinates[1]}].`}
+            {goToCoordinates.length > 0 && ` on Coordinates [${goToCoordinates.join(', ')}].`}
           </Typography>
         )}
         <IconButton
