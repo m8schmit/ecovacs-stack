@@ -21,17 +21,13 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
   const selectedRoomsList = getSelectedRoomsList();
   const mapSubsetsList = getMapSubsetsList();
 
-  const isRoomSelected = (roomName: string) => {
-    const mssid = +roomName.split(' ')[1];
-    return selectedRoomsList?.find((current) => current === mssid) !== undefined;
-  };
+  const isRoomSelected = (mssid: number) => selectedRoomsList?.find((current) => +current === +mssid) !== undefined;
 
   useEffect(() => {
     if (!map) return;
 
     map.addLayer(roomsLayer);
     roomsLayer.setZIndex(ZIndex || 0);
-    console.log('add roomsLayer');
     return () => {
       map && map.removeLayer(roomsLayer);
     };
@@ -51,6 +47,7 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
                 ]),
               ]),
               name: `Room ${mssid}`,
+              mssid,
             }),
         ),
       }),
@@ -61,20 +58,20 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
     roomsLayer
       .getSource()
       ?.getFeatures()
-      .forEach((feature, index) =>
+      .forEach((feature, index) => {
         feature.setStyle(
           new Style({
             stroke: new Stroke({
-              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.6),
+              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.6),
               width: 2,
             }),
             fill: new Fill({
-              color: getRandomColor(index, isRoomSelected(feature.get('name')) ? 0.8 : 0.6),
+              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.6),
             }),
             text: new Text({ text: feature.get('name') }),
           }),
-        ),
-      );
+        );
+      });
   }, [selectedRoomsList, roomsLayer?.getSource()]);
 
   return null;

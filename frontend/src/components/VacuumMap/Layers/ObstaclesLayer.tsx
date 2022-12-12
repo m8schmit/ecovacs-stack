@@ -40,7 +40,6 @@ const ObstaclesLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
 
     map.addLayer(obstaclesLayer);
     obstaclesLayer.setZIndex(ZIndex || 0);
-    console.log('add obstaclesLayer');
     return () => {
       map && map.removeLayer(obstaclesLayer);
     };
@@ -60,18 +59,19 @@ const ObstaclesLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
       );
 
     obstaclesLayer.setStyle(
-      obstaclesList.map((obstacle: AiMapObstacle) => {
-        return new Style({
-          image: new Icon({
-            anchor: [0.5, 0.5],
-            scale: 0.5,
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            src: `data:image/png;base64,${RECOGNIZED_OBJECTS_ICON_LIST[obstacle.type]}`,
+      obstaclesList.map(
+        (obstacle: AiMapObstacle) =>
+          new Style({
+            image: new Icon({
+              anchor: [0.5, 0.5],
+              scale: 0.5,
+              anchorXUnits: 'fraction',
+              anchorYUnits: 'fraction',
+              src: `data:image/png;base64,${RECOGNIZED_OBJECTS_ICON_LIST[obstacle.type]}`,
+            }),
+            geometry: new Point([getCoordinates(obstacle.x, 'x'), getCoordinates(obstacle.y, 'y')]),
           }),
-          geometry: new Point([getCoordinates(obstacle.x, 'x'), getCoordinates(obstacle.y, 'y')]),
-        });
-      }),
+      ),
     );
   }, [obstaclesList]);
 

@@ -45,7 +45,6 @@ const DockPosLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
 
     map.addLayer(dockPosLayer);
     dockPosLayer.setZIndex(ZIndex || 0);
-    console.log('add dockPosLayer');
     return () => {
       map && map.removeLayer(dockPosLayer);
     };

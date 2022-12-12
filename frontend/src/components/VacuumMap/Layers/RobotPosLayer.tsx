@@ -48,7 +48,6 @@ const RobotPosLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
 
     map.addLayer(robotLayer);
     robotLayer.setZIndex(ZIndex || 0);
-    console.log('add robotLayer');
     return () => {
       map && map.removeLayer(robotLayer);
     };

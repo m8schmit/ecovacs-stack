@@ -46,7 +46,6 @@ const TraceLayer: FC<LayerProps> = ({ ZIndex }) => {
 
     map.addLayer(traceLayer);
     traceLayer.setZIndex(ZIndex || 0);
-    console.log('add traceLayer');
     return () => {
       map && map.removeLayer(traceLayer);
     };

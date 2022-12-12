@@ -17,7 +17,6 @@ const MainLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
 
     map.addLayer(mainLayer);
     mainLayer.setZIndex(ZIndex || 0);
-    console.log('add mainLayer');
     return () => {
       map && map.removeLayer(mainLayer);
     };

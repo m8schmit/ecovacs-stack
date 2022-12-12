@@ -33,8 +33,8 @@ const SelectTypeSwitch = () => {
         onChange={handleChange}
         name="vac-power-options"
       >
-        <FormControlLabel value={'room'} control={<Radio />} label="Spot Area" />
-        <FormControlLabel value={'zone'} control={<Radio />} label="Custom Area" />
+        <FormControlLabel value={'room'} control={<Radio />} label="Select rooms" />
+        <FormControlLabel value={'zone'} control={<Radio />} label="Define zones" />
         <FormControlLabel value={'point'} control={<Radio />} label="Click to go" />
       </RadioGroup>
     </FormControl>

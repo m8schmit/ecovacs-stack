@@ -34,7 +34,6 @@ const SelectZonesInteraction: FC<LayerProps> = ({ ZIndex }) => {
   );
 
   const drawNewZone = (event: DrawEvent) => {
-    console.log('here');
     const extend = event.feature.getGeometry()?.getExtent();
     const coordinate = extend !== undefined ? setCoordinates(extend) : [];
     coordinate.length && dispatch(updateSelectedZonesList(coordinate));

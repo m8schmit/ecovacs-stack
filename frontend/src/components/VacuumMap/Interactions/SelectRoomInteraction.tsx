@@ -12,21 +12,16 @@ const SelectRoomInteraction = () => {
   const selectRoom = (event: MapBrowserEvent<any>) => {
     if (!map) return;
 
-    const feature = map.forEachFeatureAtPixel(event.pixel, (feature) => feature);
-    // TODO find a better way to get mssid
-    const featureName = feature?.get('name');
-    console.log('clicked on ', feature, feature?.get('name'), event);
-    if (featureName) {
-      const mssid = +featureName.split(' ')[1];
-      dispatch(updateSelectedRoomsList(mssid));
-    }
+    map.forEachFeatureAtPixel(event.pixel, (feature) => {
+      const mssid = feature.get('mssid');
+      mssid && dispatch(updateSelectedRoomsList(+mssid));
+    });
   };
 
   useEffect(() => {
     if (!map) return;
 
     map.on('click', selectRoom);
-
     return () => {
       map.un('click', selectRoom);
     };
