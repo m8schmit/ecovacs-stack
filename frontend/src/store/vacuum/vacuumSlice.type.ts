@@ -37,7 +37,7 @@ export interface CleanTask {
 }
 
 export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'pause';
-export type BotCleanType = 'auto' | 'spotArea' | 'customArea';
+export type BotCleanType = 'auto' | 'spotArea' | 'customArea' | 'mapPoint';
 
 export interface BatteryState {
   level: number;

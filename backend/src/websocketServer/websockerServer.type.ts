@@ -43,6 +43,7 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
   getMajorMap: () => void;
   clean: (params: { act: BotAct; type: BotType; value: Maybe<string> }) => void;
+  go: (params: { act: BotAct; value: Maybe<string> }) => void;
   charge: () => void;
   setSpeed: (value: number) => void;
   setCleanCount: (value: number) => void;

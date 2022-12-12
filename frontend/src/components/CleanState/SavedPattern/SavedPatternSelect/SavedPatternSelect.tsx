@@ -3,6 +3,7 @@ import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../../../store/hooks';
 import {
+  resetGoToCoordinates,
   resetSelectedRoomsList,
   resetSelectedZonesList,
   setSelectedRoomsList,
@@ -37,11 +38,15 @@ const SavedPatternSelect = () => {
     if (type === 'spotArea') {
       dispatch(setSelectionType('room'));
       dispatch(resetSelectedZonesList());
+      dispatch(resetGoToCoordinates());
       dispatch(setSelectedRoomsList(JSON.parse(selected)));
-    } else {
+    } else if (type === 'customArea') {
       dispatch(setSelectionType('zone'));
       dispatch(resetSelectedRoomsList());
+      dispatch(resetGoToCoordinates());
       dispatch(setSelectedZonesList(JSON.parse(selected)));
+    } else {
+      console.log('todo saved pattern for points.');
     }
   };
 
