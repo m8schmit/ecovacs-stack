@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../../store/hooks';
 import { getSelectedZonesList, updateSelectedZonesList } from '../../../store/vacuum/mapSlice';
 import { LayerProps } from '../Layers/Layer.type';
 import { getCoordinatesFromExtend, setCoordinates } from '../Map.utils';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 
 const SelectZonesInteraction: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);

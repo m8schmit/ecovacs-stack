@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { updateSelectedRoomsList } from '../../../store/vacuum/mapSlice';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 
 const SelectRoomInteraction = () => {
   const map = useContext(MapContext);

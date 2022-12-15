@@ -13,9 +13,9 @@ import RobotPosLayer from './Layers/RobotPosLayer';
 import RoomsLayer from './Layers/RoomsLayer';
 import TraceLayer from './Layers/TraceLayer';
 import { mapHeight, mapWidth } from './Map.utils';
-import Map from './Map/Map';
+import Map from '../UI/Map/Map';
 
-const VacuumMap = () => {
+const ControlMap = () => {
   const projection = new Projection({
     code: 'custom-base64-image',
     units: 'pixels',
@@ -38,4 +38,4 @@ const VacuumMap = () => {
   );
 };
 
-export default VacuumMap;
+export default ControlMap;

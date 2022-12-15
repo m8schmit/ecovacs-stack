@@ -11,7 +11,7 @@ import { useAppDispatch } from '../../../store/hooks';
 import { getMapTracesList, resetMapTracesListUpdateIndex } from '../../../store/vacuum/mapSlice';
 import { WebSocketContext } from '../../../utils/socket.utils';
 import { getCoordinates } from '../Map.utils';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 import { LayerProps } from './Layer.type';
 
 const TraceLayer: FC<LayerProps> = ({ ZIndex }) => {
