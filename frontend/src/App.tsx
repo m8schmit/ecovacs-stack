@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 
+import MainFrame from './components/UI/OptionsFrame/MainFrame/MainFrame';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Edit from './pages/Edit/Edit';
 import websocketService from './services/websocket.service';
 import { useAppDispatch } from './store/hooks';
 import {
@@ -139,10 +141,13 @@ const App = () => {
         <WebSocketContext.Provider value={socket}>
           <BrowserRouter>
             <Box sx={{ minHeight: '100vh', display: 'flex', width: '100%' }}>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
+              <MainFrame>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/edit" element={<Edit />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </MainFrame>
             </Box>
           </BrowserRouter>
         </WebSocketContext.Provider>

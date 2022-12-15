@@ -10,7 +10,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import { getObstaclesList } from '../../../store/vacuum/mapSlice';
 import { AiMapObstacle } from '../../../store/vacuum/mapSlice.type';
 import { getCoordinates, RECOGNIZED_OBJECTS_ICON_LIST } from '../Map.utils';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 import { LayerProps } from './Layer.type';
 
 const ObstaclesLayer: FC<LayerProps> = ({ projection, ZIndex }) => {

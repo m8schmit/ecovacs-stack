@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../../store/hooks';
 import { getGoToCoordinates, setGoToCoordinates } from '../../../store/vacuum/mapSlice';
 import { LayerProps } from '../Layers/Layer.type';
 import { getCoordinatesFromExtend, setCoordinates } from '../Map.utils';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 
 const GoToInteraction: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);

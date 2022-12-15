@@ -9,7 +9,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 
 import { getVacuumPos } from '../../../store/vacuum/mapSlice';
 import { BOT_ICON, getAngle, getCoordinates } from '../Map.utils';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 import { LayerProps } from './Layer.type';
 
 const RobotPosLayer: FC<LayerProps> = ({ projection, ZIndex }) => {

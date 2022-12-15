@@ -1,6 +1,6 @@
 import { Box, SxProps, Theme } from '@mui/material';
-import { padding, border, borderRadius } from '@mui/system';
 import { FC, ReactNode } from 'react';
+
 import theme from '../../../theme';
 
 interface OptionsFrameProps {

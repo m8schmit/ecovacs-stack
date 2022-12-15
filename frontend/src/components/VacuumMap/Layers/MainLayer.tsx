@@ -4,7 +4,7 @@ import Static from 'ol/source/ImageStatic';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { getVacuumMap } from '../../../store/vacuum/mapSlice';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 import { LayerProps } from './Layer.type';
 
 const MainLayer: FC<LayerProps> = ({ projection, ZIndex }) => {

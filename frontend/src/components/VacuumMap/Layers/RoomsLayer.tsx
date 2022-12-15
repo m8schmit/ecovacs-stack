@@ -12,7 +12,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import { getMapSubsetsList, getSelectedRoomsList } from '../../../store/vacuum/mapSlice';
 import getRandomColor from '../../../utils/colors.utils';
 import { getCoordinates, PixelRatio } from '../Map.utils';
-import { MapContext } from '../Map/MapContex';
+import { MapContext } from '../../UI/Map/MapContex';
 import { LayerProps } from './Layer.type';
 
 const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {

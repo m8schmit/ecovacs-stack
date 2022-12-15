@@ -4,7 +4,7 @@ import { getCenter } from 'ol/extent';
 import { Projection } from 'ol/proj';
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from 'react';
 
-import { LayerProps } from '../Layers/Layer.type';
+import { LayerProps } from '../../VacuumMap/Layers/Layer.type';
 import { MapContext } from './MapContex';
 
 interface MapProps {
