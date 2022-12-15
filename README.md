@@ -28,7 +28,7 @@ address=/aliyuncs.com/your-local-ip-here
 
 - restart your vacuum bot, it should connect to the MQTTs server and you should see something like:
 
-![alt text](2022-09-29_08-51.png 'Title')
+![alt text](2022-12-13_09-51.png 'Title')
 
 ## Topics
 
