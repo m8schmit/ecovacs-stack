@@ -16,6 +16,7 @@ export type BotCommandName =
   | 'getDusterRemind'
   | 'getDModule'
   | 'getError'
+  | 'getFeiyanInfo'
   | 'getInfo'
   | 'getLifeSpan'
   | 'getMajorMap'
@@ -34,10 +35,12 @@ export type BotCommandName =
   | 'getVolume'
   | 'getWaterInfo'
   | 'playSound'
-  | 'setAutoEmpty'
-  | 'setCleanCount'
-  | 'getFeiyanInfo'
   | 'resetLifeSpan'
+  | 'setAutoEmpty'
+  | 'setCachedMapInfo' /* for del, mod and backup */
+  | 'setCleanCount'
+  | 'setMapSubSet' /* for the split */
+  | 'setMapSet' /* for the merge */
   | 'setLiveLaunchPwd'
   | 'setRelocationState'
   | 'setSched_V2'
@@ -45,7 +48,7 @@ export type BotCommandName =
   | 'SetTime' /* keep the uppercase S */
   | 'setWaterInfo';
 
-export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide';
+export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide' | 'backup';
 export type PosDevicesType = 'chargePos' | 'deebotPos';
 
 // CleanState

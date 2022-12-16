@@ -24,6 +24,7 @@ const Dashboard = () => {
                 <Tab label="Notifications" value="1" />
                 <Tab label="Commands" value="2" />
                 <Tab label="Options" value="3" />
+                <Tab label="Reports" value="4" disabled />
               </TabList>
             </Box>
             <TabPanel
@@ -44,6 +45,10 @@ const Dashboard = () => {
             >
               <Options />
             </TabPanel>
+            <TabPanel
+              value="4"
+              sx={value === '4' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+            ></TabPanel>
           </TabContext>
         </Box>
       </Grid>
