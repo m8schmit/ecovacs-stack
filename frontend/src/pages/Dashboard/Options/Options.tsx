@@ -3,7 +3,7 @@ import EditMap from './EditMap/EditMap';
 
 const Options = () => {
   return (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       <EditMap />
     </Box>
   );
