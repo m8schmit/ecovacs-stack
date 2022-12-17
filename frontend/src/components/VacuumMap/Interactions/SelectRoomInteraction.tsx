@@ -2,7 +2,7 @@ import { MapBrowserEvent } from 'ol';
 import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
-import { updateSelectedRoomsList } from '../../../store/vacuum/mapSlice';
+import { resetSelectedRoomsList, updateSelectedRoomsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
 
 const SelectRoomInteraction = () => {
@@ -24,6 +24,7 @@ const SelectRoomInteraction = () => {
     map.on('click', selectRoom);
     return () => {
       map.un('click', selectRoom);
+      dispatch(resetSelectedRoomsList());
     };
   }, [map]);
   return null;
