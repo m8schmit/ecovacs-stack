@@ -18,6 +18,7 @@ import {
   EmptyDustBin,
   go,
   mergeRooms,
+  renameRoom,
   resetLifeSpan,
   setCleanCount,
   setRelocationState,
@@ -218,6 +219,10 @@ const websocketServer = () => {
 
     socket.on('mergeRooms', ({ mid, subsets }) => {
       mergeRooms(mid, subsets);
+    });
+
+    socket.on('renameRoom', ({ mssid, mid, subtype, name }) => {
+      renameRoom(mssid, mid, subtype, name);
     });
   });
 };

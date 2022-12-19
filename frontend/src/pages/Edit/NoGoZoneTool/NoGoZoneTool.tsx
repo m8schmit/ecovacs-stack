@@ -9,6 +9,7 @@ export const NoGoZoneTool = () => {
         <Button variant="outlined">No Go Zone</Button>
         <Button variant="outlined">No Mop Zone</Button>
         <Button variant="outlined">Virtual Wall</Button>
+        <Button variant="outlined">Virtual Mop Wall</Button>
         <Button variant="outlined" color="warning" disabled>
           Delete
         </Button>

@@ -82,6 +82,7 @@ export interface ClientToServerEvents {
   getSavedPattern: () => void;
   splitRoom: (params: { mssid: string; mid: string; value: string }) => void;
   mergeRooms: (params: { mid: string; subsets: { values: any; mssid: string }[] }) => void;
+  renameRoom: (params: { mssid: string; mid: string; subtype: string; name: string }) => void;
 }
 
 export interface InterServerEvents {

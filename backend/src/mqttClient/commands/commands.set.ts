@@ -180,7 +180,15 @@ export const resetLifeSpan = (type: LifeSpanDeviceType) => {
   sendJSONCommand(command, client);
 };
 
-const setMapSubSet = (mssid: string, mid: string, type: MapSubSetType, act: BotAct, value: string) => {
+const setMapSubSet = (
+  mssid: string,
+  mid: string,
+  type: MapSubSetType,
+  act: BotAct,
+  value: Maybe<string> = null,
+  subtype: string = '0',
+  name: Maybe<string> = null,
+) => {
   const command: BotCommand = {
     name: 'setMapSubSet',
     payload: {
@@ -196,8 +204,8 @@ const setMapSubSet = (mssid: string, mid: string, type: MapSubSetType, act: BotA
       type,
       act,
       // cacheName,
-      // subtype,
-      // name,
+      subtype /* between 0 and 15 for the rooms icons */,
+      name,
       // seqIndex,
       value,
       // connections,
@@ -212,6 +220,11 @@ const setMapSubSet = (mssid: string, mid: string, type: MapSubSetType, act: BotA
 export const splitRoom = (mssid: string, mid: string, value: string) => {
   setMapSubSet(mssid, mid, 'ar', 'divide', value);
 };
+
+export const renameRoom = (mssid: string, mid: string, subtype: string, name: string) => {
+  setMapSubSet(mssid, mid, 'ar', 'mod', null, subtype, name);
+};
+
 const setMapSet = (act: BotAct, mid: string, type: MapSubSetType, subsets: { values: any; mssid: string }[]) => {
   const command: BotCommand = {
     name: 'setMapSet',
@@ -230,4 +243,32 @@ const setMapSet = (act: BotAct, mid: string, type: MapSubSetType, subsets: { val
 
 export const mergeRooms = (mid: string, subsets: { values: any; mssid: string }[]) => {
   setMapSet('merge', mid, 'ar', subsets);
+};
+
+const setCachedMapInfo = (act: BotAct, mid: string, name: Maybe<string> = null, isFake: boolean = true) => {
+  const command: BotCommand = {
+    name: 'setMapSet',
+    payload: {
+      itemType: 0,
+      act,
+      build: 1,
+      mid,
+      name,
+      isFake,
+      bdTaskID: get16LengthId(),
+    },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const renameMap = (mid: string, name: string) => {
+  setCachedMapInfo('mod', mid, name);
+};
+
+export const deleteMap = (mid: string) => {
+  setCachedMapInfo('del', mid);
+};
+
+export const saveMap = (mid: string) => {
+  setCachedMapInfo('backup', mid);
 };

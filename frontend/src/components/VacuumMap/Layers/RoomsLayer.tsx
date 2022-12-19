@@ -36,20 +36,17 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
   useEffect(() => {
     roomsLayer.setSource(
       new Vector({
-        features: mapSubsetsList.map(
-          ({ value, mssid }) =>
-            new Feature({
-              geometry: new Polygon([
-                // need to add the PixelRatio as an offset to Y
-                value.map((current) => [
-                  getCoordinates(+current[0], 'x'),
-                  getCoordinates(+current[1], 'y') + PixelRatio,
-                ]),
-              ]),
-              name: `Room ${mssid}`,
-              mssid,
-            }),
-        ),
+        features: mapSubsetsList.map(({ value, mssid, name, subtype }) => {
+          console.log('draw room ', mssid, name);
+          return new Feature({
+            geometry: new Polygon([
+              // need to add the PixelRatio as an offset to Y
+              value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y') + PixelRatio]),
+            ]),
+            name: name ? name : `Room ${mssid}`,
+            mssid,
+          });
+        }),
       }),
     );
   }, [mapSubsetsList]);
@@ -62,11 +59,11 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
         feature.setStyle(
           new Style({
             stroke: new Stroke({
-              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.6),
+              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.5),
               width: 2,
             }),
             fill: new Fill({
-              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.6),
+              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.5),
             }),
             text: new Text({ text: feature.get('name') }),
           }),
