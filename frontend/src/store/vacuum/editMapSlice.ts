@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useAppSelector } from '../hooks';
 
-type ActiveToolType = 'none' | 'split';
+type ActiveToolType = 'none' | 'split' | 'merge';
 
 interface EditMapState {
   activeTool: ActiveToolType;
