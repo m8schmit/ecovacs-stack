@@ -80,6 +80,8 @@ export interface ClientToServerEvents {
   dismissError: (id: number | null) => void;
   savePattern: (pattern: BotPattern) => void;
   getSavedPattern: () => void;
+  splitRoom: (params: { mssid: string; mid: string; value: string }) => void;
+  mergeRooms: (params: { mid: string; subsets: { values: any; mssid: string }[] }) => void;
 }
 
 export interface InterServerEvents {

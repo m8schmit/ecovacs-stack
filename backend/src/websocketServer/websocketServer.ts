@@ -17,13 +17,14 @@ import {
   editSched_V2,
   EmptyDustBin,
   go,
+  mergeRooms,
   resetLifeSpan,
   setCleanCount,
   setRelocationState,
   setSpeed,
   setWaterInfo,
+  splitRoom,
 } from '../mqttClient/commands/commands.set';
-import { decompressLZMA } from '../mqttClient/map/LZMA.utils';
 import { delAllBotError, delBotError, getBotError } from '../mysqlHelper/botError.query';
 import { delAllBotEvent, delBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 import { getAllReminders } from '../mysqlHelper/botReminder.query';
@@ -206,6 +207,18 @@ const websocketServer = () => {
     socket.on('getSavedPattern', () => sendBotSavedPatternList());
 
     socket.on('savePattern', (pattern) => addBotPattern(JSON.stringify(pattern)).then(() => sendBotSavedPatternList()));
+
+    /*
+     ** Map Edit
+     */
+
+    socket.on('splitRoom', ({ mssid, mid, value }) => {
+      splitRoom(mssid, mid, value);
+    });
+
+    socket.on('mergeRooms', ({ mid, subsets }) => {
+      mergeRooms(mid, subsets);
+    });
   });
 };
 

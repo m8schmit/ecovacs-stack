@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
-import EditMap from './EditMap/EditMap';
+import EditMapOption from './EditMapOption/EditMapOption';
 
 const Options = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-      <EditMap />
+      <EditMapOption />
     </Box>
   );
 };

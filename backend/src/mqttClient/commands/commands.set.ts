@@ -2,7 +2,7 @@ import { client } from '../mqttClient';
 import { get14LengthId, get16LengthId } from '../text.utils';
 import { Maybe } from '../types';
 import { CleaningType } from './commands.schedules.type';
-import { BotAct, BotCommand, BotType, LifeSpanDeviceType } from './commands.type';
+import { BotAct, BotCommand, BotType, LifeSpanDeviceType, MapSubSetType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const clean = (
@@ -178,4 +178,56 @@ export const resetLifeSpan = (type: LifeSpanDeviceType) => {
     },
   };
   sendJSONCommand(command, client);
+};
+
+const setMapSubSet = (mssid: string, mid: string, type: MapSubSetType, act: BotAct, value: string) => {
+  const command: BotCommand = {
+    name: 'setMapSubSet',
+    payload: {
+      // cleanset: '1,0,2',
+      // compress: 1,
+      // center,
+      // values,
+      // count,
+      // index
+      mid,
+      // valueSize,
+      // totalCount,
+      type,
+      act,
+      // cacheName,
+      // subtype,
+      // name,
+      // seqIndex,
+      value,
+      // connections,
+      mssid,
+      // seq,
+      bdTaskID: get16LengthId(),
+    },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const splitRoom = (mssid: string, mid: string, value: string) => {
+  setMapSubSet(mssid, mid, 'ar', 'divide', value);
+};
+const setMapSet = (act: BotAct, mid: string, type: MapSubSetType, subsets: { values: any; mssid: string }[]) => {
+  const command: BotCommand = {
+    name: 'setMapSet',
+    payload: {
+      // msid,
+      act,
+      // start,
+      mid,
+      type,
+      subsets,
+      bdTaskID: get16LengthId(),
+    },
+  };
+  sendJSONCommand(command, client);
+};
+
+export const mergeRooms = (mid: string, subsets: { values: any; mssid: string }[]) => {
+  setMapSet('merge', mid, 'ar', subsets);
 };

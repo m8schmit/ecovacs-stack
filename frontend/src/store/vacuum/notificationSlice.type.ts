@@ -31,6 +31,8 @@ export type BotEventType =
   | 1061
   | 1062
   | 1068
+  | 1081
+  | 1084
   | 1088
   | 1092;
 
@@ -64,6 +66,8 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1062: 'Unable de locate, starting new map.',
   1061: 'Resuming cleaning after position retrieved.',
   1068: 'Failed to find position, returning to charge.',
+  1081: 'Merge rooms failed.',
+  1084: 'Split room failed.',
   1088: 'Failed to find position.',
   1092: 'Failed to find position after being lift.',
 };

@@ -254,7 +254,7 @@ const mqttClient = () => {
       }
     }
 
-    if (isTopic('MapSubSet', topic)) {
+    if (isTopic('getMapSubSet', topic)) {
       const res = getDatafromMessage(message);
       decompressLZMA(res.value).then((value) =>
         WSsocket?.emit('mapSubSet', {
