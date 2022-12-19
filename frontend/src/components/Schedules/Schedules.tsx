@@ -6,18 +6,19 @@ import { useContext, useEffect } from 'react';
 import { showDialog, showEditDialog } from '../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../store/hooks';
 import { Schedules as SchedulesType } from '../../store/vacuum/commands.schedules.type';
-import { getVacuumMap } from '../../store/vacuum/mapSlice';
+import { getMapSubsetsList, getVacuumMap } from '../../store/vacuum/mapSlice';
 import { geSchedulesList } from '../../store/vacuum/stateSlice';
 import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
-import { daysList } from './ScheduleDialog/Schedule.utils';
+import { daysList, getSubsetName } from './ScheduleDialog/Schedule.utils';
 import { ScheduleDialog } from './ScheduleDialog/ScheduleDialog';
 
 export const Schedules = () => {
   const socket = useContext(WebSocketContext);
   const dispatch = useAppDispatch();
   const ScheduleList = geSchedulesList();
+  const mapSubsetsList = getMapSubsetsList();
   const { id: mid } = getVacuumMap();
 
   useEffect(() => {
@@ -104,7 +105,7 @@ export const Schedules = () => {
                   {currentSchedule.content.jsonStr?.content?.type === 'spotArea' &&
                     `clean ${currentSchedule.content.jsonStr?.content?.value
                       .split(',')
-                      .map((curr: string) => `room ${curr}`)
+                      .map((curr: string) => getSubsetName(curr, mapSubsetsList))
                       .join(',')}`}{' '}
                   {getScheduleNextday(currentSchedule)} at{' '}
                   {dayjs().set('hour', currentSchedule.hour).set('minute', currentSchedule.minute).format('HH:mm')}.

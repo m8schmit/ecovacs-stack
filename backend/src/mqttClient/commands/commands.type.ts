@@ -48,7 +48,19 @@ export type BotCommandName =
   | 'SetTime' /* keep the uppercase S */
   | 'setWaterInfo';
 
-export type BotAct = 'go' | 'start' | 'stop' | 'resume' | 'add' | 'del' | 'mod' | 'merge' | 'divide' | 'backup';
+export type BotAct =
+  | 'go'
+  | 'start'
+  | 'stop'
+  | 'pause'
+  | 'resume'
+  | 'add'
+  | 'del'
+  | 'mod'
+  | 'merge'
+  | 'divide'
+  | 'backup'
+  | 'restore';
 export type PosDevicesType = 'chargePos' | 'deebotPos';
 
 // CleanState
@@ -147,3 +159,6 @@ export interface AiMapObstacle {
 }
 // ['brush', 'sideBrush', 'heap', 'unitCare', 'dModule'],
 // [{"type":"sideBrush","left":6778,"total":9000},{"type":"brush","left":16062,"total":18000},{"type":"heap","left":5262,"total":7200},{"type":"unitCare","left":-138,"total":1800},{"type":"dModule","left":3598,"total":3600}
+
+// rooms list or wifi strength
+export type MapType = '0' | 'st';

@@ -33,7 +33,7 @@ import { geSchedulesList } from '../../../store/vacuum/stateSlice';
 import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
 import { ScheduleFormData } from '../Schedule.type';
-import { daysList } from './Schedule.utils';
+import { daysList, getSubsetName } from './Schedule.utils';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -52,7 +52,8 @@ export const ScheduleDialog = () => {
   const schedulesList = geSchedulesList();
   const [currentSchedule, setCurrentSchedule] = useState<Schedules>();
   const scheduleLength = schedulesList.length;
-  const roomsList = getMapSubsetsList().map((mapSubset) => mapSubset.mssid);
+  const mapSubsetsList = getMapSubsetsList();
+  const roomsList = mapSubsetsList.map((mapSubset) => mapSubset.mssid);
 
   const socket = useContext(WebSocketContext);
   const { id: mid } = getVacuumMap();
@@ -251,7 +252,7 @@ export const ScheduleDialog = () => {
                   renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                       {selected.map((roomId) => (
-                        <Chip key={`room-${roomId}`} label={`Room ${roomId}`} />
+                        <Chip key={`room-${roomId}`} label={getSubsetName(roomId, mapSubsetsList)} />
                       ))}
                     </Box>
                   )}
@@ -261,7 +262,7 @@ export const ScheduleDialog = () => {
                     .sort((a, b) => +a - +b)
                     .map((roomId) => (
                       <MenuItem key={`room-${roomId}`} value={roomId}>
-                        {`Room ${roomId}`}
+                        {getSubsetName(roomId, mapSubsetsList)}
                       </MenuItem>
                     ))}
                 </Select>

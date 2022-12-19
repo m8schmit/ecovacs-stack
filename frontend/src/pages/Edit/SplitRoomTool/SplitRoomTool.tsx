@@ -30,16 +30,16 @@ export const SplitRoomTool = () => {
       <Typography variant="overline">Split a selected room</Typography>
       <OptionsFrame>
         {activetool !== 'split' && (
-          <Button variant="outlined" disabled={selectedRoomsList.length !== 1} onClick={() => activateSplit()}>
+          <Button variant="outlined" disabled={selectedRoomsList.length !== 1} onClick={activateSplit}>
             Split
           </Button>
         )}
         {activetool === 'split' && (
           <>
-            <Button variant="outlined" onClick={() => desactivateSplit()}>
+            <Button variant="outlined" onClick={desactivateSplit}>
               Cancel
             </Button>
-            <Button variant="contained" onClick={() => handleSplit()} disabled={!splitLine}>
+            <Button variant="contained" onClick={handleSplit} disabled={!splitLine}>
               Confirm Split
             </Button>
           </>
