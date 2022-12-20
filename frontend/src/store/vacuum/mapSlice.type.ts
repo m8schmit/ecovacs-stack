@@ -90,3 +90,27 @@ export type BotObstacleLabel = {
 //   5: 'shoe',
 //   6: 'wire',
 // };
+
+export type RoomType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
+
+export type RoomsTypeIcon = {
+  [key in RoomType]: string;
+};
+
+// 0 default
+// 1 living room
+// 2 dining room
+// 3 bed room
+// 4 study room
+// 5 kitchen
+// 6 bath room
+// 7 laundry room
+// 8 lounge room
+// 9 storage room
+// 10 kids room
+// 11 sun room
+// 12 corridor
+// 13 balcony
+// 14 fitness room
+// 15 cloakroom (dont exist anymore in the last version)
+// 16 second bedroom (dont exist in my official version)

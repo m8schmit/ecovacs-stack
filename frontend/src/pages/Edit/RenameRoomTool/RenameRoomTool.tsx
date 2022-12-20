@@ -40,7 +40,7 @@ export const RenameRoomTool = () => {
     <>
       <Typography variant="overline">Rename a selected room</Typography>
       <OptionsFrame>
-        TODO subtype
+        TODO subtype, current subtype is {getMapSubsetbyId()?.subtype}
         <TextField
           sx={{ width: '100%' }}
           label="Select a room to rename it"

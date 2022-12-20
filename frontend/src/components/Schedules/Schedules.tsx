@@ -10,8 +10,9 @@ import { getMapSubsetsList, getVacuumMap } from '../../store/vacuum/mapSlice';
 import { geSchedulesList } from '../../store/vacuum/stateSlice';
 import theme from '../../theme';
 import { WebSocketContext } from '../../utils/socket.utils';
+import { getSubsetName } from '../../utils/subset.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
-import { daysList, getSubsetName } from './ScheduleDialog/Schedule.utils';
+import { daysList } from './ScheduleDialog/Schedule.utils';
 import { ScheduleDialog } from './ScheduleDialog/ScheduleDialog';
 
 export const Schedules = () => {

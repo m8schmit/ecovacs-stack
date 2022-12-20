@@ -6,7 +6,6 @@ import VectorSource from 'ol/source/Vector';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
-import Text from 'ol/style/Text';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { getMapSubsetsList, getSelectedRoomsList } from '../../../store/vacuum/mapSlice';
@@ -36,17 +35,21 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
   useEffect(() => {
     roomsLayer.setSource(
       new Vector({
-        features: mapSubsetsList.map(({ value, mssid, name, subtype }) => {
-          console.log('draw room ', mssid, name);
-          return new Feature({
-            geometry: new Polygon([
-              // need to add the PixelRatio as an offset to Y
-              value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y') + PixelRatio]),
-            ]),
-            name: name ? name : `Room ${mssid}`,
-            mssid,
-          });
-        }),
+        features: mapSubsetsList.map(
+          ({ value, mssid, name, subtype }) =>
+            new Feature({
+              geometry: new Polygon([
+                // need to add the PixelRatio as an offset to Y
+                value.map((current) => [
+                  getCoordinates(+current[0], 'x'),
+                  getCoordinates(+current[1], 'y') + PixelRatio,
+                ]),
+              ]),
+              name: name ? name : `Room ${mssid}`,
+              mssid,
+              subtype,
+            }),
+        ),
       }),
     );
   }, [mapSubsetsList]);
@@ -65,7 +68,6 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
             fill: new Fill({
               color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.5),
             }),
-            text: new Text({ text: feature.get('name') }),
           }),
         );
       });
