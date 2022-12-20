@@ -9,6 +9,7 @@ import SplitRoomInteraction from './Interactions/SplitRoomInteraction';
 import MainLayer from './Layers/MainLayer';
 import RoomsLayer from './Layers/RoomsLayer';
 import { mapHeight, mapWidth } from './Map.utils';
+import LabelsLayer from './Layers/LabelsLayer';
 
 const EditMap = () => {
   const projection = new Projection({
@@ -22,6 +23,7 @@ const EditMap = () => {
     <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
       {selectionType === 'split' && <SplitRoomInteraction />}
       <SelectRoomInteraction />
+      <LabelsLayer />
       <RoomsLayer />
       <MainLayer />
     </Map>

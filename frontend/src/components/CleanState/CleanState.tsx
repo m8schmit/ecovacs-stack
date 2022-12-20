@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import {
   getGoToCoordinates,
+  getMapSubsetsList,
   getSelectedRoomsList,
   getSelectedZonesList,
   getSelectionType,
@@ -21,6 +22,7 @@ import {
 } from '../../store/vacuum/stateSlice';
 import { BotAct, CleanTask } from '../../store/vacuum/vacuumSlice.type';
 import { WebSocketContext } from '../../utils/socket.utils';
+import { getSubsetName } from '../../utils/subset.utils';
 import { isCleanStateContent, isString } from '../../utils/typeguard.utils';
 import { OptionsFrame } from '../UI/OptionsFrame/OptionsFrame';
 import SavedPatternSelect from './SavedPattern/SavedPatternSelect/SavedPatternSelect';
@@ -30,6 +32,7 @@ const CleanState = () => {
   const status = getVacuumClean();
   const selectedRoomsList = getSelectedRoomsList();
   const selectedZonesList = getSelectedZonesList();
+  const mapSubsetsList = getMapSubsetsList();
   const goToCoordinates = getGoToCoordinates();
   const selectionType = getSelectionType();
   const { isCharging } = getChargeState();
@@ -128,9 +131,13 @@ const CleanState = () => {
           (isCleanStateContent(status?.cleanState?.content) && status?.cleanState?.content.type) ||
           status.state}{' '}
         {status?.cleanState?.content &&
-          `on Rooms ${
+          `on ${
             (isCleanStateContent(status?.cleanState?.content) && status?.cleanState?.content?.value) ||
-            (isString(status?.cleanState?.content) && status?.cleanState?.content)
+            (isString(status?.cleanState?.content) &&
+              status?.cleanState?.content
+                .split(',')
+                .map((mssid) => getSubsetName(mssid, mapSubsetsList))
+                .join(', '))
           }`}
       </>
     );
@@ -162,7 +169,8 @@ const CleanState = () => {
         {status.state === 'idle' && (
           <Typography sx={{ mt: 2 }}>
             start an <b>{getCleanType()}</b> cleaning
-            {selectedRoomsList.length > 0 && ` on Rooms ${selectedRoomsList.join(', ')}.`}
+            {selectedRoomsList.length > 0 &&
+              ` on Rooms ${selectedRoomsList.map((mssid) => getSubsetName(`${mssid}`, mapSubsetsList)).join(', ')}.`}
             {selectedZonesList.length > 0 && ` on Zones [${selectedZonesList.join('], [')}].`}
             {goToCoordinates.length > 0 && ` on Coordinates [${goToCoordinates.join(', ')}].`}
           </Typography>

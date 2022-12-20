@@ -14,6 +14,7 @@ import RoomsLayer from './Layers/RoomsLayer';
 import TraceLayer from './Layers/TraceLayer';
 import { mapHeight, mapWidth } from './Map.utils';
 import Map from '../UI/Map/Map';
+import LabelsLayer from './Layers/LabelsLayer';
 
 const ControlMap = () => {
   const projection = new Projection({
@@ -31,6 +32,7 @@ const ControlMap = () => {
       <RobotPosLayer />
       <DockPosLayer />
       <ObstaclesLayer />
+      <LabelsLayer />
       <TraceLayer />
       <RoomsLayer />
       <MainLayer />

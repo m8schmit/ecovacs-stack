@@ -32,8 +32,9 @@ import { getMapSubsetsList, getVacuumMap } from '../../../store/vacuum/mapSlice'
 import { geSchedulesList } from '../../../store/vacuum/stateSlice';
 import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
+import { getSubsetName } from '../../../utils/subset.utils';
 import { ScheduleFormData } from '../Schedule.type';
-import { daysList, getSubsetName } from './Schedule.utils';
+import { daysList } from './Schedule.utils';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
