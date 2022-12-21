@@ -61,27 +61,30 @@ const LabelsLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
       );
 
     labelsLayer.setStyle(
-      mapSubsetsList.map(({ center, mssid, subtype }) => {
-        console.log(center, mssid, subtype);
-        return new Style({
-          image: new Icon({
-            anchor: [0.5, 0.5],
-            scale: 0.4,
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            src: `data:image/png;base64,${ROOM_TYPE[+subtype as RoomType]}`,
-          }),
-          text: new Text({
-            text: getSubsetName(mssid, mapSubsetsList),
-            offsetY: 25,
-            stroke: new Stroke({
-              color: '#fff',
-              width: 2,
+      mapSubsetsList.map(
+        ({ center, mssid, subtype }) =>
+          new Style({
+            image: new Icon({
+              anchor: [0.5, 0.5],
+              scale: 0.4,
+              anchorXUnits: 'fraction',
+              anchorYUnits: 'fraction',
+              src: `data:image/png;base64,${ROOM_TYPE[+subtype as RoomType]}`,
             }),
+            text: new Text({
+              text: getSubsetName(mssid, mapSubsetsList),
+              offsetY: 25,
+              stroke: new Stroke({
+                color: '#fff',
+                width: 2,
+              }),
+            }),
+            geometry: new Point([
+              getCoordinates(+center.split(',')[0], 'x'),
+              getCoordinates(+center.split(',')[1], 'y'),
+            ]),
           }),
-          geometry: new Point([getCoordinates(+center.split(',')[0], 'x'), getCoordinates(+center.split(',')[1], 'y')]),
-        });
-      }),
+      ),
     );
   }, [mapSubsetsList]);
 

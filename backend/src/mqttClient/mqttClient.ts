@@ -17,6 +17,7 @@ import { CHANGE_MOP_REMINDER_EVENT, RELOCATE_SUCCESS_EVENT } from './commands/ev
 import { decompressLZMA } from './map/LZMA.utils';
 import { parseTracePoints, VacuumMap } from './map/map';
 import { getDatafromMessage, getLogs, isTopic } from './mqtt.utils';
+import { formatStringSubset } from './subset.utils';
 import { Maybe } from './types';
 
 export let client: MqttClient;
@@ -215,7 +216,12 @@ const mqttClient = () => {
           vacuumMap && getMinorMap(pieceID, vacuumMap.settings);
         });
 
-        getMapSet(vacuumMap.settings.mid);
+        //rooms
+        getMapSet(vacuumMap.settings.mid, 'ar');
+        // no mop zone/wall
+        getMapSet(vacuumMap.settings.mid, 'mw');
+        // no go zone/wall
+        getMapSet(vacuumMap.settings.mid, 'vw');
       }
     }
 
@@ -256,22 +262,29 @@ const mqttClient = () => {
 
     if (isTopic('getMapSubSet', topic)) {
       const res = getDatafromMessage(message);
-      decompressLZMA(res.value).then((value) =>
-        WSsocket?.emit('mapSubSet', {
-          ...res,
-          value: value
-            .toString()
-            .split(';')
-            .map((current) => current.split(',')),
-        }),
-      );
+      const type = res?.type;
+
+      type === 'ar' &&
+        decompressLZMA(res.value).then((value) =>
+          WSsocket?.emit(`mapSubSet`, {
+            ...res,
+            value: value
+              .toString()
+              .split(';')
+              .map((current) => current.split(',')),
+          }),
+        );
+
+      type === 'mw' && WSsocket?.emit(`NoMopMapSubSet`, { ...res, value: formatStringSubset(res.value) });
+      type === 'vw' && WSsocket?.emit(`NoGoMapSubSet`, res);
     }
 
     if (isTopic('MapSet', topic)) {
       const res = getDatafromMessage(message);
-      res?.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) =>
-        getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid),
-      );
+      const type = res?.type;
+      res?.subsets?.forEach((subset: { totalcount: number; name: string; mssid: string }) => {
+        getMapSubSet(res.msid, subset.totalcount, res.mid, subset.mssid, type);
+      });
     }
   };
 

@@ -116,6 +116,13 @@ export interface MapSubSet {
   value: string[][] /* decoded B64 LZMA, classic polygon coordinates like [[x, y], [x, y]...] */;
 }
 
+export interface ZoneMapSubset {
+  type: MapSubSetType;
+  mssid: string;
+  value: number[][];
+  mid: string;
+}
+
 export type MapSubSetType = 'ar' | 'vw' | 'mw';
 
 // MapTracesList

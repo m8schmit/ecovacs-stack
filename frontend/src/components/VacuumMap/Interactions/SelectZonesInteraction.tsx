@@ -7,11 +7,11 @@ import { FC, useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { getSelectedZonesList, updateSelectedZonesList } from '../../../store/vacuum/mapSlice';
-import { LayerProps } from '../Layers/Layer.type';
+import { LayerProps, InteractionProps } from '../Layers/Layer.type';
 import { getCoordinatesFromExtend, setCoordinates } from '../Map.utils';
 import { MapContext } from '../../UI/Map/MapContex';
 
-const SelectZonesInteraction: FC<LayerProps> = ({ ZIndex }) => {
+const SelectZonesInteraction: FC<LayerProps & InteractionProps> = ({ ZIndex, isInteractable }) => {
   const map = useContext(MapContext);
   const dispatch = useAppDispatch();
   const selectedZonesList = getSelectedZonesList();
@@ -43,12 +43,13 @@ const SelectZonesInteraction: FC<LayerProps> = ({ ZIndex }) => {
     if (!map) return;
     map.addLayer(zonesLayer);
     zonesLayer.setZIndex(ZIndex || 0);
-    map.addInteraction(zonesDrawer);
+    isInteractable ? map.addInteraction(zonesDrawer) : map.removeInteraction(zonesDrawer);
+
     return () => {
       map.removeInteraction(zonesDrawer);
       map.removeLayer(zonesLayer);
     };
-  }, [map]);
+  }, [map, isInteractable]);
 
   useEffect(() => {
     if (!zonesDrawer) return;

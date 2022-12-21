@@ -13,6 +13,7 @@ import {
   onRelocateSuccess,
   setMapSubsetsList,
   setMapTracesList,
+  setNoMopMapSubsetsList,
   setObstaclesList,
   setVacuumMap,
   setVacuumPos,
@@ -92,6 +93,10 @@ const App = () => {
     socket && socket.on('chargeState', (payload) => dispatch(setChargeState(payload)));
 
     socket && socket.on('mapSubSet', (payload) => dispatch(setMapSubsetsList(payload)));
+
+    socket && socket.on('NoMopMapSubSet', (payload) => dispatch(setNoMopMapSubsetsList(payload)));
+
+    socket && socket.on('NoGoMapSubSet', (payload) => console.log('TODO', payload));
 
     socket && socket.on('speed', (payload) => dispatch(setVacuumingOption(payload)));
 

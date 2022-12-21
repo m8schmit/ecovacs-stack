@@ -12,6 +12,7 @@ import {
   LifeSpanDeviceType,
   MapSubSet,
   MapTracesList,
+  ZoneMapSubset,
 } from '../mqttClient/commands/commands.type';
 import { Maybe } from '../mqttClient/types';
 import { BotPattern } from '../mysqlHelper/query.type';
@@ -24,6 +25,9 @@ export interface ServerToClientEvents {
   status: (status: CleanState) => void;
   chargeState: (chargeState: ChargeState) => void;
   mapSubSet: (mapSubSet: MapSubSet) => void;
+  NoMopMapSubSet: (NoMopMapSubSet: ZoneMapSubset) => void;
+  NoGoMapSubSet: (NoGoMapSubSet: ZoneMapSubset) => void;
+
   mapTrace: (mapTracesList: MapTracesList) => void;
   speed: (value: number) => void;
   autoEmpty: (autoEmptyState: AutoEmptyState) => void;

@@ -10,6 +10,7 @@ import MainLayer from './Layers/MainLayer';
 import RoomsLayer from './Layers/RoomsLayer';
 import { mapHeight, mapWidth } from './Map.utils';
 import LabelsLayer from './Layers/LabelsLayer';
+import SelectNoGoZonesInteraction from './Interactions/SelectNoGoZonesInteraction';
 
 const EditMap = () => {
   const projection = new Projection({
@@ -22,7 +23,10 @@ const EditMap = () => {
   return (
     <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
       {selectionType === 'split' && <SplitRoomInteraction />}
-      <SelectRoomInteraction />
+      <SelectRoomInteraction
+        isInteractable={selectionType === 'split' || selectionType === 'none' || selectionType === 'merge'}
+      />
+      <SelectNoGoZonesInteraction isInteractable={selectionType === 'noGoZone'} />
       <LabelsLayer />
       <RoomsLayer />
       <MainLayer />

@@ -13,6 +13,7 @@ import {
 import {
   getSavedPattern,
   getSelectedSavedPatternId,
+  getVacuumClean,
   setSelectedSavedPatternId,
 } from '../../../../store/vacuum/stateSlice';
 import { WebSocketContext } from '../../../../utils/socket.utils';
@@ -22,6 +23,7 @@ const SavedPatternSelect = () => {
   const savedPatternList = getSavedPattern();
   const selectedSavedPatternId = getSelectedSavedPatternId();
   const dispatch = useAppDispatch();
+  const { state } = getVacuumClean();
 
   const handleChange = ({ target: { value } }: SelectChangeEvent) => {
     console.log(value);
@@ -55,7 +57,7 @@ const SavedPatternSelect = () => {
   }, []);
 
   return (
-    <FormControl sx={{ mb: 1, minWidth: 180 }} size="small">
+    <FormControl sx={{ mb: 1, minWidth: 180 }} size="small" disabled={state !== 'idle'}>
       <InputLabel id="demo-simple-select-label">Saved pattern</InputLabel>
       <Select
         labelId="saved-pattern"

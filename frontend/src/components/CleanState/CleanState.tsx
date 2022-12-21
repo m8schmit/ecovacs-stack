@@ -37,6 +37,7 @@ const CleanState = () => {
   const selectionType = getSelectionType();
   const { isCharging } = getChargeState();
   const { active: autoEmptyActive } = getAutoEmptyState();
+  const { state: botState } = getVacuumClean();
 
   const dispatch = useAppDispatch();
 
@@ -131,7 +132,7 @@ const CleanState = () => {
           (isCleanStateContent(status?.cleanState?.content) && status?.cleanState?.content.type) ||
           status.state}{' '}
         {status?.cleanState?.content &&
-          `on ${
+          `in ${
             (isCleanStateContent(status?.cleanState?.content) && status?.cleanState?.content?.value) ||
             (isString(status?.cleanState?.content) &&
               status?.cleanState?.content
@@ -154,7 +155,7 @@ const CleanState = () => {
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography>currently: {getTextState()}</Typography>
-          {(selectedRoomsList.length > 0 || selectedZonesList.length > 0) && (
+          {botState === 'idle' && (selectedRoomsList.length > 0 || selectedZonesList.length > 0) && (
             <Box>
               <Button size="small" variant="outlined" sx={{ mr: 1 }} onClick={() => save()} startIcon={<Save />}>
                 save
@@ -170,7 +171,7 @@ const CleanState = () => {
           <Typography sx={{ mt: 2 }}>
             start an <b>{getCleanType()}</b> cleaning
             {selectedRoomsList.length > 0 &&
-              ` on Rooms ${selectedRoomsList.map((mssid) => getSubsetName(`${mssid}`, mapSubsetsList)).join(', ')}.`}
+              ` in ${selectedRoomsList.map((mssid) => getSubsetName(`${mssid}`, mapSubsetsList)).join(', ')}.`}
             {selectedZonesList.length > 0 && ` on Zones [${selectedZonesList.join('], [')}].`}
             {goToCoordinates.length > 0 && ` on Coordinates [${goToCoordinates.join(', ')}].`}
           </Typography>
