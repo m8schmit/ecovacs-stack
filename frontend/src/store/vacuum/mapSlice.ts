@@ -11,6 +11,7 @@ import {
   MapSubSet,
   MapTracesList,
   SelectionType,
+  ZoneMapSubset,
 } from './mapSlice.type';
 
 interface MapState {
@@ -25,6 +26,7 @@ interface MapState {
     id: string | null;
   };
   mapSubsetsList: MapSubSet[];
+  noMopMapSubsetsList: ZoneMapSubset[];
   mapTracesList: MapTracesList;
   obstaclesList: AiMapObstacle[];
   position: {
@@ -46,6 +48,7 @@ const initialState: MapState = {
     id: null,
   },
   mapSubsetsList: [],
+  noMopMapSubsetsList: [],
   mapTracesList: {
     updateIndex: 0,
     totalCount: 0,
@@ -92,6 +95,14 @@ export const mapSlice = createSlice({
       ...state,
       mapSubsetsList: [
         ...state.mapSubsetsList.filter((mapSubset) => mapSubset.mssid !== action.payload.mssid),
+        action.payload,
+      ],
+    }),
+
+    setNoMopMapSubsetsList: (state, action: PayloadAction<ZoneMapSubset>) => ({
+      ...state,
+      noMopMapSubsetsList: [
+        ...state.noMopMapSubsetsList.filter((mapSubset) => mapSubset.mssid !== action.payload.mssid),
         action.payload,
       ],
     }),
@@ -192,6 +203,7 @@ export const {
   setVacuumMap,
   setVacuumPos,
   setMapSubsetsList,
+  setNoMopMapSubsetsList,
 
   updateSelectedRoomsList,
   setSelectedRoomsList,
@@ -223,6 +235,7 @@ export const getMapTracesList = () => useAppSelector(({ map }) => map.mapTracesL
 export const getVacuumPos = (device: Devices) => useAppSelector(({ map }) => map.position[device]);
 
 export const getMapSubsetsList = () => useAppSelector(({ map }) => map.mapSubsetsList);
+export const getNoMopMapSubsetsList = () => useAppSelector(({ map }) => map.noMopMapSubsetsList);
 export const getSelectedRoomsList = () => useAppSelector(({ map }) => map.selectedRoomsList);
 export const getSelectedZonesList = () => useAppSelector(({ map }) => map.selectedZonesList);
 export const getGoToCoordinates = () => useAppSelector(({ map }) => map.goToCoordinates);

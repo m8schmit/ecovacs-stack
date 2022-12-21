@@ -11,10 +11,10 @@ import {
 } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
-export const getMapSet = (mid: string) => {
+export const getMapSet = (mid: string, type: MapSubSetType = 'ar') => {
   const command: BotCommand = {
     name: 'getMapSet',
-    payload: { start: 0, mid, type: 'ar', bdTaskID: get16LengthId() },
+    payload: { start: 0, mid, type, bdTaskID: get16LengthId() },
   };
   sendJSONCommand(command, client);
 };
@@ -48,6 +48,13 @@ export const getMapSubSet = (msid: string, count: number, mid: string, mssid: st
   };
   sendJSONCommand(command, client);
 };
+
+// //not sure yet if it will only return the zone or the wall
+// export const getNoGoList = (msid: string, count: number, mid: string, mssid: string) =>
+//   getMapSubSet(msid, count, mid, mssid, 'vw');
+
+// export const getNoMopList = (msid: string, count: number, mid: string, mssid: string) =>
+//   getMapSubSet(msid, count, mid, mssid, 'mw');
 
 export const getMapInfo_v2 = (mid: string, type: MapType = '0') => {
   const command: BotCommand = {

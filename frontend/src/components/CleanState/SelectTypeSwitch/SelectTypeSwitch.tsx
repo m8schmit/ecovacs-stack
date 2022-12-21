@@ -9,11 +9,12 @@ import {
   resetSelectedZonesList,
   setSelectionType,
 } from '../../../store/vacuum/mapSlice';
-import { resetSelectedSavedPatternId } from '../../../store/vacuum/stateSlice';
+import { getVacuumClean, resetSelectedSavedPatternId } from '../../../store/vacuum/stateSlice';
 
 const SelectTypeSwitch = () => {
   const selectionType = getSelectionType();
   const dispatch = useAppDispatch();
+  const { state } = getVacuumClean();
 
   const handleChange = (_: ChangeEvent<HTMLInputElement>, value: any) => {
     console.log(value);
@@ -25,7 +26,7 @@ const SelectTypeSwitch = () => {
   };
 
   return (
-    <FormControl>
+    <FormControl disabled={state !== 'idle'}>
       <RadioGroup
         row
         aria-labelledby="vac-power-options"

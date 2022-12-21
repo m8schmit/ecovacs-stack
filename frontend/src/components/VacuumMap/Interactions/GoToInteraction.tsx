@@ -7,11 +7,11 @@ import { FC, useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { getGoToCoordinates, setGoToCoordinates } from '../../../store/vacuum/mapSlice';
-import { LayerProps } from '../Layers/Layer.type';
+import { InteractionProps, LayerProps } from '../Layers/Layer.type';
 import { getCoordinatesFromExtend, setCoordinates } from '../Map.utils';
 import { MapContext } from '../../UI/Map/MapContex';
 
-const GoToInteraction: FC<LayerProps> = ({ ZIndex }) => {
+const GoToInteraction: FC<LayerProps & InteractionProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
   const dispatch = useAppDispatch();
   const goToCoordinates = getGoToCoordinates();
