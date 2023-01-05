@@ -11,6 +11,9 @@ import RoomsLayer from './Layers/RoomsLayer';
 import { mapHeight, mapWidth } from './Map.utils';
 import LabelsLayer from './Layers/LabelsLayer';
 import SelectNoGoZonesInteraction from './Interactions/SelectNoGoZonesInteraction';
+import SelectNoMopZonesInteraction from './Interactions/SelectNoMopZonesInteraction';
+import NoGoZonesLayer from './Layers/NoGoZonesLayer';
+import NoMopZonesLayer from './Layers/NoMopZonesLayer';
 
 const EditMap = () => {
   const projection = new Projection({
@@ -26,8 +29,12 @@ const EditMap = () => {
       <SelectRoomInteraction
         isInteractable={selectionType === 'split' || selectionType === 'none' || selectionType === 'merge'}
       />
-      <SelectNoGoZonesInteraction isInteractable={selectionType === 'noGoZone'} />
+      {selectionType === 'noGoZone' && <SelectNoGoZonesInteraction />}
+      {selectionType === 'noMopZone' && <SelectNoMopZonesInteraction />}
+
       <LabelsLayer />
+      <NoMopZonesLayer />
+      <NoGoZonesLayer />
       <RoomsLayer />
       <MainLayer />
     </Map>
