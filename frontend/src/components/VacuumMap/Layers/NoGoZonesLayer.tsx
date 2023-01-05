@@ -14,7 +14,8 @@ import { LayerProps } from './Layer.type';
 
 const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
-  const selectedNoGoZonesList = getNoMopMapSubsetsList();
+  //TODO add correct selector
+  const selectedNoGoZonesList: any = [];
 
   const [NoGozonesLayer] = useState(
     new VectorLayer({

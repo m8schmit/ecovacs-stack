@@ -18,6 +18,8 @@ import RobotPosLayer from './Layers/RobotPosLayer';
 import RoomsLayer from './Layers/RoomsLayer';
 import TraceLayer from './Layers/TraceLayer';
 import { mapHeight, mapWidth } from './Map.utils';
+import SelectedZonesLayer from './Layers/SelectedZonesLayer';
+import GoToLayer from './Layers/GoToLayer';
 
 const ControlMap = () => {
   const projection = new Projection({
@@ -29,20 +31,27 @@ const ControlMap = () => {
   const { state: botState } = getVacuumClean();
 
   return (
-    <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
-      {selectionType === 'room' && <SelectRoomInteraction isInteractable={botState === 'idle'} />}
-      {selectionType === 'zone' && <SelectZonesInteraction isInteractable={botState === 'idle'} />}
-      {selectionType === 'point' && <GoToInteraction isInteractable={botState === 'idle'} />}
-      <RobotPosLayer />
-      <DockPosLayer />
-      <ObstaclesLayer />
-      <LabelsLayer />
-      <TraceLayer />
-      <NoMopZonesLayer />
-      <NoGoZonesLayer />
-      <RoomsLayer />
-      <MainLayer />
-    </Map>
+    <>
+      {' '}
+      {(botState === 'idle' && selectionType === 'zone').toString()}
+      <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
+        {botState === 'idle' && selectionType === 'room' && <SelectRoomInteraction />}
+        {botState === 'idle' && selectionType === 'zone' && <SelectZonesInteraction />}
+        {botState === 'idle' && selectionType === 'point' && <GoToInteraction />}
+
+        <RobotPosLayer />
+        <DockPosLayer />
+        <ObstaclesLayer />
+        <LabelsLayer />
+        <TraceLayer />
+        <GoToLayer />
+        <SelectedZonesLayer />
+        <NoMopZonesLayer />
+        <NoGoZonesLayer />
+        <RoomsLayer />
+        <MainLayer />
+      </Map>
+    </>
   );
 };
 

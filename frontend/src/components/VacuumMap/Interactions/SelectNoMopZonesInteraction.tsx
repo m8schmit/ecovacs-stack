@@ -3,13 +3,14 @@ import VectorSource from 'ol/source/Vector';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
-import { FC, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { MapContext } from '../../UI/Map/MapContex';
 
 const SelectNoMopZonesInteraction = () => {
   const map = useContext(MapContext);
+  let isLoaded = false;
   //TODO
   const dispatch = useAppDispatch();
 
@@ -24,12 +25,12 @@ const SelectNoMopZonesInteraction = () => {
   };
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || isLoaded) return;
     map.getAllLayers().forEach((layer) => {
       if (layer.get('id') === 'NoMopzonesLayer') {
         const source = layer.getSource() as VectorSource;
         if (source) {
-          const NoMopzonesDrawer = new Draw({
+          const initialDrawer = new Draw({
             source,
             type: 'Circle',
             stopClick: true,
@@ -45,8 +46,9 @@ const SelectNoMopZonesInteraction = () => {
             }),
           });
 
-          map.addInteraction(NoMopzonesDrawer);
-          setNoMopZonesDrawer(NoMopzonesDrawer);
+          map.addInteraction(initialDrawer);
+          setNoMopZonesDrawer(initialDrawer);
+          isLoaded = true;
         }
       }
     });

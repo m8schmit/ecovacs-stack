@@ -1,12 +1,11 @@
 import { MapBrowserEvent } from 'ol';
-import { FC, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { resetSelectedRoomsList, updateSelectedRoomsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
-import { InteractionProps } from '../Layers/Layer.type';
 
-const SelectRoomInteraction: FC<InteractionProps> = ({ isInteractable }) => {
+const SelectRoomInteraction = () => {
   const map = useContext(MapContext);
   const dispatch = useAppDispatch();
 
@@ -22,12 +21,12 @@ const SelectRoomInteraction: FC<InteractionProps> = ({ isInteractable }) => {
   useEffect(() => {
     if (!map) return;
 
-    isInteractable ? map.on('click', selectRoom) : map.un('click', selectRoom);
+    map.on('click', selectRoom);
     return () => {
       map.un('click', selectRoom);
       dispatch(resetSelectedRoomsList());
     };
-  }, [map, isInteractable]);
+  }, [map]);
   return null;
 };
 

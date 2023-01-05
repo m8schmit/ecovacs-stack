@@ -1,38 +1,26 @@
-import { Feature } from 'ol';
-import { fromExtent } from 'ol/geom/Polygon';
 import Draw, { createBox, DrawEvent } from 'ol/interaction/Draw';
-import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { FC, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
-import { getSelectedZonesList, updateSelectedZonesList } from '../../../store/vacuum/mapSlice';
-import { LayerProps, InteractionProps } from '../Layers/Layer.type';
-import { getCoordinatesFromExtend, setCoordinates } from '../Map.utils';
+import { updateSelectedZonesList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
+import { setCoordinates } from '../Map.utils';
 
-const SelectZonesInteraction: FC<LayerProps & InteractionProps> = ({ ZIndex, isInteractable }) => {
+const SelectZonesInteraction = () => {
   const map = useContext(MapContext);
   const dispatch = useAppDispatch();
-  const selectedZonesList = getSelectedZonesList();
+  let isLoaded = false;
 
-  const source = new VectorSource({
-    wrapX: false,
-  });
+  const [zonesDrawer, setZonesDrawer] = useState<Draw | undefined>();
 
-  const zonesDrawer = new Draw({
-    source,
-    type: 'Circle',
-    stopClick: true,
-    geometryFunction: createBox(),
-  });
+  //todo send real coordinates
+  // const drawNewZone = (event: any) => {
+  //   const coordinates = event.feature.getGeometry().getCoordinates() || [];
+  //   console.log('no go', coordinates);
 
-  const [zonesLayer] = useState(
-    new VectorLayer({
-      source,
-    }),
-  );
-
+  //   // coordinates.length && dispatch(setNo(coordinate));
+  // };
   const drawNewZone = (event: DrawEvent) => {
     const extend = event.feature.getGeometry()?.getExtent();
     const coordinate = extend !== undefined ? setCoordinates(extend) : [];
@@ -40,35 +28,34 @@ const SelectZonesInteraction: FC<LayerProps & InteractionProps> = ({ ZIndex, isI
   };
 
   useEffect(() => {
-    if (!map) return;
-    map.addLayer(zonesLayer);
-    zonesLayer.setZIndex(ZIndex || 0);
-    isInteractable ? map.addInteraction(zonesDrawer) : map.removeInteraction(zonesDrawer);
+    if (!map || isLoaded) return;
+    map.getAllLayers().forEach((layer) => {
+      if (layer.get('id') === 'SelectedZonesLayer') {
+        const source = layer.getSource() as VectorSource;
+        if (source) {
+          const initialDrawer = new Draw({
+            source,
+            type: 'Circle',
+            stopClick: true,
+            geometryFunction: createBox(),
+          });
 
-    return () => {
-      map.removeInteraction(zonesDrawer);
-      map.removeLayer(zonesLayer);
-    };
-  }, [map, isInteractable]);
+          map.addInteraction(initialDrawer);
+          setZonesDrawer(initialDrawer);
+          isLoaded = true;
+        }
+      }
+    });
+  }, [map]);
 
   useEffect(() => {
     if (!zonesDrawer) return;
     zonesDrawer.on('drawend', drawNewZone);
     return () => {
       zonesDrawer.un('drawend', drawNewZone);
+      map && map.removeInteraction(zonesDrawer);
     };
-  }, []);
-
-  useEffect(() => {
-    zonesLayer.getSource()?.clear();
-    zonesLayer
-      .getSource()
-      ?.addFeatures(
-        selectedZonesList.map(
-          (selectedZone) => new Feature({ geometry: fromExtent(getCoordinatesFromExtend(selectedZone)) }),
-        ),
-      );
-  }, [selectedZonesList]);
+  }, [zonesDrawer]);
 
   return null;
 };
