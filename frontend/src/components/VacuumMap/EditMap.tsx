@@ -26,9 +26,9 @@ const EditMap = () => {
   return (
     <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
       {selectionType === 'split' && <SplitRoomInteraction />}
-      <SelectRoomInteraction
-        isInteractable={selectionType === 'split' || selectionType === 'none' || selectionType === 'merge'}
-      />
+      {selectionType === 'split' ||
+        selectionType === 'none' ||
+        (selectionType === 'merge' && <SelectRoomInteraction />)}
       {selectionType === 'noGoZone' && <SelectNoGoZonesInteraction />}
       {selectionType === 'noMopZone' && <SelectNoMopZonesInteraction />}
 
