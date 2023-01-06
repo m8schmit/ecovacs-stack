@@ -20,6 +20,8 @@ import TraceLayer from './Layers/TraceLayer';
 import { mapHeight, mapWidth } from './Map.utils';
 import SelectedZonesLayer from './Layers/SelectedZonesLayer';
 import GoToLayer from './Layers/GoToLayer';
+import NoGoWallsLayer from './Layers/NoGoWallsLayer';
+import NoMopWallsLayer from './Layers/NoMopWallsLayer';
 
 const ControlMap = () => {
   const projection = new Projection({
@@ -32,8 +34,6 @@ const ControlMap = () => {
 
   return (
     <>
-      {' '}
-      {(botState === 'idle' && selectionType === 'zone').toString()}
       <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
         {botState === 'idle' && selectionType === 'room' && <SelectRoomInteraction />}
         {botState === 'idle' && selectionType === 'zone' && <SelectZonesInteraction />}
@@ -47,6 +47,8 @@ const ControlMap = () => {
         <GoToLayer />
         <SelectedZonesLayer />
         <NoMopZonesLayer />
+        <NoMopWallsLayer />
+        <NoGoWallsLayer />
         <NoGoZonesLayer />
         <RoomsLayer />
         <MainLayer />
