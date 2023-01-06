@@ -1,6 +1,5 @@
-import Draw, { createBox } from 'ol/interaction/Draw';
+import Draw from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
-import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import { useContext, useEffect, useState } from 'react';
@@ -8,16 +7,17 @@ import { useContext, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import { MapContext } from '../../UI/Map/MapContex';
 
-const SelectNoMopZonesInteraction = () => {
+const SelectNoGoWallsInteraction = () => {
   const map = useContext(MapContext);
   let isLoaded = false;
+
   //TODO
   const dispatch = useAppDispatch();
 
-  const [NoMopzonesDrawer, setNoMopZonesDrawer] = useState<Draw | null>();
+  const [NoGoWallsDrawer, setNoGoWallsDrawer] = useState<Draw | null>();
 
   // TODO find the right type, geometry in drawend doesnt contain `getcoordinates()`
-  const drawNewZone = (event: any) => {
+  const drawNewWall = (event: any) => {
     const coordinates = event.feature.getGeometry().getCoordinates() || [];
     console.log('no go', coordinates);
 
@@ -27,47 +27,40 @@ const SelectNoMopZonesInteraction = () => {
   useEffect(() => {
     if (!map || isLoaded) return;
     map.getAllLayers().forEach((layer) => {
-      if (layer.get('id') === 'NoMopzonesLayer') {
+      if (layer.get('id') === 'NoGoWallsLayer') {
         const source = layer.getSource() as VectorSource;
         if (source) {
           const initialDrawer = new Draw({
             source,
-            type: 'Circle',
+            type: 'LineString',
             stopClick: true,
-            geometryFunction: createBox(),
+            maxPoints: 2,
             style: new Style({
               stroke: new Stroke({
-                color: 'rgba(255, 125, 0, 1)',
+                color: 'rgba(255, 0, 0, 1)',
                 width: 2,
-              }),
-              fill: new Fill({
-                color: 'rgba(255, 125, 0, 0.3)',
               }),
             }),
           });
 
           map.addInteraction(initialDrawer);
-          setNoMopZonesDrawer(initialDrawer);
+          setNoGoWallsDrawer(initialDrawer);
           isLoaded = true;
         }
       }
     });
-
-    return () => {
-      NoMopzonesDrawer && map.removeInteraction(NoMopzonesDrawer);
-    };
   }, [map]);
 
   useEffect(() => {
-    if (!NoMopzonesDrawer) return;
-    NoMopzonesDrawer.on('drawend', drawNewZone);
+    if (!NoGoWallsDrawer) return;
+    NoGoWallsDrawer.on('drawend', drawNewWall);
     return () => {
-      NoMopzonesDrawer.un('drawend', drawNewZone);
-      map && map.removeInteraction(NoMopzonesDrawer);
+      NoGoWallsDrawer.un('drawend', drawNewWall);
+      map && map.removeInteraction(NoGoWallsDrawer);
     };
-  }, [NoMopzonesDrawer]);
+  }, [NoGoWallsDrawer]);
 
   return null;
 };
 
-export default SelectNoMopZonesInteraction;
+export default SelectNoGoWallsInteraction;
