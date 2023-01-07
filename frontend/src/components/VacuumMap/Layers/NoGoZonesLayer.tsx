@@ -7,7 +7,7 @@ import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import { getNoMopMapSubsetsList } from '../../../store/vacuum/mapSlice';
+import { getNoGoMapSubsetsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
 import { getCoordinates, PixelRatio } from '../Map.utils';
 import { LayerProps } from './Layer.type';
@@ -15,7 +15,7 @@ import { LayerProps } from './Layer.type';
 const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
   //TODO add correct selector
-  const selectedNoGoZonesList = getNoMopMapSubsetsList();
+  const selectedNoGoZonesList = getNoGoMapSubsetsList();
 
   const [NoGozonesLayer] = useState(
     new VectorLayer({
@@ -28,7 +28,7 @@ const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
           width: 2,
         }),
         fill: new Fill({
-          color: 'rgba(255, 0, 0, 0.3)',
+          color: 'rgba(255, 0, 0, 0.2)',
         }),
       }),
     }),

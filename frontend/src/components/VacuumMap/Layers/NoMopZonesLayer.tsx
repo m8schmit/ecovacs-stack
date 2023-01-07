@@ -26,9 +26,6 @@ const NoMopZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
           color: 'rgba(255, 125, 0, 1)',
           width: 2,
         }),
-        fill: new Fill({
-          color: 'rgba(255, 125, 0, 0.3)',
-        }),
       }),
     }),
   );
