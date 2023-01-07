@@ -27,9 +27,6 @@ const NoGoWallsLayer: FC<LayerProps> = ({ ZIndex }) => {
           color: 'rgba(255, 0, 0, 1)',
           width: 2,
         }),
-        fill: new Fill({
-          color: 'rgba(255, 0, 0, 0.3)',
-        }),
       }),
     }),
   );

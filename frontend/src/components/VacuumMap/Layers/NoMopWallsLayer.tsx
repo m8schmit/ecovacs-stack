@@ -28,7 +28,7 @@ const NoMopWallsLayer: FC<LayerProps> = ({ ZIndex }) => {
           width: 2,
         }),
         fill: new Fill({
-          color: 'rgba(255, 125, 0, 0.3)',
+          color: 'rgba(255, 125, 0, 0.2)',
         }),
       }),
     }),
