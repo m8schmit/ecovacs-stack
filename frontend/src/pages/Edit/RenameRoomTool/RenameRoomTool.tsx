@@ -4,6 +4,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
 import { getMapSubsetsList, getSelectedRoomsList, getVacuumMap } from '../../../store/vacuum/mapSlice';
 import { WebSocketContext } from '../../../utils/socket.utils';
+import SelectRoomType from './SelectRoomType/SelectRoomType';
 
 export const RenameRoomTool = () => {
   const socket = useContext(WebSocketContext);
@@ -14,11 +15,13 @@ export const RenameRoomTool = () => {
 
   const handleRename = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(event.target.value);
 
-  const saveRename = () =>
-    socket.emit('renameRoom', { mssid: `${selectedRoomsList[0]}`, mid: mapId, subset: 0, name: value });
-
   const getMapSubsetbyId = () =>
     mapSubsetsList.find(({ mssid: currentMssid }) => currentMssid === `${selectedRoomsList[0]}`);
+
+  const getMapSubType = () => getMapSubsetbyId()?.subtype || '0';
+
+  const saveRename = () =>
+    socket.emit('renameRoom', { mssid: `${selectedRoomsList[0]}`, mid: mapId, subtype: getMapSubType(), name: value });
 
   useEffect(() => {
     if (selectedRoomsList.length !== 1 || (!selectedRoomsList[0] && selectedRoomsList[0] !== 0)) {
@@ -40,7 +43,7 @@ export const RenameRoomTool = () => {
     <>
       <Typography variant="overline">Rename a selected room</Typography>
       <OptionsFrame>
-        TODO subtype, current subtype is {getMapSubsetbyId()?.subtype}
+        <SelectRoomType subtype={getMapSubType()} />
         <TextField
           sx={{ width: '100%' }}
           label="Select a room to rename it"

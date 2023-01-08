@@ -1,6 +1,5 @@
-import Draw, { createBox } from 'ol/interaction/Draw';
+import Draw from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
-import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import { useContext, useEffect, useState } from 'react';
