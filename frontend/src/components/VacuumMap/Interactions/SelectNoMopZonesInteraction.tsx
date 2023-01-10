@@ -1,13 +1,10 @@
 import Draw, { createBox } from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
-import Fill from 'ol/style/Fill';
-import RegularShape from 'ol/style/RegularShape';
-import Stroke from 'ol/style/Stroke';
-import Style from 'ol/style/Style';
 import { useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { MapContext } from '../../UI/Map/MapContex';
+import { mopZoneStyle } from '../Map.utils';
 
 const SelectNoMopZonesInteraction = () => {
   const map = useContext(MapContext);
@@ -36,23 +33,7 @@ const SelectNoMopZonesInteraction = () => {
             type: 'Circle',
             stopClick: true,
             geometryFunction: createBox(),
-            style: new Style({
-              stroke: new Stroke({
-                color: 'rgba(255, 125, 0, 1)',
-                width: 2,
-              }),
-              fill: new Fill({
-                color: 'rgba(255, 125, 0, 0.3)',
-              }),
-              image: new RegularShape({
-                fill: new Fill({
-                  color: 'rgba(255, 125, 0, 1)',
-                }),
-                points: 5,
-                radius1: 5,
-                radius2: 5,
-              }),
-            }),
+            style: mopZoneStyle,
           });
 
           map.addInteraction(initialDrawer);

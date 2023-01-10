@@ -18,7 +18,7 @@ const convertHexToRGBA = (hexCode: string, opacity: number) => {
 };
 
 const getRandomColor = (id: number, opacity = 1) => {
-  const colors = ['#00ffe1', '#ff9100', '#0011ff', '#00ff77', '#15ff00', '#ff2600'];
+  const colors = ['#cbdc6c', '#cdb5cf', '#f4c2d5', '#fdae6a', '#9dc9c4', '#abda7a', '#f5e163', '#fdc662'];
 
   return convertHexToRGBA(colors[id % colors.length], opacity);
 };

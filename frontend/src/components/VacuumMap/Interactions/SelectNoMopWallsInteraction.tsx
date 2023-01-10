@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { MapContext } from '../../UI/Map/MapContex';
+import { mopZoneStyle } from '../Map.utils';
 
 const SelectNoMopWallsInteraction = () => {
   const map = useContext(MapContext);
@@ -36,20 +37,7 @@ const SelectNoMopWallsInteraction = () => {
             type: 'LineString',
             stopClick: true,
             maxPoints: 2,
-            style: new Style({
-              stroke: new Stroke({
-                color: 'rgba(255, 125, 0, 1)',
-                width: 2,
-              }),
-              image: new RegularShape({
-                fill: new Fill({
-                  color: 'rgba(255, 125, 0, 1)',
-                }),
-                points: 5,
-                radius1: 5,
-                radius2: 5,
-              }),
-            }),
+            style: mopZoneStyle,
           });
 
           map.addInteraction(initialDrawer);

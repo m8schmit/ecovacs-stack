@@ -1,5 +1,4 @@
 import { TextField } from '@mui/material';
-import { typography } from '@mui/system';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
 import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
@@ -47,7 +46,7 @@ export const RenameRoomTool = () => {
         <SelectRoomType subtype={getMapSubType()} />
         <TextField
           sx={{ width: '100%', marginLeft: theme.typography.pxToRem(10) }}
-          size="small"
+          size="medium"
           label="Room Name"
           variant="filled"
           onChange={handleRename}
