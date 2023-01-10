@@ -1,8 +1,10 @@
-import { TextField, Typography } from '@mui/material';
+import { TextField } from '@mui/material';
+import { typography } from '@mui/system';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
 import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
 import { getMapSubsetsList, getSelectedRoomsList, getVacuumMap } from '../../../store/vacuum/mapSlice';
+import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
 import SelectRoomType from './SelectRoomType/SelectRoomType';
 
@@ -41,12 +43,12 @@ export const RenameRoomTool = () => {
 
   return (
     <>
-      <Typography variant="overline">Rename a selected room</Typography>
-      <OptionsFrame>
+      <OptionsFrame sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <SelectRoomType subtype={getMapSubType()} />
         <TextField
-          sx={{ width: '100%' }}
-          label="Select a room to rename it"
+          sx={{ width: '100%', marginLeft: theme.typography.pxToRem(10) }}
+          size="small"
+          label="Room Name"
           variant="filled"
           onChange={handleRename}
           onBlur={saveRename}

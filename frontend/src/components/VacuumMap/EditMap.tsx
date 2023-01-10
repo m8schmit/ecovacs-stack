@@ -18,6 +18,7 @@ import NoMopWallsLayer from './Layers/NoMopWallsLayer';
 import NoMopZonesLayer from './Layers/NoMopZonesLayer';
 import RoomsLayer from './Layers/RoomsLayer';
 import { mapHeight, mapWidth } from './Map.utils';
+import { getSelectedRoomsList } from '../../store/vacuum/mapSlice';
 
 const EditMap = () => {
   const projection = new Projection({
@@ -26,26 +27,30 @@ const EditMap = () => {
     extent: [0, 0, mapWidth, mapHeight],
   });
   const selectionType = getActiveTool();
+  const isSingleRoomselected = getSelectedRoomsList().length === 1;
 
   return (
-    <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
-      {selectionType === 'split' && <SplitRoomInteraction />}
-      {(selectionType === 'split' || selectionType === 'none' || selectionType === 'merge') && (
-        <SelectRoomInteraction />
-      )}
-      {selectionType === 'noGoZone' && <SelectNoGoZonesInteraction />}
-      {selectionType === 'noMopZone' && <SelectNoMopZonesInteraction />}
-      {selectionType === 'noGoWall' && <SelectNoGoWallsInteraction />}
-      {selectionType === 'noMopWall' && <SelectNoMopWallsInteraction />}
+    <>
+      room selected: {(selectionType === 'split' && !isSingleRoomselected).toString()}
+      <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
+        {selectionType === 'merge' && <SelectRoomInteraction />}
+        {selectionType === 'default' && <SelectRoomInteraction selectMulti={false} />}
+        {selectionType === 'split' && <SelectRoomInteraction selectMulti={false} />}
+        {selectionType === 'split' && isSingleRoomselected && <SplitRoomInteraction />}
+        {selectionType === 'noGoZone' && <SelectNoGoZonesInteraction />}
+        {selectionType === 'noMopZone' && <SelectNoMopZonesInteraction />}
+        {selectionType === 'noGoWall' && <SelectNoGoWallsInteraction />}
+        {selectionType === 'noMopWall' && <SelectNoMopWallsInteraction />}
 
-      <LabelsLayer />
-      <NoGoWallsLayer />
-      <NoMopZonesLayer />
-      <NoGoZonesLayer />
-      <NoMopWallsLayer />
-      <RoomsLayer />
-      <MainLayer />
-    </Map>
+        <LabelsLayer />
+        <NoGoWallsLayer />
+        <NoMopZonesLayer />
+        <NoGoZonesLayer />
+        <NoMopWallsLayer />
+        <RoomsLayer />
+        <MainLayer />
+      </Map>
+    </>
   );
 };
 

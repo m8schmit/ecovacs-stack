@@ -3,12 +3,14 @@ import { useAppSelector } from '../hooks';
 
 export type ActiveToolType =
   | 'none'
+  | 'default'
   | 'split'
   | 'merge'
   | 'noGoZone'
   | 'noGoWall'
   | 'noMopZone'
   | 'noMopWall'
+  | 'noGoTool'
   | 'deleteNoGoZone';
 
 interface EditMapState {
@@ -17,7 +19,7 @@ interface EditMapState {
 }
 
 const initialState: EditMapState = {
-  activeTool: 'none',
+  activeTool: 'default',
   splitLine: [],
 };
 
