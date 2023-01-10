@@ -3,6 +3,7 @@ import { MultiPoint, Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Vector from 'ol/source/Vector';
+import Fill from 'ol/style/Fill';
 import Icon from 'ol/style/Icon';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
@@ -71,15 +72,16 @@ const LabelsLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
               anchorXUnits: 'fraction',
               anchorYUnits: 'fraction',
               src: `data:image/png;base64,${ROOM_TYPE_V2[+subtype as RoomType]}`,
-              // opacity: 0.9,
+              opacity: 0.9,
               color: getRandomColor(+mssid),
             }),
             text: new Text({
               text: getSubsetName(mssid, mapSubsetsList),
               offsetY: 25,
+              fill: new Fill({ color: getRandomColor(+mssid, 1, true) }),
               stroke: new Stroke({
                 color: '#fff',
-                width: 2,
+                width: 3,
               }),
             }),
             geometry: new Point([

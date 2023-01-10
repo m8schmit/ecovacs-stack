@@ -17,10 +17,12 @@ const convertHexToRGBA = (hexCode: string, opacity: number) => {
   return `rgba(${r},${g},${b},${opacity})`;
 };
 
-const getRandomColor = (id: number, opacity = 1) => {
+const getRandomColor = (id: number, opacity = 1, dark = false) => {
   const colors = ['#cbdc6c', '#cdb5cf', '#f4c2d5', '#fdae6a', '#9dc9c4', '#abda7a', '#f5e163', '#fdc662'];
+  const darkColors = ['#67804c', '#796b7a', '#8e727d', '#936843', '#5f7773', '#67804c', '#8c813e', '#93753e'];
 
-  return convertHexToRGBA(colors[id % colors.length], opacity);
+  const colorsArray = dark ? darkColors : colors;
+  return convertHexToRGBA(colorsArray[id % colorsArray.length], opacity);
 };
 
 export default getRandomColor;

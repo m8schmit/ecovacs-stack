@@ -4,7 +4,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import { getNoMopMapSubsetsList } from '../../../store/vacuum/mapSlice';
+import { getNoGoMapSubsetsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
 import { getCoordinates, nogoZonesStyle, PixelRatio } from '../Map.utils';
 import { LayerProps } from './Layer.type';
@@ -12,7 +12,7 @@ import { LayerProps } from './Layer.type';
 const NoGoWallsLayer: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
   //TODO add correct selector
-  const selectedNoGoWallsList = getNoMopMapSubsetsList();
+  const selectedNoGoWallsList = getNoGoMapSubsetsList();
 
   const [NoGoWallsLayer] = useState(
     new VectorLayer({

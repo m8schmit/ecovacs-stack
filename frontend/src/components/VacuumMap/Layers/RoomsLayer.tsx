@@ -62,7 +62,9 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
         feature.setStyle(
           new Style({
             stroke: new Stroke({
-              color: getRandomColor(+feature.get('mssid'), isRoomSelected(feature.get('mssid')) ? 1 : 0.6),
+              color: isRoomSelected(feature.get('mssid'))
+                ? getRandomColor(+feature.get('mssid'), 0.8, true)
+                : getRandomColor(+feature.get('mssid'), 0.6),
               width: 2,
             }),
             fill: new Fill({
