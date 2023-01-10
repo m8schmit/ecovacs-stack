@@ -245,7 +245,10 @@ export const getMapTracesList = () => useAppSelector(({ map }) => map.mapTracesL
 export const getVacuumPos = (device: Devices) => useAppSelector(({ map }) => map.position[device]);
 
 export const getMapSubsetsList = () => useAppSelector(({ map }) => map.mapSubsetsList);
-export const getNoMopMapSubsetsList = () => useAppSelector(({ map }) => map.noMopMapSubsetsList);
+export const getNoMopZoneMapSubsetsList = () =>
+  useAppSelector(({ map }) => map.noMopMapSubsetsList.filter(({ value }) => value.length === 4));
+export const getNoMopWallMapSubsetsList = () =>
+  useAppSelector(({ map }) => map.noMopMapSubsetsList.filter(({ value }) => value.length === 2));
 export const getNoGoMapSubsetsList = () => useAppSelector(({ map }) => map.noGoMapSubsetsList);
 
 export const getSelectedRoomsList = () => useAppSelector(({ map }) => map.selectedRoomsList);

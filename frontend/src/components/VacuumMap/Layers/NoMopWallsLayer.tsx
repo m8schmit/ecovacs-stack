@@ -4,7 +4,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import { getNoMopMapSubsetsList } from '../../../store/vacuum/mapSlice';
+import { getNoMopWallMapSubsetsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
 import { getCoordinates, mopZoneStyle, PixelRatio } from '../Map.utils';
 import { LayerProps } from './Layer.type';
@@ -12,7 +12,7 @@ import { LayerProps } from './Layer.type';
 const NoMopWallsLayer: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
   //todo add correct selector
-  const selectedNoMopWallsList = getNoMopMapSubsetsList();
+  const selectedNoMopWallsList = getNoMopWallMapSubsetsList();
 
   const [NoMopWallsLayer] = useState(
     new VectorLayer({

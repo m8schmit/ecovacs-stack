@@ -21,7 +21,6 @@ import { mapHeight, mapWidth } from './Map.utils';
 import SelectedZonesLayer from './Layers/SelectedZonesLayer';
 import GoToLayer from './Layers/GoToLayer';
 import NoGoWallsLayer from './Layers/NoGoWallsLayer';
-import NoMopWallsLayer from './Layers/NoMopWallsLayer';
 
 const ControlMap = () => {
   const projection = new Projection({
@@ -47,7 +46,7 @@ const ControlMap = () => {
         <GoToLayer />
         <SelectedZonesLayer />
         <NoMopZonesLayer />
-        <NoMopWallsLayer />
+        {/* <NoMopWallsLayer /> */}
         <NoGoWallsLayer />
         <NoGoZonesLayer />
         <RoomsLayer />
