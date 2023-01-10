@@ -13,7 +13,7 @@ export const NoGoZoneTool = () => {
     <>
       <Typography variant="overline">Select a tool to define or delete a no go zone.</Typography>
       <OptionsFrame sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {(activetool === 'merge' || activetool === 'split' || activetool === 'none') && (
+        {activetool === 'noGoTool' && (
           <>
             <Button variant="outlined" onClick={() => handleClick('noGoZone')}>
               No Go Zone
@@ -37,7 +37,7 @@ export const NoGoZoneTool = () => {
           activetool === 'noGoZone' ||
           activetool === 'noMopZone') && (
           <>
-            <Button variant="outlined" onClick={() => handleClick('none')}>
+            <Button variant="outlined" onClick={() => handleClick('noGoTool')}>
               Cancel
             </Button>
             <Button variant="contained" onClick={() => console.log('todo')} disabled>
@@ -47,7 +47,7 @@ export const NoGoZoneTool = () => {
         )}
         {activetool === 'deleteNoGoZone' && (
           <>
-            <Button variant="outlined" onClick={() => handleClick('none')}>
+            <Button variant="outlined" onClick={() => handleClick('noGoTool')}>
               Cancel
             </Button>
             <Button variant="contained" onClick={() => console.log('todo')} disabled>

@@ -1,20 +1,19 @@
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { useContext } from 'react';
 
 import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
 import { useAppDispatch } from '../../../store/hooks';
-import { getActiveTool, setActivetool } from '../../../store/vacuum/editMapSlice';
+import { setActivetool } from '../../../store/vacuum/editMapSlice';
 import { getSelectedRoomsList, getVacuumMap } from '../../../store/vacuum/mapSlice';
+import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
 
 export const MergeRoomTool = () => {
   const dispatch = useAppDispatch();
   const socket = useContext(WebSocketContext);
   const selectedRoomsList = getSelectedRoomsList();
-  const activetool = getActiveTool();
   const { id: mapId } = getVacuumMap();
-  const activateMerge = () => dispatch(setActivetool('merge'));
-  const desactivateMerge = () => dispatch(setActivetool('none'));
+  const desactivateMerge = () => dispatch(setActivetool('default'));
 
   const handleMerge = () => {
     console.log('merge rooms: ', selectedRoomsList);
@@ -29,23 +28,22 @@ export const MergeRoomTool = () => {
 
   return (
     <>
-      <Typography variant="overline">Select two or more adjoining rooms</Typography>
       <OptionsFrame>
-        {activetool !== 'merge' && (
-          <Button variant="outlined" onClick={activateMerge}>
-            Merge
-          </Button>
-        )}
-        {activetool === 'merge' && (
-          <>
-            <Button variant="outlined" onClick={() => desactivateMerge()}>
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={() => handleMerge()} disabled={selectedRoomsList.length < 2}>
-              Confirm Split
-            </Button>
-          </>
-        )}
+        <Button
+          variant="outlined"
+          onClick={() => desactivateMerge()}
+          sx={{ margin: `0 ${theme.typography.pxToRem(5)}` }}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleMerge()}
+          disabled={selectedRoomsList.length < 2}
+          sx={{ margin: `0 ${theme.typography.pxToRem(5)}` }}
+        >
+          Confirm Merge
+        </Button>
       </OptionsFrame>
     </>
   );

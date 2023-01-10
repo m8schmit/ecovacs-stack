@@ -1,11 +1,13 @@
 import { MapBrowserEvent } from 'ol';
-import { useContext, useEffect } from 'react';
+import { FC, useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { resetSelectedRoomsList, updateSelectedRoomsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
-
-const SelectRoomInteraction = () => {
+interface SelectRoomInteractionProps {
+  selectMulti?: boolean;
+}
+const SelectRoomInteraction: FC<SelectRoomInteractionProps> = ({ selectMulti = true }) => {
   const map = useContext(MapContext);
   const dispatch = useAppDispatch();
 
@@ -14,7 +16,12 @@ const SelectRoomInteraction = () => {
 
     map.forEachFeatureAtPixel(event.pixel, (feature) => {
       const mssid = feature.get('mssid');
-      mssid && dispatch(updateSelectedRoomsList(+mssid));
+      if (mssid) {
+        if (!selectMulti) {
+          dispatch(resetSelectedRoomsList());
+        }
+        dispatch(updateSelectedRoomsList(+mssid));
+      }
     });
   };
 

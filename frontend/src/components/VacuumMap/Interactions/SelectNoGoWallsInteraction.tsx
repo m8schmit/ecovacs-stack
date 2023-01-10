@@ -1,5 +1,7 @@
 import Draw from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
+import Fill from 'ol/style/Fill';
+import RegularShape from 'ol/style/RegularShape';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import { useContext, useEffect, useState } from 'react';
@@ -39,6 +41,14 @@ const SelectNoGoWallsInteraction = () => {
               stroke: new Stroke({
                 color: 'rgba(255, 0, 0, 1)',
                 width: 2,
+              }),
+              image: new RegularShape({
+                fill: new Fill({
+                  color: 'rgba(255, 0, 0, 1)',
+                }),
+                points: 5,
+                radius1: 5,
+                radius2: 5,
               }),
             }),
           });
