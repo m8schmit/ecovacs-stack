@@ -58,15 +58,15 @@ const RoomsLayer: FC<LayerProps> = ({ ZIndex }) => {
     roomsLayer
       .getSource()
       ?.getFeatures()
-      .forEach((feature, index) => {
+      .forEach((feature) => {
         feature.setStyle(
           new Style({
             stroke: new Stroke({
-              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.5),
+              color: getRandomColor(+feature.get('mssid'), isRoomSelected(feature.get('mssid')) ? 1 : 0.6),
               width: 2,
             }),
             fill: new Fill({
-              color: getRandomColor(index, isRoomSelected(feature.get('mssid')) ? 0.8 : 0.5),
+              color: getRandomColor(+feature.get('mssid'), isRoomSelected(feature.get('mssid')) ? 0.8 : 0.6),
             }),
           }),
         );

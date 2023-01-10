@@ -1,7 +1,7 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import { ROOM_TYPE, ROOM_TYPE_LABEL } from '../../../../components/VacuumMap/Map.utils';
+import { ROOM_TYPE_LABEL, ROOM_TYPE_V2 } from '../../../../components/VacuumMap/Map.utils';
 import { getMapSubsetsList, getSelectedRoomsList, getVacuumMap } from '../../../../store/vacuum/mapSlice';
 import { RoomType } from '../../../../store/vacuum/mapSlice.type';
 import theme from '../../../../theme';
@@ -46,7 +46,7 @@ const SelectRoomType: FC<SelectRoomTypeProps> = ({ subtype }) => {
 
   return (
     <>
-      <FormControl sx={{ mb: 1, minWidth: 180 }} size="small">
+      <FormControl sx={{ minWidth: 180 }} variant="filled">
         <InputLabel id="demo-simple-select-label">Room Type</InputLabel>
         <Select
           labelId="room-type"
@@ -63,7 +63,7 @@ const SelectRoomType: FC<SelectRoomTypeProps> = ({ subtype }) => {
                 <Box
                   component="img"
                   sx={{ height: theme.typography.pxToRem(25), marginRight: theme.typography.pxToRem(10) }}
-                  src={`data:image/png;base64,${ROOM_TYPE[index as RoomType]}`}
+                  src={`data:image/png;base64,${ROOM_TYPE_V2[index as RoomType]}`}
                 />
                 {label}
               </Box>

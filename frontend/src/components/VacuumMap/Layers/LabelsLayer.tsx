@@ -11,9 +11,10 @@ import { FC, useContext, useEffect, useState } from 'react';
 
 import { getMapSubsetsList } from '../../../store/vacuum/mapSlice';
 import { RoomType } from '../../../store/vacuum/mapSlice.type';
+import getRandomColor from '../../../utils/colors.utils';
 import { getSubsetName } from '../../../utils/subset.utils';
 import { MapContext } from '../../UI/Map/MapContex';
-import { getCoordinates, ROOM_TYPE } from '../Map.utils';
+import { getCoordinates, ROOM_TYPE_V2 } from '../Map.utils';
 import { LayerProps } from './Layer.type';
 
 const LabelsLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
@@ -69,7 +70,9 @@ const LabelsLayer: FC<LayerProps> = ({ projection, ZIndex }) => {
               scale: 0.4,
               anchorXUnits: 'fraction',
               anchorYUnits: 'fraction',
-              src: `data:image/png;base64,${ROOM_TYPE[+subtype as RoomType]}`,
+              src: `data:image/png;base64,${ROOM_TYPE_V2[+subtype as RoomType]}`,
+              // opacity: 0.9,
+              color: getRandomColor(+mssid),
             }),
             text: new Text({
               text: getSubsetName(mssid, mapSubsetsList),

@@ -2,14 +2,11 @@ import { Feature } from 'ol';
 import { Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import Fill from 'ol/style/Fill';
-import Stroke from 'ol/style/Stroke';
-import Style from 'ol/style/Style';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { getNoGoMapSubsetsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
-import { getCoordinates, PixelRatio } from '../Map.utils';
+import { getCoordinates, nogoZonesStyle, PixelRatio } from '../Map.utils';
 import { LayerProps } from './Layer.type';
 
 const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
@@ -22,15 +19,7 @@ const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
       source: new VectorSource({
         wrapX: false,
       }),
-      style: new Style({
-        stroke: new Stroke({
-          color: 'rgba(255, 0, 0, 1)',
-          width: 2,
-        }),
-        fill: new Fill({
-          color: 'rgba(255, 0, 0, 0.2)',
-        }),
-      }),
+      style: nogoZonesStyle,
     }),
   );
 
