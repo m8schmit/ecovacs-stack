@@ -3,24 +3,25 @@ import VectorSource from 'ol/source/Vector';
 import { useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
+import { setNoGoSubset } from '../../../store/vacuum/editMapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
 import { nogoZonesStyle } from '../Map.utils';
 
 const SelectNoGoZonesInteraction = () => {
   const map = useContext(MapContext);
-  let isLoaded = false;
-
-  //TODO
   const dispatch = useAppDispatch();
-
   const [NoGozonesDrawer, setNoGoZonesDrawer] = useState<Draw | null>();
+  let isLoaded = false;
 
   // TODO find the right type, geometry in drawend doesnt contain `getcoordinates()`
   const drawNewZone = (event: any) => {
-    const coordinates = event.feature.getGeometry().getCoordinates() || [];
-    console.log('no go', coordinates);
+    const coordinates = event.feature.getGeometry().getCoordinates()[0] || [];
+    console.log('no go', coordinates, coordinates.length);
 
-    // coordinates.length && dispatch(setNo(coordinate));
+    if (coordinates.length) {
+      coordinates.pop();
+      dispatch(setNoGoSubset(coordinates));
+    }
   };
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const SelectNoGoZonesInteraction = () => {
     return () => {
       NoGozonesDrawer.un('drawend', drawNewZone);
       map && map.removeInteraction(NoGozonesDrawer);
+      dispatch(setNoGoSubset([]));
     };
   }, [NoGozonesDrawer]);
 

@@ -181,7 +181,7 @@ export const resetLifeSpan = (type: LifeSpanDeviceType) => {
 };
 
 const setMapSubSet = (
-  mssid: string,
+  mssid: Maybe<string> = null,
   mid: string,
   type: MapSubSetType,
   act: BotAct,
@@ -223,6 +223,15 @@ export const splitRoom = (mssid: string, mid: string, value: string) => {
 
 export const renameRoom = (mssid: string, mid: string, subtype: string, name: string) => {
   setMapSubSet(mssid, mid, 'ar', 'mod', null, subtype, name);
+};
+
+// with 4 int in value it's a wall, with 8 it's a zone.
+export const addNoMopSubset = (value: string, mid: string) => {
+  setMapSubSet(null, mid, 'mw', 'add', value);
+};
+
+export const addNoGoSubset = (value: string, mid: string) => {
+  setMapSubSet(null, mid, 'vw', 'add', value);
 };
 
 const setMapSet = (act: BotAct, mid: string, type: MapSubSetType, subsets: { values: any; mssid: string }[]) => {

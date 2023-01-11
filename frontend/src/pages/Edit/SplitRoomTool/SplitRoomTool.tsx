@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { useContext, useEffect } from 'react';
 
 import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';

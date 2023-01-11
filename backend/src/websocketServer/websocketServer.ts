@@ -10,6 +10,8 @@ import {
   getSingleInfo,
 } from '../mqttClient/commands/commands.get';
 import {
+  addNoGoSubset,
+  addNoMopSubset,
   addSched_V2,
   charge,
   clean,
@@ -223,6 +225,14 @@ const websocketServer = () => {
 
     socket.on('renameRoom', ({ mssid, mid, subtype, name }) => {
       renameRoom(mssid, mid, subtype, name);
+    });
+
+    socket.on('addNoMopSubset', ({ value, mid }) => {
+      addNoMopSubset(value, mid);
+    });
+
+    socket.on('addNoGoSubset', ({ value, mid }) => {
+      addNoGoSubset(value, mid);
     });
   });
 };

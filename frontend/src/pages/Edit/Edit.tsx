@@ -9,7 +9,7 @@ import theme from '../../theme';
 import MapDelete from './MapDelete/MapDelete';
 import { MapSaveTool } from './MapSaveTool/MapSaveTool';
 import MergeRoomTool from './MergeRoomTool/MergeRoomTool';
-import NoGoZoneTool from './NoGoZoneTool/NoGoZoneTool';
+import NoGoZoneTool from './NoGoTool/NoGoTool';
 import RenameRoomTool from './RenameRoomTool/RenameRoomTool';
 import SplitRoomTool from './SplitRoomTool/SplitRoomTool';
 
