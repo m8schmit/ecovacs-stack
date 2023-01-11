@@ -4,16 +4,20 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { FC, useContext, useEffect, useState } from 'react';
 
+import { getNoMopSubset, getSelectedNoGoList } from '../../../store/vacuum/editMapSlice';
 import { getNoMopZoneMapSubsetsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
-import { getCoordinates, mopZoneStyle, PixelRatio } from '../Map.utils';
+import { getCoordinates, PixelRatio } from '../Map.utils';
+import { formatNoGoSubset, mopZoneStyle, selectedNoGoStyle } from '../NoGo.utils';
 import { LayerProps } from './Layer.type';
 
 const NoMopZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
-  const selectedNoMopZonesList = getNoMopZoneMapSubsetsList();
+  const noMopZonesList = getNoMopZoneMapSubsetsList();
+  const selectedNoGoList = getSelectedNoGoList();
+  const noMopSubset = getNoMopSubset();
 
-  const [NoMopzonesLayer] = useState(
+  const [noMopzonesLayer] = useState(
     new VectorLayer({
       source: new VectorSource({
         wrapX: false,
@@ -22,30 +26,44 @@ const NoMopZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
     }),
   );
 
+  const isMopZoneSelected = (mssid: number) =>
+    selectedNoGoList?.find((current) => current.mssid === +mssid && current.shape === 'zone' && current.type === 'mw');
+
   useEffect(() => {
     if (!map) return;
-    map.addLayer(NoMopzonesLayer);
-    NoMopzonesLayer.setZIndex(ZIndex || 0);
-    NoMopzonesLayer.set('id', 'NoMopzonesLayer');
+    map.addLayer(noMopzonesLayer);
+    noMopzonesLayer.setZIndex(ZIndex || 0);
+    noMopzonesLayer.set('id', 'NoMopzonesLayer');
     return () => {
-      map.removeLayer(NoMopzonesLayer);
+      map.removeLayer(noMopzonesLayer);
     };
   }, [map]);
 
   useEffect(() => {
-    NoMopzonesLayer.getSource()?.clear();
-    NoMopzonesLayer.getSource()?.addFeatures(
-      selectedNoMopZonesList.map(
-        ({ value }) =>
+    noMopzonesLayer.getSource()?.clear();
+    noMopzonesLayer.getSource()?.addFeatures(
+      formatNoGoSubset(noMopZonesList, noMopSubset).map(
+        ({ value, mssid, type }) =>
           new Feature({
             geometry: new Polygon([
               // need to add the PixelRatio as an offset to Y
               value.map((current) => [getCoordinates(+current[0], 'x'), getCoordinates(+current[1], 'y') + PixelRatio]),
             ]),
+            mssid,
+            type,
           }),
       ),
     );
-  }, [selectedNoMopZonesList]);
+  }, [noMopZonesList]);
+
+  useEffect(() => {
+    noMopzonesLayer
+      .getSource()
+      ?.getFeatures()
+      .forEach((feature) => {
+        feature.setStyle(isMopZoneSelected(feature.get('mssid')) ? selectedNoGoStyle : mopZoneStyle);
+      });
+  }, [selectedNoGoList]);
 
   return null;
 };

@@ -131,6 +131,7 @@ export const mapSlice = createSlice({
         selectedZonesList: [...state.selectedZonesList, action.payload],
       };
     },
+
     setSelectedRoomsList: (state, action: PayloadAction<number[]>) => ({
       ...state,
       selectedRoomsList: action.payload,
@@ -249,8 +250,10 @@ export const getNoMopZoneMapSubsetsList = () =>
   useAppSelector(({ map }) => map.noMopMapSubsetsList.filter(({ value }) => value.length === 4));
 export const getNoMopWallMapSubsetsList = () =>
   useAppSelector(({ map }) => map.noMopMapSubsetsList.filter(({ value }) => value.length === 2));
-export const getNoGoMapSubsetsList = () => useAppSelector(({ map }) => map.noGoMapSubsetsList);
-
+export const getNoGoZoneMapSubsetsList = () =>
+  useAppSelector(({ map }) => map.noGoMapSubsetsList.filter(({ value }) => value.length === 4));
+export const getNoGoWallMapSubsetsList = () =>
+  useAppSelector(({ map }) => map.noGoMapSubsetsList.filter(({ value }) => value.length === 2));
 export const getSelectedRoomsList = () => useAppSelector(({ map }) => map.selectedRoomsList);
 export const getSelectedZonesList = () => useAppSelector(({ map }) => map.selectedZonesList);
 export const getGoToCoordinates = () => useAppSelector(({ map }) => map.goToCoordinates);

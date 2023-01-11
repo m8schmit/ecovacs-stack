@@ -5,9 +5,9 @@ import { useContext, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import { setNoGoSubset } from '../../../store/vacuum/editMapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
-import { nogoZonesStyle } from '../Map.utils';
+import { nogoZonesStyle } from '../NoGo.utils';
 
-const SelectNoGoZonesInteraction = () => {
+const CreateNoGoZonesInteraction = () => {
   const map = useContext(MapContext);
   const dispatch = useAppDispatch();
   const [NoGozonesDrawer, setNoGoZonesDrawer] = useState<Draw | null>();
@@ -16,7 +16,6 @@ const SelectNoGoZonesInteraction = () => {
   // TODO find the right type, geometry in drawend doesnt contain `getcoordinates()`
   const drawNewZone = (event: any) => {
     const coordinates = event.feature.getGeometry().getCoordinates()[0] || [];
-    console.log('no go', coordinates, coordinates.length);
 
     if (coordinates.length) {
       coordinates.pop();
@@ -59,4 +58,4 @@ const SelectNoGoZonesInteraction = () => {
   return null;
 };
 
-export default SelectNoGoZonesInteraction;
+export default CreateNoGoZonesInteraction;

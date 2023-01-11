@@ -1,13 +1,15 @@
 import '../../../node_modules/ol/ol.css';
 
+import { Select } from '@mui/material';
 import Projection from 'ol/proj/Projection';
 
 import { getActiveTool } from '../../store/vacuum/editMapSlice';
+import { getSelectedRoomsList } from '../../store/vacuum/mapSlice';
 import Map from '../UI/Map/Map';
-import SelectNoGoWallsInteraction from './Interactions/SelectNoGoWallsInteraction';
-import SelectNoGoZonesInteraction from './Interactions/SelectNoGoZonesInteraction';
-import SelectNoMopWallsInteraction from './Interactions/SelectNoMopWallsInteraction';
-import SelectNoMopZonesInteraction from './Interactions/SelectNoMopZonesInteraction';
+import CreateNoGoWallsInteraction from './Interactions/CreateNoGoWallsInteraction';
+import CreateNoGoZonesInteraction from './Interactions/CreateNoGoZonesInteraction';
+import CreateNoMopWallsInteraction from './Interactions/CreateNoMopWallsInteraction';
+import CreateNoMopZonesInteraction from './Interactions/CreateNoMopZonesInteraction';
 import SelectRoomInteraction from './Interactions/SelectRoomInteraction';
 import SplitRoomInteraction from './Interactions/SplitRoomInteraction';
 import LabelsLayer from './Layers/LabelsLayer';
@@ -18,7 +20,7 @@ import NoMopWallsLayer from './Layers/NoMopWallsLayer';
 import NoMopZonesLayer from './Layers/NoMopZonesLayer';
 import RoomsLayer from './Layers/RoomsLayer';
 import { mapHeight, mapWidth } from './Map.utils';
-import { getSelectedRoomsList } from '../../store/vacuum/mapSlice';
+import SelectNoGoInteraction from './Interactions/SelectNoGoInteraction';
 
 const EditMap = () => {
   const projection = new Projection({
@@ -37,10 +39,11 @@ const EditMap = () => {
         {selectionType === 'default' && <SelectRoomInteraction selectMulti={false} />}
         {selectionType === 'split' && <SelectRoomInteraction selectMulti={false} />}
         {selectionType === 'split' && isSingleRoomselected && <SplitRoomInteraction />}
-        {selectionType === 'noGoZone' && <SelectNoGoZonesInteraction />}
-        {selectionType === 'noMopZone' && <SelectNoMopZonesInteraction />}
-        {selectionType === 'noGoWall' && <SelectNoGoWallsInteraction />}
-        {selectionType === 'noMopWall' && <SelectNoMopWallsInteraction />}
+        {selectionType === 'noGoZone' && <CreateNoGoZonesInteraction />}
+        {selectionType === 'noMopZone' && <CreateNoMopZonesInteraction />}
+        {selectionType === 'noGoWall' && <CreateNoGoWallsInteraction />}
+        {selectionType === 'noMopWall' && <CreateNoMopWallsInteraction />}
+        {selectionType === 'deleteNoGoZone' && <SelectNoGoInteraction />}
 
         <LabelsLayer />
         <NoGoWallsLayer />

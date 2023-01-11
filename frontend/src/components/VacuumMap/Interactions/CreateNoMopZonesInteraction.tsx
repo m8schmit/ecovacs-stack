@@ -3,23 +3,25 @@ import VectorSource from 'ol/source/Vector';
 import { useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../store/hooks';
+import { setNoMopSubset } from '../../../store/vacuum/editMapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
-import { mopZoneStyle } from '../Map.utils';
+import { mopZoneStyle } from '../NoGo.utils';
 
-const SelectNoMopZonesInteraction = () => {
+const CreateNoMopZonesInteraction = () => {
   const map = useContext(MapContext);
   let isLoaded = false;
-  //TODO
   const dispatch = useAppDispatch();
 
   const [NoMopzonesDrawer, setNoMopZonesDrawer] = useState<Draw | null>();
 
   // TODO find the right type, geometry in drawend doesnt contain `getcoordinates()`
   const drawNewZone = (event: any) => {
-    const coordinates = event.feature.getGeometry().getCoordinates() || [];
-    console.log('no go', coordinates);
+    const coordinates = event.feature.getGeometry().getCoordinates()[0] || [];
 
-    // coordinates.length && dispatch(setNo(coordinate));
+    if (coordinates.length) {
+      coordinates.pop();
+      dispatch(setNoMopSubset(coordinates));
+    }
   };
 
   useEffect(() => {
@@ -42,10 +44,6 @@ const SelectNoMopZonesInteraction = () => {
         }
       }
     });
-
-    return () => {
-      NoMopzonesDrawer && map.removeInteraction(NoMopzonesDrawer);
-    };
   }, [map]);
 
   useEffect(() => {
@@ -54,10 +52,11 @@ const SelectNoMopZonesInteraction = () => {
     return () => {
       NoMopzonesDrawer.un('drawend', drawNewZone);
       map && map.removeInteraction(NoMopzonesDrawer);
+      dispatch(setNoMopSubset([]));
     };
   }, [NoMopzonesDrawer]);
 
   return null;
 };
 
-export default SelectNoMopZonesInteraction;
+export default CreateNoMopZonesInteraction;
