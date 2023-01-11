@@ -16,11 +16,13 @@ export type ActiveToolType =
 interface EditMapState {
   activeTool: ActiveToolType;
   splitLine: number[];
+  noGoSubset: number[][];
 }
 
 const initialState: EditMapState = {
   activeTool: 'default',
   splitLine: [],
+  noGoSubset: [],
 };
 
 export const editMapSlice = createSlice({
@@ -35,10 +37,15 @@ export const editMapSlice = createSlice({
       ...state,
       splitLine: action.payload,
     }),
+    setNoGoSubset: (state, action: PayloadAction<number[][]>) => ({
+      ...state,
+      noGoSubset: action.payload,
+    }),
   },
 });
 
-export const { setActivetool, setSplitLine } = editMapSlice.actions;
+export const { setActivetool, setSplitLine, setNoGoSubset } = editMapSlice.actions;
 
 export const getActiveTool = () => useAppSelector(({ editMap }) => editMap.activeTool);
 export const getSplitLine = () => useAppSelector(({ editMap }) => editMap.splitLine);
+export const getNoGoSubset = () => useAppSelector(({ editMap }) => editMap.noGoSubset);

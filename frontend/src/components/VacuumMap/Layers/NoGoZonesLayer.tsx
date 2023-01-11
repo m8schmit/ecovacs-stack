@@ -4,15 +4,17 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { FC, useContext, useEffect, useState } from 'react';
 
+import { getNoGoSubset } from '../../../store/vacuum/editMapSlice';
 import { getNoGoMapSubsetsList } from '../../../store/vacuum/mapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
-import { getCoordinates, nogoZonesStyle, PixelRatio } from '../Map.utils';
+import { getCoordinates, nogoZonesStyle, PixelRatio, setCoordinates } from '../Map.utils';
 import { LayerProps } from './Layer.type';
 
 const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
   const map = useContext(MapContext);
   //TODO add correct selector
   const selectedNoGoZonesList = getNoGoMapSubsetsList();
+  const nogoSubset = getNoGoSubset();
 
   const [NoGozonesLayer] = useState(
     new VectorLayer({
@@ -34,10 +36,15 @@ const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
   }, [map]);
 
   useEffect(() => {
+    const MergedMoGoSubset = [
+      ...selectedNoGoZonesList.map(({ value }) => value),
+      nogoSubset.map((value: number[]) => setCoordinates(value)),
+    ];
+    console.log(MergedMoGoSubset);
     NoGozonesLayer.getSource()?.clear();
     NoGozonesLayer.getSource()?.addFeatures(
-      selectedNoGoZonesList.map(
-        ({ value }) =>
+      MergedMoGoSubset.map(
+        (value) =>
           new Feature({
             geometry: new Polygon([
               // need to add the PixelRatio as an offset to Y
@@ -46,7 +53,7 @@ const NoGoZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
           }),
       ),
     );
-  }, [selectedNoGoZonesList]);
+  }, [selectedNoGoZonesList, nogoSubset]);
 
   return null;
 };

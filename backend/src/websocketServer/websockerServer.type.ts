@@ -87,6 +87,8 @@ export interface ClientToServerEvents {
   splitRoom: (params: { mssid: string; mid: string; value: string }) => void;
   mergeRooms: (params: { mid: string; subsets: { values: any; mssid: string }[] }) => void;
   renameRoom: (params: { mssid: string; mid: string; subtype: string; name: string }) => void;
+  addNoMopSubset: (params: { value: string; mid: string }) => void;
+  addNoGoSubset: (params: { value: string; mid: string }) => void;
 }
 
 export interface InterServerEvents {
