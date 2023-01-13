@@ -6,7 +6,7 @@ import { updateReminder } from '../mysqlHelper/botReminder.query';
 import { WSsocket } from '../websocketServer/websocketServer';
 import {
   getLifeSpan,
-  getMapInfo_v2,
+  getMapInfo,
   getMapSet,
   getMapSubSet,
   getMinorMap,
@@ -150,26 +150,31 @@ const mqttClient = () => {
       });
     }
 
+    if (isTopic('onMapInfo', topic)) {
+      const res = getDatafromMessage(message);
+    }
+
     /* Maybe find a better way to avoid code repetition */
     if (isTopic('getInfo', topic)) {
       const res = getDatafromMessage(message);
-      // console.log('getInfo ', inspect(res, false, null, true));
       res &&
         Object.keys(res).forEach((key) => {
           switch (key) {
             case 'getCleanInfo':
               WSsocket?.emit('status', { state: res[key].data.state, cleanState: res[key].data.cleanState });
-
+              break;
             case 'getChargeState':
               WSsocket?.emit('chargeState', res[key].data);
+              break;
             case 'getBattery':
               WSsocket?.emit('batteryLevel', res[key].data);
+              break;
             case 'getSpeed':
               WSsocket?.emit('speed', res[key].data);
-
+              break;
             case 'getCleanCount':
               WSsocket?.emit('cleanCount', res[key].data);
-
+              break;
             case 'getWaterInfo':
               const enable = !!res[key].data.enable;
               WSsocket?.emit('waterInfo', {
@@ -177,6 +182,10 @@ const mqttClient = () => {
                 amount: res[key].data.amount,
                 sweepType: res[key].data.sweepType,
               });
+              break;
+            case 'getCachedMapInfo':
+              WSsocket?.emit('cachedMapInfo', res[key].data);
+              break;
           }
         });
     }
@@ -198,6 +207,13 @@ const mqttClient = () => {
         WSsocket.emit('obstacleList', res.pointValue);
       }
     }
+
+    if (isTopic('onCachedMapInfo', topic)) {
+      const res = getDatafromMessage(message);
+
+      WSsocket?.emit('backupActionFinished');
+      WSsocket?.emit('cachedMapInfo', res);
+    }
   });
 
   const handleMap = async (topic: string, message: Buffer) => {
@@ -206,8 +222,8 @@ const mqttClient = () => {
       if (res) {
         if (!vacuumMap) {
           vacuumMap = new VacuumMap(res);
-          getMapInfo_v2(vacuumMap.settings.mid);
         }
+
         if (!vacuumMap.piecesIDsList) {
           console.info('TODO: handle no map case.');
           return;
@@ -222,6 +238,11 @@ const mqttClient = () => {
         getMapSet(vacuumMap.settings.mid, 'mw');
         // no go zone/wall
         getMapSet(vacuumMap.settings.mid, 'vw');
+        // ???
+        getMapSet(vacuumMap.settings.mid, 'svw');
+
+        // getMapInfo_V2(vacuumMap.settings.mid);
+        getMapInfo(vacuumMap.settings.mid);
       }
     }
 
@@ -276,7 +297,7 @@ const mqttClient = () => {
         );
 
       type === 'mw' && WSsocket?.emit(`NoMopMapSubSet`, { ...res, value: formatStringSubset(res.value) });
-      type === 'vw' && WSsocket?.emit(`NoGoMapSubSet`, res);
+      type === 'vw' && WSsocket?.emit(`NoGoMapSubSet`, { ...res, value: formatStringSubset(res.value) });
     }
 
     if (isTopic('MapSet', topic)) {

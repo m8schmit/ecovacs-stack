@@ -1,4 +1,4 @@
-import { CleaningType, Schedules } from '../mqttClient/commands/commands.schedules.type';
+import { CachedMapInfo, CleaningType, Schedules } from '../mqttClient/commands/commands.schedules.type';
 import {
   AiMapObstacle,
   AutoEmptyState,
@@ -42,6 +42,8 @@ export interface ServerToClientEvents {
   errorList: (errorList: any /*todo*/) => void;
   savedPatternList: (patternList: BotPattern[]) => void;
   obstacleList: (obstacleList: AiMapObstacle[]) => void;
+  cachedMapInfo: (cachedMapInfo: CachedMapInfo[]) => void;
+  backupActionFinished: () => void;
 }
 
 export interface ClientToServerEvents {
@@ -89,6 +91,10 @@ export interface ClientToServerEvents {
   renameRoom: (params: { mssid: string; mid: string; subtype: string; name: string }) => void;
   addNoMopSubset: (params: { value: string; mid: string }) => void;
   addNoGoSubset: (params: { value: string; mid: string }) => void;
+  delNoMopSubset: (params: { mssid: string; mid: string }) => void;
+  delNoGoSubset: (params: { mssid: string; mid: string }) => void;
+  saveMap: (params: { mid: string }) => void;
+  restoreMap: (params: { mid: string; reMid: string }) => void;
 }
 
 export interface InterServerEvents {

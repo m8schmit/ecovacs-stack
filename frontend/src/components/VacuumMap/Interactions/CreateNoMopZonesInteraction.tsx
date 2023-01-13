@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import { setNoMopSubset } from '../../../store/vacuum/editMapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
+import { setCoordinates } from '../Map.utils';
 import { mopZoneStyle } from '../NoGo.utils';
 
 const CreateNoMopZonesInteraction = () => {
@@ -20,7 +21,7 @@ const CreateNoMopZonesInteraction = () => {
 
     if (coordinates.length) {
       coordinates.pop();
-      dispatch(setNoMopSubset(coordinates));
+      dispatch(setNoMopSubset(coordinates.map((current: number[]) => setCoordinates(current))));
     }
   };
 

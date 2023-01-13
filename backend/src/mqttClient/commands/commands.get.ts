@@ -1,14 +1,7 @@
 import { MajorMap } from '../map/map.model';
 import { client } from '../mqttClient';
 import { get16LengthId, makeId } from '../text.utils';
-import {
-  BotCommand,
-  BotCommandName,
-  LifeSpanDeviceType,
-  MapSubSetType,
-  MapType,
-  PosDevicesType,
-} from './commands.type';
+import { BotCommand, BotCommandName, LifeSpanDeviceType, MapSubSetType, PosDevicesType } from './commands.type';
 import { sendJSONCommand } from './commands.utils';
 
 export const getMapSet = (mid: string, type: MapSubSetType = 'ar') => {
@@ -49,17 +42,24 @@ export const getMapSubSet = (msid: string, count: number, mid: string, mssid: st
   sendJSONCommand(command, client);
 };
 
-// //not sure yet if it will only return the zone or the wall
-// export const getNoGoList = (msid: string, count: number, mid: string, mssid: string) =>
-//   getMapSubSet(msid, count, mid, mssid, 'vw');
-
-// export const getNoMopList = (msid: string, count: number, mid: string, mssid: string) =>
-//   getMapSubSet(msid, count, mid, mssid, 'mw');
-
-export const getMapInfo_v2 = (mid: string, type: MapType = '0') => {
+// This is the blue polygon around the map.
+export const getMapInfo_V2 = (mid: string) => {
   const command: BotCommand = {
-    name: 'getMapInfo_v2',
-    payload: { mid, type, bdTaskID: get16LengthId() },
+    name: 'getMapInfo_V2',
+    payload: { mid, type: 'ol', bdTaskID: get16LengthId() },
+  };
+  sendJSONCommand(command, client);
+};
+
+// return all the minor Map, without having to call them by pieceID (crc)
+export const getMapInfo = (mid: string) => {
+  const command: BotCommand = {
+    name: 'getMapInfo',
+    payload: {
+      mid,
+      type: 'ol',
+      bdTaskID: get16LengthId(),
+    },
   };
   sendJSONCommand(command, client);
 };

@@ -91,5 +91,5 @@ export const selectedNoGoStyle = new Style({
 
 export const formatNoGoSubset = (selectedNoGoZonesList: ZoneMapSubset[], nogoSubset: number[][]) => [
   ...selectedNoGoZonesList.map(({ value, mssid, type }) => ({ value, mssid, type })),
-  { value: nogoSubset.map((value: number[]) => setCoordinates(value)), mssid: null, type: null },
+  { value: nogoSubset.map((value: number[]) => value), mssid: null, type: null },
 ];

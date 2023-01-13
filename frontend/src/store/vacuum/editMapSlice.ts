@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
-import { NoGo } from './editMap.type';
+import { CachedMapInfo, NoGo } from './editMap.type';
 
 export type ActiveToolType =
   | 'none'
@@ -21,6 +21,7 @@ interface EditMapState {
   noGoSubset: number[][];
   noMopSubset: number[][];
   selectedNoGoList: NoGo[];
+  cachedMapInfo: CachedMapInfo;
 }
 
 const initialState: EditMapState = {
@@ -29,6 +30,7 @@ const initialState: EditMapState = {
   noGoSubset: [],
   noMopSubset: [],
   selectedNoGoList: [],
+  cachedMapInfo: { enable: 0, info: [] },
 };
 
 export const editMapSlice = createSlice({
@@ -71,6 +73,10 @@ export const editMapSlice = createSlice({
         selectedNoGoList: initialState.selectedNoGoList,
       };
     },
+    setCachedMapInfo: (state, action: PayloadAction<CachedMapInfo>) => ({
+      ...state,
+      cachedMapInfo: action.payload,
+    }),
   },
 });
 
@@ -82,6 +88,7 @@ export const {
   updateSelectedNoGoList,
   setSelectedNoGoList,
   resetSelectedNoGoList,
+  setCachedMapInfo,
 } = editMapSlice.actions;
 
 export const getActiveTool = () => useAppSelector(({ editMap }) => editMap.activeTool);
@@ -89,3 +96,6 @@ export const getSplitLine = () => useAppSelector(({ editMap }) => editMap.splitL
 export const getNoGoSubset = () => useAppSelector(({ editMap }) => editMap.noGoSubset);
 export const getNoMopSubset = () => useAppSelector(({ editMap }) => editMap.noMopSubset);
 export const getSelectedNoGoList = () => useAppSelector(({ editMap }) => editMap.selectedNoGoList);
+export const getCachedMapInfo = () => useAppSelector(({ editMap }) => editMap.cachedMapInfo);
+export const getSelectedCachedMapInfo = () =>
+  useAppSelector(({ editMap }) => editMap.cachedMapInfo.info.find((current) => current.using === 1));

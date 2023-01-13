@@ -25,7 +25,7 @@ import dayjs from 'dayjs';
 import { useContext, useEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 
-import { getDialog, hideDialog } from '../../../store/dialog/dialogSlice';
+import { getDialog, hideDialog, ScheduleDialog as ScheduleDialogType } from '../../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../../store/hooks';
 import { Schedules } from '../../../store/vacuum/commands.schedules.type';
 import { getMapSubsetsList, getVacuumMap } from '../../../store/vacuum/mapSlice';
@@ -33,6 +33,7 @@ import { geSchedulesList } from '../../../store/vacuum/stateSlice';
 import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
 import { getSubsetName } from '../../../utils/subset.utils';
+import { isDialog, Maybe } from '../../../utils/typeguard.utils';
 import { ScheduleFormData } from '../Schedule.type';
 import { daysList } from './Schedule.utils';
 
@@ -49,8 +50,11 @@ const MenuProps = {
 
 export const ScheduleDialog = () => {
   const dispatch = useAppDispatch();
-  const { isVisible, schedId } = getDialog('ScheduleDialog');
+  const scheduleDialog = getDialog('ScheduleDialog');
   const schedulesList = geSchedulesList();
+  // isVisible, schedId
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [schedId, setShedId] = useState<Maybe<number>>();
   const [currentSchedule, setCurrentSchedule] = useState<Schedules>();
   const scheduleLength = schedulesList.length;
   const mapSubsetsList = getMapSubsetsList();
@@ -100,6 +104,13 @@ export const ScheduleDialog = () => {
     socket.emit(command, payload);
     handleClose();
   };
+
+  useEffect(() => {
+    if (isDialog<ScheduleDialogType>(scheduleDialog, 'ScheduleDialog')) {
+      setIsVisible(scheduleDialog.isVisible);
+      setShedId(scheduleDialog.schedId);
+    }
+  }, [scheduleDialog]);
 
   useEffect(() => {
     if (isVisible) {

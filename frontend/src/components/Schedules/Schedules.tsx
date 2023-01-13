@@ -56,7 +56,6 @@ export const Schedules = () => {
     } else if (todayDay + 1 === nextScheduleDay) {
       return 'Tomorrow';
     }
-    console.log(nextScheduleDay);
     return daysList[nextScheduleDay].label;
   };
 

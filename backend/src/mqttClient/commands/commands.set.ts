@@ -234,6 +234,14 @@ export const addNoGoSubset = (value: string, mid: string) => {
   setMapSubSet(null, mid, 'vw', 'add', value);
 };
 
+export const delNoMopSubset = (mssid: string, mid: string) => {
+  setMapSubSet(mssid, mid, 'mw', 'del');
+};
+
+export const delNoGoSubset = (mssid: string, mid: string) => {
+  setMapSubSet(mssid, mid, 'vw', 'del');
+};
+
 const setMapSet = (act: BotAct, mid: string, type: MapSubSetType, subsets: { values: any; mssid: string }[]) => {
   const command: BotCommand = {
     name: 'setMapSet',
@@ -254,13 +262,20 @@ export const mergeRooms = (mid: string, subsets: { values: any; mssid: string }[
   setMapSet('merge', mid, 'ar', subsets);
 };
 
-const setCachedMapInfo = (act: BotAct, mid: string, name: Maybe<string> = null, isFake: boolean = true) => {
+const setCachedMapInfo = (
+  act: BotAct,
+  mid: string,
+  reMid: Maybe<string> = null,
+  name: Maybe<string> = null,
+  isFake: boolean = true,
+) => {
   const command: BotCommand = {
-    name: 'setMapSet',
+    name: 'setCachedMapInfo',
     payload: {
       itemType: 0,
       act,
       build: 1,
+      reMid,
       mid,
       name,
       isFake,
@@ -278,6 +293,13 @@ export const deleteMap = (mid: string) => {
   setCachedMapInfo('del', mid);
 };
 
+// {"data":{"itemType":0,"act":"backup","built":1,"mid":"94258964","isFake":false,"bdTaskID":"1663934436611974"}}
 export const saveMap = (mid: string) => {
   setCachedMapInfo('backup', mid);
+};
+
+// the 'reMid' for 'restore map id' is the 'backupId' of the currently used map when calling 'getCachedMapInfo'
+// :{"data":{"reMid":"1087869604","itemType":0,"act":"restore","built":1,"mid":"94258964","isFake":false,"bdTaskID":"1671414257830275"}}
+export const restoreMap = (mid: string, reMid: string) => {
+  setCachedMapInfo('restore', mid, reMid);
 };

@@ -7,12 +7,15 @@ import MainFrame from './components/UI/OptionsFrame/MainFrame/MainFrame';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Edit from './pages/Edit/Edit';
 import websocketService from './services/websocket.service';
+import { hideDialog } from './store/dialog/dialogSlice';
 import { useAppDispatch } from './store/hooks';
+import { setCachedMapInfo } from './store/vacuum/editMapSlice';
 import {
   incrementMapTracesListUpdateIndex,
   onRelocateSuccess,
   setMapSubsetsList,
   setMapTracesList,
+  setNoGoMapSubsetsList,
   setNoMopMapSubsetsList,
   setObstaclesList,
   setVacuumMap,
@@ -96,7 +99,7 @@ const App = () => {
 
     socket && socket.on('NoMopMapSubSet', (payload) => dispatch(setNoMopMapSubsetsList(payload)));
 
-    socket && socket.on('NoGoMapSubSet', (payload) => console.log('TODO', payload));
+    socket && socket.on('NoGoMapSubSet', (payload) => dispatch(setNoGoMapSubsetsList(payload)));
 
     socket && socket.on('speed', (payload) => dispatch(setVacuumingOption(payload)));
 
@@ -116,11 +119,11 @@ const App = () => {
 
     socket && socket.on('obstacleList', (payload) => dispatch(setObstaclesList(payload)));
 
-    socket &&
-      socket.on('lifeSpanReminder', (payload) => {
-        console.log('LIFESPAN', payload);
-        dispatch(setLifeSpanAccessory(payload));
-      });
+    socket && socket.on('cachedMapInfo', (payload) => dispatch(setCachedMapInfo(payload)));
+
+    socket && socket.on('lifeSpanReminder', (payload) => dispatch(setLifeSpanAccessory(payload)));
+
+    socket && socket.on('backupActionFinished', () => dispatch(hideDialog()));
 
     socket &&
       socket.on('eventList', (payload) =>

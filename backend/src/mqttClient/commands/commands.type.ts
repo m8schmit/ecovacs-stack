@@ -20,12 +20,14 @@ export type BotCommandName =
   | 'getInfo'
   | 'getLifeSpan'
   | 'getMajorMap'
-  | 'getMapInfo_v2'
+  | 'getMapInfo'
+  | 'getMapInfo_V2'
   | 'getMapSet'
   | 'getMapState'
   | 'getMapSubSet'
   | 'getMapTrace'
   | 'getMinorMap'
+  | 'getMultiMapState'
   | 'getPos'
   | 'getRecognization'
   | 'getSched_V2'
@@ -123,7 +125,7 @@ export interface ZoneMapSubset {
   mid: string;
 }
 
-export type MapSubSetType = 'ar' | 'vw' | 'mw';
+export type MapSubSetType = 'ar' | 'vw' | 'mw' | 'svw';
 
 // MapTracesList
 
@@ -168,4 +170,4 @@ export interface AiMapObstacle {
 // [{"type":"sideBrush","left":6778,"total":9000},{"type":"brush","left":16062,"total":18000},{"type":"heap","left":5262,"total":7200},{"type":"unitCare","left":-138,"total":1800},{"type":"dModule","left":3598,"total":3600}
 
 // rooms list or wifi strength
-export type MapType = '0' | 'st';
+export type MapType = '0' | 'st' | '1,4';

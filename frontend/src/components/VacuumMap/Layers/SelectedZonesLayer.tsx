@@ -32,8 +32,6 @@ const SelectedZonesLayer: FC<LayerProps> = ({ ZIndex }) => {
   }, [map]);
 
   useEffect(() => {
-    console.log('zone source, ', selectedZonesList);
-    console.log('  SelectedZonesLayer.getSource()', SelectedZonesLayer.getSource());
     SelectedZonesLayer.getSource()?.clear();
     SelectedZonesLayer.getSource()?.addFeatures(
       selectedZonesList.map(

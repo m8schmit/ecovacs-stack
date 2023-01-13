@@ -1,22 +1,43 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { stat } from 'fs';
 import { shallowEqual } from 'react-redux';
-import { useAppSelector } from '../hooks';
-type DialogType = 'ScheduleDialog';
-type Maybe<T> = null | T;
 
-interface ScheduleDialog {
+import { Maybe } from '../../utils/typeguard.utils';
+import { useAppSelector } from '../hooks';
+
+export type DialogType = 'ScheduleDialog' | 'BackupDialog';
+
+export type BackupModeType = 'save' | 'load';
+
+interface AppDialog {
+  type: DialogType;
   isVisible: boolean;
+}
+export interface ScheduleDialog extends AppDialog {
   schedId: Maybe<number>;
+}
+
+export interface BackupDialog extends AppDialog {
+  backupMode: BackupModeType;
+  isLoading: boolean;
 }
 
 interface DialogState {
   ScheduleDialog: ScheduleDialog;
+  BackupDialog: BackupDialog;
 }
 
 const initialState: DialogState = {
   ScheduleDialog: {
+    type: 'ScheduleDialog',
     isVisible: false,
     schedId: null,
+  },
+  BackupDialog: {
+    type: 'BackupDialog',
+    isVisible: false,
+    backupMode: 'save',
+    isLoading: false,
   },
 };
 
@@ -33,11 +54,17 @@ export const dialogSlice = createSlice({
       state.ScheduleDialog.isVisible = true;
       state.ScheduleDialog.schedId = action.payload;
     },
+    showBackupDialog: (state, action: PayloadAction<BackupModeType>) => {
+      state.BackupDialog.isVisible = true;
+      state.BackupDialog.backupMode = action.payload;
+    },
+    setBackupDialogLoading: (state, action: PayloadAction<boolean>) => {
+      state.BackupDialog.isLoading = action.payload;
+    },
     hideDialog: () => initialState,
   },
 });
 
-export const { showDialog, showEditDialog, hideDialog } = dialogSlice.actions;
+export const { showDialog, showEditDialog, showBackupDialog, setBackupDialogLoading, hideDialog } = dialogSlice.actions;
 
-export const getDialog = (dialogType: DialogType): ScheduleDialog =>
-  useAppSelector((state) => state.dialog[dialogType], shallowEqual);
+export const getDialog = (dialogType: DialogType) => useAppSelector((state) => state.dialog[dialogType], shallowEqual);

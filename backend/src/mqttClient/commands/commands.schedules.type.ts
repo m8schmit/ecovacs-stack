@@ -25,3 +25,17 @@ interface ScheduleContent {
 
 // jsonStr Will look like {\"router\":\"plan\",\"content\":{\"type\":\"spotArea\",\"value\":\"5\",\"subtype\":\"0\",\"areaName\":\"\"}} for a spotArea cleaning
 // or {"router":"plan","content":{"type":"auto"} for an auto cleaning
+
+interface MapInfo {
+  mid: string;
+  backupId: string;
+  status: number;
+  index: number;
+  using: number /* boolean number*/;
+  built: number /* boolean number*/;
+  name: string;
+}
+export interface CachedMapInfo {
+  enable: number /* boolean number*/;
+  info: MapInfo[];
+}

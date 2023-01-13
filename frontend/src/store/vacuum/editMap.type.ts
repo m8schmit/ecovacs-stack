@@ -6,3 +6,17 @@ export interface NoGo {
   type: MapSubSetType;
   shape: MapShape;
 }
+
+interface MapInfo {
+  mid: string;
+  backupId: string;
+  status: number;
+  index: number;
+  using: number /* boolean number*/;
+  built: number /* boolean number*/;
+  name: string;
+}
+export interface CachedMapInfo {
+  enable: number /* boolean number*/;
+  info: MapInfo[];
+}

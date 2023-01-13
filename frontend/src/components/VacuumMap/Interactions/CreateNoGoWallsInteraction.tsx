@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import { setNoGoSubset } from '../../../store/vacuum/editMapSlice';
 import { MapContext } from '../../UI/Map/MapContex';
+import { setCoordinates } from '../Map.utils';
 import { nogoZonesStyle } from '../NoGo.utils';
 
 const CreateNoGoWallsInteraction = () => {
@@ -19,7 +20,7 @@ const CreateNoGoWallsInteraction = () => {
     const coordinates = event.feature.getGeometry().getCoordinates() || [];
 
     if (coordinates.length) {
-      dispatch(setNoGoSubset(coordinates));
+      dispatch(setNoGoSubset(coordinates.map((current: number[]) => setCoordinates(current))));
     }
   };
 

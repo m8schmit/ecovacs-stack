@@ -15,6 +15,8 @@ import {
   addSched_V2,
   charge,
   clean,
+  delNoGoSubset,
+  delNoMopSubset,
   delSched_V2,
   editSched_V2,
   EmptyDustBin,
@@ -22,6 +24,8 @@ import {
   mergeRooms,
   renameRoom,
   resetLifeSpan,
+  restoreMap,
+  saveMap,
   setCleanCount,
   setRelocationState,
   setSpeed,
@@ -52,7 +56,6 @@ const getBotStatus = () => {
     'getRecognization',
   ]);
   getInfo(['getStats']);
-  // getInfo(['getCachedMapInfo']);
 };
 
 const getOneTimeBotStatus = () => {
@@ -60,6 +63,7 @@ const getOneTimeBotStatus = () => {
   getPos(['chargePos', 'deebotPos']);
   getSingleInfo('getAutoEmpty');
   getSingleInfo('getBlock');
+  getInfo(['getCachedMapInfo']);
   getAIMap();
 };
 
@@ -233,6 +237,22 @@ const websocketServer = () => {
 
     socket.on('addNoGoSubset', ({ value, mid }) => {
       addNoGoSubset(value, mid);
+    });
+
+    socket.on('delNoMopSubset', ({ mssid, mid }) => {
+      delNoMopSubset(mssid, mid);
+    });
+
+    socket.on('delNoGoSubset', ({ mssid, mid }) => {
+      delNoGoSubset(mssid, mid);
+    });
+
+    socket.on('saveMap', ({ mid }) => {
+      saveMap(mid);
+    });
+
+    socket.on('restoreMap', ({ mid, reMid }) => {
+      restoreMap(mid, reMid);
     });
   });
 };
