@@ -33,10 +33,10 @@ services:
       default:
     volumes:
       - ./backend:/opt/app
-    user: 1000:1000
+    user: "${UID}:${GID}"
     environment:
       - BASE_URL=https://localhost
-      - BASE_URL_01=https//ecovacs.com
+      - BASE_URL_01=https://ecovacs.com
       - MYSQL_USER=dev
       - MYSQL_PASSWORD=dev
       - MYSQL_DATABASE=dev
@@ -53,7 +53,7 @@ services:
       - 8883:8883
       - 443:443
       - 3000:3000
-      - 80:80
+      - 8070:80
     networks:
       default:
       ecovacs_stack:
@@ -68,10 +68,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    user: "${UID}:${GID}"
     environment:
       - WDS_SOCKET_PORT=0
       - TZ=America/New_York
-
     networks:
       default:
     volumes:

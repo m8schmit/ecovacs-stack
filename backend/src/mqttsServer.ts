@@ -1,6 +1,6 @@
 import { Aedes, Client, Server, Subscription } from 'aedes';
 
-import botSetup from './mqttClient/botSetup';
+// import botSetup from './mqttClient/botSetup';
 import { getSingleInfo } from './mqttClient/commands/commands.get';
 import { playSound, setLiveLaunchPwd } from './mqttClient/commands/commands.set';
 import { setTime } from './mqttClient/commands/commands.special';
