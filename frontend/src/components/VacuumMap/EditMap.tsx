@@ -33,7 +33,6 @@ const EditMap = () => {
 
   return (
     <>
-      room selected: {(selectionType === 'split' && !isSingleRoomselected).toString()}
       <Map zoom={3} minZoom={3} maxZoom={4} projection={projection}>
         {selectionType === 'merge' && <SelectRoomInteraction />}
         {selectionType === 'default' && <SelectRoomInteraction selectMulti={false} />}

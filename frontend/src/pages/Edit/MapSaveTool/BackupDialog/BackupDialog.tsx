@@ -21,7 +21,7 @@ export const BackupDialog = () => {
   const backupDialog = getDialog('BackupDialog');
   const [backupMode, setBackupMode] = useState<BackupModeType>('load');
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { id: mid } = getVacuumMap();
   const selectedCachedMapInfo = getSelectedCachedMapInfo();
 
@@ -31,14 +31,13 @@ export const BackupDialog = () => {
       setBackupMode(backupDialog.backupMode);
       setIsLoading(backupDialog.isLoading);
     }
-  });
+  }, [backupDialog]);
 
   const handleClose = () => {
     !isLoading && dispatch(hideDialog());
   };
 
   const handleConfirm = () => {
-    console.log(backupMode, selectedCachedMapInfo);
     if (backupMode === 'load' && selectedCachedMapInfo && selectedCachedMapInfo.backupId) {
       socket.emit('restoreMap', { mid, reMid: selectedCachedMapInfo.backupId });
     } else if (backupMode === 'save') {

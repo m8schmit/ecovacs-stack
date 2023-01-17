@@ -4,7 +4,12 @@ import { useContext, useEffect } from 'react';
 import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
 import { useAppDispatch } from '../../../store/hooks';
 import { getSplitLine, setActivetool, setSplitLine } from '../../../store/vacuum/editMapSlice';
-import { getSelectedRoomsList, getVacuumMap, resetSelectedRoomsList } from '../../../store/vacuum/mapSlice';
+import {
+  getSelectedRoomsList,
+  getVacuumMap,
+  resetMapSubsetsList,
+  resetSelectedRoomsList,
+} from '../../../store/vacuum/mapSlice';
 import theme from '../../../theme';
 import { WebSocketContext } from '../../../utils/socket.utils';
 
@@ -19,14 +24,16 @@ export const SplitRoomTool = () => {
     `${[...splitLine].slice(0, 2).join(',')};${[...splitLine].splice(2, 4).join(',')}`;
   const desactivateSplit = () => dispatch(setActivetool('default'));
 
-  const handleSplit = () => {
-    console.log('splitRoom: ', selectedRoomsList);
-    socket.emit('splitRoom', { mssid: `${selectedRoomsList[0]}`, mid: mapId, value: getFormatedLineCoordinates() });
-  };
-
   const resetRoom = () => {
     dispatch(resetSelectedRoomsList());
     dispatch(setSplitLine([]));
+  };
+
+  const handleSplit = () => {
+    console.log('splitRoom: ', selectedRoomsList);
+    socket.emit('splitRoom', { mssid: `${selectedRoomsList[0]}`, mid: mapId, value: getFormatedLineCoordinates() });
+    resetRoom();
+    dispatch(resetMapSubsetsList());
   };
 
   useEffect(() => {

@@ -154,6 +154,20 @@ const mqttClient = () => {
       const res = getDatafromMessage(message);
     }
 
+    if (isTopic('setMapSubSet', topic)) {
+      console.log('HERE', topic, vacuumMap?.settings);
+      if (!vacuumMap) return;
+
+      //rooms
+      getMapSet(vacuumMap.settings.mid, 'ar');
+      // no mop zone/wall
+      getMapSet(vacuumMap.settings.mid, 'mw');
+      // no go zone/wall
+      getMapSet(vacuumMap.settings.mid, 'vw');
+      // ???
+      getMapSet(vacuumMap.settings.mid, 'svw');
+    }
+
     /* Maybe find a better way to avoid code repetition */
     if (isTopic('getInfo', topic)) {
       const res = getDatafromMessage(message);

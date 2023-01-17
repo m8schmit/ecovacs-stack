@@ -19,7 +19,6 @@ export const Relocate: FC<RelocateProps> = ({ sx }) => {
   const triggerRelocate = () => {
     socket.emit('setRelocationState');
     dispatch(setLocationState({ isLoading: true }));
-    console.log('here');
     RelocateTimeOut = window.setTimeout(() => dispatch(setLocationState({ isLoading: false, isInvalid: true })), 30000);
   };
 

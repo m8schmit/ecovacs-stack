@@ -5,7 +5,7 @@ import { shallowEqual } from 'react-redux';
 import { Maybe } from '../../utils/typeguard.utils';
 import { useAppSelector } from '../hooks';
 
-export type DialogType = 'ScheduleDialog' | 'BackupDialog';
+export type DialogType = 'ScheduleDialog' | 'BackupDialog' | 'DeleteMapDialog';
 
 export type BackupModeType = 'save' | 'load';
 
@@ -22,9 +22,14 @@ export interface BackupDialog extends AppDialog {
   isLoading: boolean;
 }
 
+export interface DeleteMapDialog extends AppDialog {
+  isLoading: boolean;
+}
+
 interface DialogState {
   ScheduleDialog: ScheduleDialog;
   BackupDialog: BackupDialog;
+  DeleteMapDialog: DeleteMapDialog;
 }
 
 const initialState: DialogState = {
@@ -37,6 +42,11 @@ const initialState: DialogState = {
     type: 'BackupDialog',
     isVisible: false,
     backupMode: 'save',
+    isLoading: false,
+  },
+  DeleteMapDialog: {
+    type: 'DeleteMapDialog',
+    isVisible: false,
     isLoading: false,
   },
 };
@@ -61,10 +71,20 @@ export const dialogSlice = createSlice({
     setBackupDialogLoading: (state, action: PayloadAction<boolean>) => {
       state.BackupDialog.isLoading = action.payload;
     },
+    setDeleteMapDialogLoading: (state, action: PayloadAction<boolean>) => {
+      state.DeleteMapDialog.isLoading = action.payload;
+    },
     hideDialog: () => initialState,
   },
 });
 
-export const { showDialog, showEditDialog, showBackupDialog, setBackupDialogLoading, hideDialog } = dialogSlice.actions;
+export const {
+  showDialog,
+  showEditDialog,
+  showBackupDialog,
+  setBackupDialogLoading,
+  setDeleteMapDialogLoading,
+  hideDialog,
+} = dialogSlice.actions;
 
 export const getDialog = (dialogType: DialogType) => useAppSelector((state) => state.dialog[dialogType], shallowEqual);

@@ -100,7 +100,10 @@ export const mapSlice = createSlice({
         action.payload,
       ],
     }),
-
+    resetMapSubsetsList: (state) => ({
+      ...state,
+      mapSubsetsList: [],
+    }),
     setNoMopMapSubsetsList: (state, action: PayloadAction<ZoneMapSubset>) => ({
       ...state,
       noMopMapSubsetsList: [
@@ -213,6 +216,7 @@ export const {
   setVacuumMap,
   setVacuumPos,
   setMapSubsetsList,
+  resetMapSubsetsList,
   setNoMopMapSubsetsList,
   setNoGoMapSubsetsList,
 
