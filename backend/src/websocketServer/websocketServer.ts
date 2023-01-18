@@ -15,6 +15,7 @@ import {
   addSched_V2,
   charge,
   clean,
+  deleteMap,
   delNoGoSubset,
   delNoMopSubset,
   delSched_V2,
@@ -253,6 +254,10 @@ const websocketServer = () => {
 
     socket.on('restoreMap', ({ mid, reMid }) => {
       restoreMap(mid, reMid);
+    });
+
+    socket.on('deleteMap', ({ mid }) => {
+      deleteMap(mid);
     });
   });
 };

@@ -95,6 +95,7 @@ export interface ClientToServerEvents {
   delNoGoSubset: (params: { mssid: string; mid: string }) => void;
   saveMap: (params: { mid: string }) => void;
   restoreMap: (params: { mid: string; reMid: string }) => void;
+  deleteMap: (params: { mid: string }) => void;
 }
 
 export interface InterServerEvents {
