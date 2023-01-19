@@ -1,4 +1,13 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
 import {
@@ -11,6 +20,7 @@ import {
 import { useAppDispatch } from '../../../../store/hooks';
 import { getSelectedCachedMapInfo } from '../../../../store/vacuum/editMapSlice';
 import { getVacuumMap } from '../../../../store/vacuum/mapSlice';
+import theme from '../../../../theme';
 import { WebSocketContext } from '../../../../utils/socket.utils';
 import { isDialog } from '../../../../utils/typeguard.utils';
 
@@ -59,7 +69,16 @@ export const BackupDialog = () => {
         {backupMode === 'load' && !isLoading && (
           <Typography>You will loose some informations like the Schedules.</Typography>
         )}
-        TODO map preview
+        <Box
+          sx={{
+            padding: theme.typography.pxToRem(10),
+            border: `solid thin ${theme.palette.grey[300]}`,
+            borderRadius: theme.typography.pxToRem(5),
+            margin: `${theme.typography.pxToRem(10)} 0`,
+          }}
+        >
+          TODO map preview
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={isLoading}>

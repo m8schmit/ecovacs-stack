@@ -225,7 +225,7 @@ const mqttClient = () => {
     if (isTopic('onCachedMapInfo', topic)) {
       const res = getDatafromMessage(message);
 
-      WSsocket?.emit('backupActionFinished');
+      WSsocket?.emit('mapActionFinished');
       WSsocket?.emit('cachedMapInfo', res);
     }
   });

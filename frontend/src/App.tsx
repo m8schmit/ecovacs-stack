@@ -123,7 +123,7 @@ const App = () => {
 
     socket && socket.on('lifeSpanReminder', (payload) => dispatch(setLifeSpanAccessory(payload)));
 
-    socket && socket.on('backupActionFinished', () => dispatch(hideDialog()));
+    socket && socket.on('mapActionFinished', () => dispatch(hideDialog()));
 
     socket &&
       socket.on('eventList', (payload) =>

@@ -21,6 +21,7 @@ services:
       - ./mysql/data:/var/lib/mysql
       - ./mysql/mysql.conf.d:/etc/mysql/conf.d
       - ./mysql/scripts/init.sql:/docker-entrypoint-initdb.d/1.sql
+    restart: unless-stopped
 
   backend:
     depends_on:
@@ -33,7 +34,7 @@ services:
       default:
     volumes:
       - ./backend:/opt/app
-    user: "${UID}:${GID}"
+    user: '${UID}:${GID}'
     environment:
       - BASE_URL=https://localhost
       - BASE_URL_01=https://ecovacs.com
@@ -42,8 +43,8 @@ services:
       - MYSQL_DATABASE=dev
       - TZ=America/New_York
     command: bash -c './generate_certs.sh && yarn install && yarn run dev'
-
     stdin_open: true
+    restart: unless-stopped
 
   nginx:
     depends_on:
@@ -61,6 +62,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./nginx/:/etc/nginx:ro
+    restart: unless-stopped
 
   frontend:
     depends_on:
@@ -68,7 +70,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    user: "${UID}:${GID}"
+    user: '${UID}:${GID}'
     environment:
       - WDS_SOCKET_PORT=0
       - TZ=America/New_York
@@ -80,3 +82,4 @@ services:
       - 4200:3000
     command: bash -c 'yarn install && yarn start'
     stdin_open: true
+    restart: unless-stopped

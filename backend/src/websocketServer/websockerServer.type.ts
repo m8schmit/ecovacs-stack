@@ -43,7 +43,7 @@ export interface ServerToClientEvents {
   savedPatternList: (patternList: BotPattern[]) => void;
   obstacleList: (obstacleList: AiMapObstacle[]) => void;
   cachedMapInfo: (cachedMapInfo: CachedMapInfo[]) => void;
-  backupActionFinished: () => void;
+  mapActionFinished: () => void;
 }
 
 export interface ClientToServerEvents {

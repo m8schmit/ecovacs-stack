@@ -27,13 +27,13 @@ const TraceLayer: FC<LayerProps> = ({ ZIndex }) => {
       style: [
         new Style({
           stroke: new Stroke({
-            color: 'white',
+            color: 'rgba(250,250,250,1)',
             width: 3,
           }),
         }),
         new Style({
           stroke: new Stroke({
-            color: 'rgba(255,255,255,0.5)',
+            color: 'rgba(250,250,250,0.5)',
             width: 25,
           }),
         }),

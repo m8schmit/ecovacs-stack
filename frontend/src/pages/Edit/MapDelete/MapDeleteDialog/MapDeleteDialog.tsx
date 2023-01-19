@@ -8,6 +8,7 @@ import {
   setDeleteMapDialogLoading,
 } from '../../../../store/dialog/dialogSlice';
 import { useAppDispatch } from '../../../../store/hooks';
+import { getVacuumMap } from '../../../../store/vacuum/mapSlice';
 import { WebSocketContext } from '../../../../utils/socket.utils';
 import { isDialog } from '../../../../utils/typeguard.utils';
 
@@ -15,6 +16,7 @@ const MapDeleteDialog = () => {
   const dispatch = useAppDispatch();
   const socket = useContext(WebSocketContext);
 
+  const { id: mid } = getVacuumMap();
   const deleteMapDialog = getDialog('DeleteMapDialog');
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,6 +34,7 @@ const MapDeleteDialog = () => {
 
   const handleConfirm = () => {
     console.log('close');
+    socket.emit('deleteMap', { mid });
     dispatch(setDeleteMapDialogLoading(true));
   };
 
