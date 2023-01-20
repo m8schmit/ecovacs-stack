@@ -24,4 +24,4 @@ CREATE TABLE IF NOT EXISTS bot_saved_pattern (
 
 
 INSERT INTO `bot_reminders` (`name`, `need_to_change`) VALUES ('dust_bag', '0');
-INSERT INTO `bot_reminders` (`name`, `need_to_change`) VALUES ('mop, '0');
+INSERT INTO `bot_reminders` (`name`, `need_to_change`) VALUES ('mop', '0');
