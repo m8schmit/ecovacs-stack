@@ -13,11 +13,14 @@ import { setCachedMapInfo } from './store/vacuum/editMapSlice';
 import {
   incrementMapTracesListUpdateIndex,
   onRelocateSuccess,
+  setGoToCoordinates,
   setMapSubsetsList,
   setMapTracesList,
   setNoGoMapSubsetsList,
   setNoMopMapSubsetsList,
   setObstaclesList,
+  setSelectedRoomsList,
+  setSelectedZonesList,
   setVacuumMap,
   setVacuumPos,
 } from './store/vacuum/mapSlice';
@@ -28,6 +31,7 @@ import {
   setLifeSpanDeviceList,
 } from './store/vacuum/notificationSlice';
 import {
+  getVacuumClean,
   setAutoEmpty,
   setChargeState,
   setDoNotDisturb,
@@ -38,11 +42,14 @@ import {
   setVacuumingOption,
   setVacuumState,
 } from './store/vacuum/stateSlice';
+import { sliceIntoChunks } from './utils/array.utils';
 import { WebSocketContext } from './utils/socket.utils';
+import { isString } from './utils/typeguard.utils';
 
 const App = () => {
   const [socket, setSocket] = useState<Socket>();
   const dispatch = useAppDispatch();
+  const status = getVacuumClean();
 
   useEffect(() => {
     console.log('start websocket Service.');
@@ -53,6 +60,36 @@ const App = () => {
       websocket.disconnect();
     };
   }, [setSocket]);
+
+  //WIP todo move to backend.
+  useEffect(() => {
+    if (!status) return;
+
+    const type = status?.cleanState?.type;
+    if (!type) return;
+    if (type === 'customArea') {
+      const content = status?.cleanState?.content;
+      if (!content || !isString(content)) return;
+
+      const coordinatesList = sliceIntoChunks(
+        content.split(',').map((coordinate: string) => +coordinate >> 0),
+        4,
+      );
+      dispatch(setSelectedZonesList(coordinatesList));
+    } else if (type === 'mapPoint') {
+      const content = status?.cleanState?.content;
+      if (!content || !isString(content)) return;
+
+      const coordinatesList = content.split(',').map((coordinate: string) => +coordinate >> 0);
+      dispatch(setGoToCoordinates([coordinatesList[0], coordinatesList[1]]));
+    } else if (type === 'spotArea') {
+      const content = status?.cleanState?.content;
+      if (!content || !isString(content)) return;
+
+      const mssidList = content.split(',').map((coordinate: string) => +coordinate >> 0);
+      dispatch(setSelectedRoomsList(mssidList));
+    }
+  }, [status]);
 
   useEffect(() => {
     socket &&

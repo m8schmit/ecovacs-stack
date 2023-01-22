@@ -1,6 +1,6 @@
 import { Bolt, Close, Pause, PlayArrow, Save, Stop } from '@mui/icons-material';
 import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { useAppDispatch } from '../../store/hooks';
 import {

@@ -72,7 +72,7 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1092: 'Failed to find position after being lift.',
 };
 
-export type BotErrorType = 0 | 102 | 103 | 104 | 105 | 109 | 20003 | 20011 | 20012;
+export type BotErrorType = 0 | 102 | 103 | 104 | 105 | 109 | 110 | 20003 | 20011 | 20012;
 
 export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorType> = {
   0: 'All good.',
@@ -81,6 +81,7 @@ export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorType> = {
   104: 'Please clean the anti-drop sensor.',
   105: 'Robot is stuck.',
   109: 'Main Brush is tangled.',
+  110: 'Dust Band is Missing.',
   20003: 'Task type not supported.',
   20011: 'Handle deal message fail.',
   20012: 'Get point count out of range.',

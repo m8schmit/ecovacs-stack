@@ -5,7 +5,7 @@ export interface CleanState {
     id?: string /* 3 digits */;
     cid?: string /* 3 digits */;
     router?: BotRoute;
-    type?: BotType;
+    type?: BotCleanType;
     motionState?: BotMotionState;
     content?: CleanStateContent | string;
   };
@@ -13,12 +13,11 @@ export interface CleanState {
 
 export interface CleanStateContent {
   value?: string;
-  type?: BotType;
+  type?: BotCleanType;
 }
 
 type BotState = 'clean' | 'pause' | 'idle' | 'goCharging';
 type BotRoute = 'plan';
-type BotType = 'auto';
 type BotMotionState = 'working' | 'pause';
 
 // ChargeState

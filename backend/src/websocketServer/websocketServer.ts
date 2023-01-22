@@ -64,7 +64,7 @@ const getOneTimeBotStatus = () => {
   getPos(['chargePos', 'deebotPos']);
   getSingleInfo('getAutoEmpty');
   getSingleInfo('getBlock');
-  getInfo(['getCachedMapInfo']);
+  getInfo(['getCachedMapInfo', 'getBreakPoint']);
   getAIMap();
 };
 
