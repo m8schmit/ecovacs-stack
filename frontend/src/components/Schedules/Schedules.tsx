@@ -23,6 +23,7 @@ export const Schedules = () => {
   const { id: mid } = getVacuumMap();
 
   useEffect(() => {
+    console.log('shed');
     socket.emit('getSchedulesList');
   }, []);
 

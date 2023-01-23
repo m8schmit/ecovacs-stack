@@ -172,7 +172,7 @@ const websocketServer = () => {
     });
 
     socket.on('getLifeSpanAccessory', () => {
-      getAllReminders().then((res) => {
+      getAllReminders().then((res: any) => {
         console.log('getLifeSpanAccessory ', res);
         socket.emit(
           'lifeSpanReminder',
@@ -185,32 +185,37 @@ const websocketServer = () => {
     });
 
     socket.on('getEventsList', () => {
-      getBotEvent().then((res) => {
+      getBotEvent().then((res: any) => {
         console.log('getEventsList ', res);
         socket.emit('eventList', res);
       });
     });
 
     socket.on('getErrorsList', () => {
-      getBotError().then((res) => {
+      getBotError().then((res: any) => {
         console.log('getErrorsList ', res);
         socket.emit('errorList', res);
       });
     });
 
     socket.on('dismissEvent', (id) => {
-      (id ? delBotEvent(id) : delAllBotEvent()).then(() => getBotEvent().then((res) => socket.emit('eventList', res)));
+      (id ? delBotEvent(id) : delAllBotEvent()).then(() =>
+        getBotEvent().then((res: any) => socket.emit('eventList', res)),
+      );
     });
 
     socket.on('dismissError', (id) => {
-      (id ? delBotError(id) : delAllBotError()).then(() => getBotError().then((res) => socket.emit('errorList', res)));
+      (id ? delBotError(id) : delAllBotError()).then(() =>
+        getBotError().then((res: any) => socket.emit('errorList', res)),
+      );
     });
 
     /*
      ** Saved clean pattern
      */
 
-    const sendBotSavedPatternList = () => getBotPattern().then((res) => socket.emit('savedPatternList', res as any[]));
+    const sendBotSavedPatternList = () =>
+      getBotPattern().then((res: any) => socket.emit('savedPatternList', res as any[]));
 
     socket.on('getSavedPattern', () => sendBotSavedPatternList());
 

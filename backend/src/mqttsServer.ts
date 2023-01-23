@@ -1,14 +1,15 @@
-import { Aedes, Client, Server, Subscription } from 'aedes';
-// import botSetup from './mqttClient/botSetup';
-import { getSingleInfo } from './mqttClient/commands/commands.get';
-import { playSound, setLiveLaunchPwd } from './mqttClient/commands/commands.set';
+import Aedes from 'aedes';
+import { Client } from 'aedes:client';
+import { Subscription } from 'aedes:packet';
+
 import { setTime } from './mqttClient/commands/commands.special';
 import { options } from './server.utils';
 
+// import botSetup from './mqttClient/botSetup';
 const mqttsServer = (): Promise<Aedes> => {
   return new Promise((resolve, reject) => {
     const port = 8883;
-    const broker = Server();
+    const broker = new Aedes();
     const server = require('tls').createServer(options, broker.handle);
 
     broker.on('clientError', (client: Client, error: Error) => {

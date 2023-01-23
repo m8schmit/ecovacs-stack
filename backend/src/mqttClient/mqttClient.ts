@@ -46,9 +46,9 @@ const mqttClient = () => {
   client.on('message', (topic, message) => {
     // log message
     // filters some message I don't need
-    if (!isTopic('onMapTrace', topic) && !isTopic('onMinorMap', topic) && !isTopic('onPos', topic)) {
-      getLogs(topic, message);
-    }
+    // if (!isTopic('onMapTrace', topic) && !isTopic('onMinorMap', topic) && !isTopic('onPos', topic)) {
+    getLogs(topic, message);
+    // }
 
     handleMap(topic, message);
 
@@ -137,7 +137,7 @@ const mqttClient = () => {
         );
       }
       addBotEvent(res.code);
-      getBotEvent().then((res) => WSsocket?.emit('eventList', res));
+      getBotEvent().then((res: any) => WSsocket?.emit('eventList', res));
     }
 
     if (isTopic('onError', topic)) {
@@ -145,7 +145,7 @@ const mqttClient = () => {
       // console.log('onError ', inspect(res, false, null, true));
       const errorArray = res.code.filter((curr: number) => curr !== 0);
       errorArray.length && addBotError(errorArray);
-      getBotError().then((res) => {
+      getBotError().then((res: any) => {
         console.log('error list', res);
       });
     }

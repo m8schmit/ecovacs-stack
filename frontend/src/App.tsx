@@ -59,7 +59,7 @@ const App = () => {
     return () => {
       websocket.disconnect();
     };
-  }, [setSocket]);
+  }, []);
 
   //WIP todo move to backend.
   useEffect(() => {
@@ -70,12 +70,13 @@ const App = () => {
     if (type === 'customArea') {
       const content = status?.cleanState?.content;
       if (!content || !isString(content)) return;
+      const coordinatesList = content.split(',').map((coordinate: string) => +coordinate >> 0);
 
-      const coordinatesList = sliceIntoChunks(
-        content.split(',').map((coordinate: string) => +coordinate >> 0),
-        4,
-      );
-      dispatch(setSelectedZonesList(coordinatesList));
+      if (status?.cleanState && status?.cleanState?.donotclean && status?.cleanState?.donotclean === 1) {
+        dispatch(setGoToCoordinates([coordinatesList[0], coordinatesList[1]]));
+      } else {
+        dispatch(setSelectedZonesList(sliceIntoChunks(coordinatesList, 4)));
+      }
     } else if (type === 'mapPoint') {
       const content = status?.cleanState?.content;
       if (!content || !isString(content)) return;
@@ -92,6 +93,7 @@ const App = () => {
   }, [status]);
 
   useEffect(() => {
+    console.log(socket?.connected);
     socket &&
       socket.on('connect', () => {
         console.log('connected! ', socket.id);
@@ -182,7 +184,7 @@ const App = () => {
 
   return (
     <>
-      {socket && (
+      {socket?.connected && (
         <WebSocketContext.Provider value={socket}>
           <BrowserRouter>
             <Box sx={{ minHeight: '100vh', display: 'flex', width: '100%' }}>

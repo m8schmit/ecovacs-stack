@@ -14,7 +14,7 @@ const execMysqlQuery = (query: string) =>
   connection
     .promise()
     .query(query)
-    .then(([rows, fields]) => {
+    .then(([rows, fields]: any[]) => {
       // console.log(fields, rows);
       return rows;
     });

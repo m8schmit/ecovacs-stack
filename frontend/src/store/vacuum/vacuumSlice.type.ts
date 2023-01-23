@@ -8,6 +8,7 @@ export interface CleanState {
     type?: BotCleanType;
     motionState?: BotMotionState;
     content?: CleanStateContent | string;
+    donotclean?: number;
   };
 }
 
