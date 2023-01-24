@@ -12,7 +12,9 @@ export interface LifespanAccessory {
   needToBeChanged: boolean;
 }
 
-export type BotEventType =
+export type BotEventType = 'ERROR' | 'EVENT';
+
+export type BotEventId =
   | 1007
   | 1011
   | 1015
@@ -36,9 +38,10 @@ export type BotEventType =
   | 1088
   | 1092;
 
-export interface BotNotification<T> {
+export interface BotNotification {
   id: number;
-  code: T;
+  code: BotEventId | BotErrorId;
+  type: BotEventType;
   timestamp: string;
 }
 
@@ -47,7 +50,7 @@ export type BotNotificationLabel<T extends string | number | symbol> = {
 };
 
 //TODO replace by key for i18n
-export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
+export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventId> = {
   1007: 'Mop plugged.',
   1011: 'Starting scheduled task.',
   1015: 'unknown (1015).',
@@ -72,9 +75,9 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventType> = {
   1092: 'Failed to find position after being lift.',
 };
 
-export type BotErrorType = 0 | 102 | 103 | 104 | 105 | 109 | 110 | 20003 | 20011 | 20012;
+export type BotErrorId = 0 | 102 | 103 | 104 | 105 | 109 | 110 | 20003 | 20011 | 20012;
 
-export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorType> = {
+export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorId> = {
   0: 'All good.',
   102: 'Robot as been lift off.',
   103: 'Driving Wheel malfunction.',

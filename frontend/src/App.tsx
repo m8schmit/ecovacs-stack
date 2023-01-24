@@ -24,12 +24,7 @@ import {
   setVacuumMap,
   setVacuumPos,
 } from './store/vacuum/mapSlice';
-import {
-  setErrorsList,
-  setEventsList,
-  setLifeSpanAccessory,
-  setLifeSpanDeviceList,
-} from './store/vacuum/notificationSlice';
+import { setEventsList, setLifeSpanAccessory, setLifeSpanDeviceList } from './store/vacuum/notificationSlice';
 import {
   getVacuumClean,
   setAutoEmpty,
@@ -167,10 +162,6 @@ const App = () => {
     socket &&
       socket.on('eventList', (payload) =>
         dispatch(setEventsList(payload.map((botEvent: any) => ({ ...botEvent, code: botEvent.evt_code })))),
-      );
-    socket &&
-      socket.on('errorList', (payload) =>
-        dispatch(setErrorsList(payload.map((botError: any) => ({ ...botError, code: botError.error_code })))),
       );
 
     socket && socket.on('savedPatternList', (payload) => dispatch(setSavedPatternList(payload)));

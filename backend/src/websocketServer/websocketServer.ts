@@ -33,7 +33,6 @@ import {
   setWaterInfo,
   splitRoom,
 } from '../mqttClient/commands/commands.set';
-import { delAllBotError, delBotError, getBotError } from '../mysqlHelper/botError.query';
 import { delAllBotEvent, delBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 import { getAllReminders } from '../mysqlHelper/botReminder.query';
 import { addBotPattern, getBotPattern } from '../mysqlHelper/botSavedPattern';
@@ -191,22 +190,9 @@ const websocketServer = () => {
       });
     });
 
-    socket.on('getErrorsList', () => {
-      getBotError().then((res: any) => {
-        console.log('getErrorsList ', res);
-        socket.emit('errorList', res);
-      });
-    });
-
     socket.on('dismissEvent', (id) => {
       (id ? delBotEvent(id) : delAllBotEvent()).then(() =>
         getBotEvent().then((res: any) => socket.emit('eventList', res)),
-      );
-    });
-
-    socket.on('dismissError', (id) => {
-      (id ? delBotError(id) : delAllBotError()).then(() =>
-        getBotError().then((res: any) => socket.emit('errorList', res)),
       );
     });
 

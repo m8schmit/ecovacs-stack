@@ -1,14 +1,14 @@
-type BotErrorType = 0 | 102 | 104 | 109 | 20003 | 20011 | 20012;
+type BotErrorId = 0 | 102 | 104 | 109 | 20003 | 20011 | 20012;
 
-const NO_ERROR: BotErrorType = 0;
-const OFF_THE_FLOOR_ERROR: BotErrorType = 102;
-const CLEAN_ANTI_DROP_SENSOR_ERROR: BotErrorType = 104;
-const TASK_TYPE_NOT_SUPPORTED_ERROR: BotErrorType = 20003;
-const HANDLE_DEAL_MSG_FAIL_ERROR: BotErrorType = 20011;
-const GET_POINT_COUNT_OUT_OF_RANGE_ERROR: BotErrorType = 20012;
+const NO_ERROR: BotErrorId = 0;
+const OFF_THE_FLOOR_ERROR: BotErrorId = 102;
+const CLEAN_ANTI_DROP_SENSOR_ERROR: BotErrorId = 104;
+const TASK_TYPE_NOT_SUPPORTED_ERROR: BotErrorId = 20003;
+const HANDLE_DEAL_MSG_FAIL_ERROR: BotErrorId = 20011;
+const GET_POINT_COUNT_OUT_OF_RANGE_ERROR: BotErrorId = 20012;
 
 export {
-  BotErrorType,
+  BotErrorId,
   NO_ERROR,
   TASK_TYPE_NOT_SUPPORTED_ERROR,
   OFF_THE_FLOOR_ERROR,

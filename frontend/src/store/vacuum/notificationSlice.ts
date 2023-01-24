@@ -1,26 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '../hooks';
-import {
-  BotErrorType,
-  BotEventType,
-  BotNotification,
-  LifeSpanDevice,
-  LifespanAccessory,
-} from './notificationSlice.type';
+import { BotNotification, LifespanAccessory, LifeSpanDevice } from './notificationSlice.type';
 
 interface NotificationState {
   lifeSpanDeviceList: LifeSpanDevice[];
   lifeSpanAccessoryList: LifespanAccessory[];
-  eventsList: BotNotification<BotEventType>[];
-  errorsList: BotNotification<BotErrorType>[];
+  eventsList: BotNotification[];
 }
 
 const initialState: NotificationState = {
   lifeSpanDeviceList: [],
   lifeSpanAccessoryList: [],
   eventsList: [],
-  errorsList: [],
 };
 
 export const notificationSlice = createSlice({
@@ -31,13 +23,9 @@ export const notificationSlice = createSlice({
       ...state,
       lifeSpanDeviceList: action.payload,
     }),
-    setEventsList: (state, action: PayloadAction<BotNotification<BotEventType>[]>) => ({
+    setEventsList: (state, action: PayloadAction<BotNotification[]>) => ({
       ...state,
       eventsList: action.payload,
-    }),
-    setErrorsList: (state, action: PayloadAction<BotNotification<BotErrorType>[]>) => ({
-      ...state,
-      errorsList: action.payload,
     }),
     setLifeSpanAccessory: (state, action: PayloadAction<LifespanAccessory[]>) => ({
       ...state,
@@ -55,9 +43,8 @@ export const notificationSlice = createSlice({
   },
 });
 
-export const { setLifeSpanDeviceList, setEventsList, setErrorsList, setLifeSpanAccessory } = notificationSlice.actions;
+export const { setLifeSpanDeviceList, setEventsList, setLifeSpanAccessory } = notificationSlice.actions;
 
 export const getLifeSpanDeviceList = () => useAppSelector(({ notification }) => notification.lifeSpanDeviceList);
 export const getLifeSpanAccessoryList = () => useAppSelector(({ notification }) => notification.lifeSpanAccessoryList);
 export const getEventsList = () => useAppSelector(({ notification }) => notification.eventsList);
-export const getErrorsList = () => useAppSelector(({ notification }) => notification.errorsList);

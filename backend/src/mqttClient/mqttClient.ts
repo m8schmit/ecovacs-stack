@@ -1,6 +1,5 @@
 import { connect, MqttClient } from 'mqtt';
 
-import { addBotError, getBotError } from '../mysqlHelper/botError.query';
 import { addBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 import { updateReminder } from '../mysqlHelper/botReminder.query';
 import { WSsocket } from '../websocketServer/websocketServer';
@@ -136,18 +135,16 @@ const mqttClient = () => {
           WSsocket?.emit('lifeSpanReminder', { name: 'mop', needToBeChanged: true }),
         );
       }
-      addBotEvent(res.code);
+      addBotEvent(res.code, 'EVENT');
       getBotEvent().then((res: any) => WSsocket?.emit('eventList', res));
     }
 
     if (isTopic('onError', topic)) {
       const res = getDatafromMessage(message);
-      // console.log('onError ', inspect(res, false, null, true));
       const errorArray = res.code.filter((curr: number) => curr !== 0);
-      errorArray.length && addBotError(errorArray);
-      getBotError().then((res: any) => {
-        console.log('error list', res);
-      });
+
+      errorArray.length && addBotEvent(errorArray, 'ERROR');
+      getBotEvent().then((res: any) => WSsocket?.emit('eventList', res));
     }
 
     if (isTopic('onMapInfo', topic)) {

@@ -1,34 +1,38 @@
-import { Box, Button, List, ListItem, Paper, Typography } from '@mui/material';
+import { Button, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 
 import {
-  BotErrorType,
-  BotEventType,
+  BotErrorId,
+  BotEventId,
   BotNotification,
-  BotNotificationLabel,
+  ERROR_LABEL_LIST,
+  EVENT_LABEL_LIST,
 } from '../../../../store/vacuum/notificationSlice.type';
 import theme from '../../../../theme';
 import { WebSocketContext } from '../../../../utils/socket.utils';
 
-interface NotificationsListProps<T extends BotEventType | BotErrorType> {
-  list: BotNotification<T>[];
-  socketEvent: string;
-  labelList: BotNotificationLabel<T>;
+interface NotificationsListProps {
+  list: BotNotification[];
 }
 
-export const NotificationsList = <T extends BotEventType | BotErrorType>({
-  list,
-  socketEvent,
-  labelList,
-}: NotificationsListProps<T>) => {
+export const NotificationsList: FC<NotificationsListProps> = ({ list }) => {
   const socket = useContext(WebSocketContext);
 
-  const handleDismiss = (id: number | null) => socket.emit(socketEvent, id);
+  const handleDismiss = (id: number | null) => socket.emit('dismissEvent', id);
+
+  const getEventLabel = (eventCode: BotErrorId | BotEventId) => {
+    if (ERROR_LABEL_LIST[eventCode as BotErrorId]) {
+      return ERROR_LABEL_LIST[eventCode as BotErrorId];
+    } else if (EVENT_LABEL_LIST[eventCode as BotEventId]) {
+      return EVENT_LABEL_LIST[eventCode as BotEventId];
+    }
+    return `unkown: [${eventCode}]`;
+  };
 
   return (
     <List>
-      {list.map(({ id, code, timestamp }) => (
+      {list.map(({ id, code, type, timestamp }) => (
         <Paper
           key={`event-${id}`}
           elevation={1}
@@ -43,15 +47,13 @@ export const NotificationsList = <T extends BotEventType | BotErrorType>({
           }}
         >
           <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="body1">{labelList[code] || code}</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
-                {dayjs(timestamp).format('YYYY/M/D - HH:mm')}
-              </Typography>
-              <Button sx={{ ml: 1 }} onClick={() => handleDismiss(id)}>
-                Dismiss
-              </Button>
-            </Box>
+            <ListItemText
+              primary={getEventLabel(code)}
+              secondary={`${type.toLowerCase()} - ${dayjs(timestamp).format('YYYY/M/D - HH:mm')}`}
+            />
+            <Button sx={{ ml: 1 }} onClick={() => handleDismiss(id)}>
+              Dismiss
+            </Button>
           </ListItem>
         </Paper>
       ))}

@@ -1,9 +1,12 @@
-import { BotEventType } from '../mqttClient/commands/event.type';
+import { BotErrorId } from '../mqttClient/commands/error.type';
+import { BotEventId, BotEventType } from '../mqttClient/commands/event.type';
 import { execMysqlQuery } from './mysql';
 
 // Errors
-export const addBotEvent = (code: BotEventType) =>
-  execMysqlQuery(`INSERT INTO \`bot_events\` (\`evt_code\`, \`timestamp\`) VALUES ('${code}', now());`);
+export const addBotEvent = (code: BotEventId | BotErrorId, type: BotEventType) =>
+  execMysqlQuery(
+    `INSERT INTO \`bot_events\` (\`evt_code\`, \`type\`, \`timestamp\`) VALUES ('${code}', '${type}', now());`,
+  );
 
 export const delBotEvent = (id: number) => execMysqlQuery(`DELETE FROM \`bot_events\` WHERE ((\`id\` = '${id}'));`);
 
