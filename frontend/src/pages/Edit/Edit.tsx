@@ -1,6 +1,7 @@
 import { ArrowBack } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import EditMap from '../../components/VacuumMap/EditMap';
 import { useAppDispatch } from '../../store/hooks';
@@ -23,9 +24,11 @@ const Edit = () => {
     <>
       <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column' }}>
         <Box>
-          <Button href="/" variant="contained" startIcon={<ArrowBack />}>
-            Back
-          </Button>
+          <Link to="/">
+            <Button variant="contained" startIcon={<ArrowBack />}>
+              Back
+            </Button>
+          </Link>
         </Box>
         <Typography>What do you want to do?</Typography>
 

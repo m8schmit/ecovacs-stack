@@ -1,6 +1,5 @@
 import '../../../node_modules/ol/ol.css';
 
-import { Select } from '@mui/material';
 import Projection from 'ol/proj/Projection';
 
 import { getActiveTool } from '../../store/vacuum/editMapSlice';
@@ -10,6 +9,7 @@ import CreateNoGoWallsInteraction from './Interactions/CreateNoGoWallsInteractio
 import CreateNoGoZonesInteraction from './Interactions/CreateNoGoZonesInteraction';
 import CreateNoMopWallsInteraction from './Interactions/CreateNoMopWallsInteraction';
 import CreateNoMopZonesInteraction from './Interactions/CreateNoMopZonesInteraction';
+import SelectNoGoInteraction from './Interactions/SelectNoGoInteraction';
 import SelectRoomInteraction from './Interactions/SelectRoomInteraction';
 import SplitRoomInteraction from './Interactions/SplitRoomInteraction';
 import LabelsLayer from './Layers/LabelsLayer';
@@ -20,7 +20,6 @@ import NoMopWallsLayer from './Layers/NoMopWallsLayer';
 import NoMopZonesLayer from './Layers/NoMopZonesLayer';
 import RoomsLayer from './Layers/RoomsLayer';
 import { mapHeight, mapWidth } from './Map.utils';
-import SelectNoGoInteraction from './Interactions/SelectNoGoInteraction';
 
 const EditMap = () => {
   const projection = new Projection({
