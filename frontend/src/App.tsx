@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
@@ -178,15 +178,13 @@ const App = () => {
       {socket?.connected && (
         <WebSocketContext.Provider value={socket}>
           <BrowserRouter>
-            <Box sx={{ minHeight: '100vh', display: 'flex', width: '100%' }}>
-              <MainFrame>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/edit" element={<Edit />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </MainFrame>
-            </Box>
+            <MainFrame>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/edit" element={<Edit />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </MainFrame>
           </BrowserRouter>
         </WebSocketContext.Provider>
       )}

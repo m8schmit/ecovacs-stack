@@ -1,7 +1,6 @@
-import { Box, Divider, Grid, Link, Typography } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
-import theme from '../../../../theme';
 import Battery from '../../../Battery/Battery';
 import DND from '../../../DND/DND';
 
@@ -10,22 +9,19 @@ interface MainFrameProps {
 }
 const MainFrame: FC<MainFrameProps> = ({ children }) => {
   return (
-    <Box sx={{ margin: `0 ${theme.typography.pxToRem(15)}`, width: '100%' }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: `${theme.typography.pxToRem(15)} 0` }}>
-            <Link href="/" underline="none">
-              <Typography variant="h4">Ecovacs stack </Typography>
-            </Link>
-            <Box sx={{ display: 'flex' }}>
-              <DND />
-              <Battery />
-            </Box>
+    <Box sx={{ display: 'flex' }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} color="inherit">
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="h6" noWrap component="div">
+            Ecovacs stack
+          </Typography>
+          <Box sx={{ display: 'flex' }}>
+            <DND />
+            <Battery />
           </Box>
-          <Divider />
-        </Grid>
-        {children}
-      </Grid>
+        </Toolbar>
+      </AppBar>
+      {children}
     </Box>
   );
 };

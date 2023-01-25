@@ -42,7 +42,10 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
   return (
     <>
       <MapContext.Provider value={map}>
-        <Box sx={{ height: '90vh' }} ref={mapRef}>
+        <Box
+          sx={{ top: 0, left: 0, width: '100%', height: '100%', position: 'absolute', overflow: 'hidden' }}
+          ref={mapRef}
+        >
           {Children.map(children, (child, index) => {
             if (isValidElement<LayerProps>(child)) {
               return cloneElement<LayerProps>(child, {

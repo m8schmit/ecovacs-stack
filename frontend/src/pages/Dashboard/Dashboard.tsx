@@ -1,6 +1,7 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Grid, Tab } from '@mui/material';
+import { Box, Grid, Tab, Toolbar } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
+import Drawer from '../../components/UI/Drawer/Drawer';
 
 import ControlMap from '../../components/VacuumMap/ControlMap';
 import Commands from './Commands/Commands';
@@ -16,8 +17,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <Grid item xs={12} md={6}>
-        <Box sx={{ width: '100%', typography: 'body1' }}>
+      <Drawer>
+        <Box sx={{ width: '100%', typography: 'body1', overflow: 'hidden' }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -29,32 +30,33 @@ const Dashboard = () => {
             </Box>
             <TabPanel
               value="1"
-              sx={value === '1' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+              sx={value === '1' ? { display: 'flex', height: 'calc(100vh)', overflow: 'scroll' } : {}}
             >
               <Notifications />
             </TabPanel>
             <TabPanel
               value="2"
-              sx={value === '2' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+              sx={value === '2' ? { display: 'flex', height: 'calc(100vh)', overflow: 'scroll' } : {}}
             >
               <Commands />
             </TabPanel>
             <TabPanel
               value="3"
-              sx={value === '3' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+              sx={value === '3' ? { display: 'flex', height: 'calc(100vh)', overflow: 'scroll' } : {}}
             >
               <Options />
             </TabPanel>
             <TabPanel
               value="4"
-              sx={value === '4' ? { display: 'flex', height: 'calc(100vh - 150px)', overflow: 'scroll' } : {}}
+              sx={value === '4' ? { display: 'flex', height: 'calc(100vh)', overflow: 'scroll' } : {}}
             ></TabPanel>
           </TabContext>
         </Box>
-      </Grid>
-      <Grid item xs={12} md={6}>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, height: '100vh', paddingTop: '64px', position: 'relative' }}>
+        <Toolbar />
         <ControlMap />
-      </Grid>
+      </Box>
     </>
   );
 };
