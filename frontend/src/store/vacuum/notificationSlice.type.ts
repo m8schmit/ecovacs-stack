@@ -42,6 +42,7 @@ export interface BotNotification {
   id: number;
   code: BotEventId | BotErrorId;
   type: BotEventType;
+  read: boolean;
   timestamp: string;
 }
 

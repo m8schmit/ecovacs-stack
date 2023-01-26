@@ -1,7 +1,8 @@
-import { Button, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
+import { Box, Button, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { FC, useContext } from 'react';
 
+import GlowingDot from '../../../../components/UI/GlowingDot/GlowingDot';
 import {
   BotErrorId,
   BotEventId,
@@ -32,7 +33,7 @@ export const NotificationsList: FC<NotificationsListProps> = ({ list }) => {
 
   return (
     <List>
-      {list.map(({ id, code, type, timestamp }) => (
+      {list.map(({ id, code, type, read, timestamp }) => (
         <Paper
           key={`event-${id}`}
           elevation={1}
@@ -47,6 +48,7 @@ export const NotificationsList: FC<NotificationsListProps> = ({ list }) => {
           }}
         >
           <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box sx={{ marginRight: theme.typography.pxToRem(5) }}>{!read && <GlowingDot />}</Box>
             <ListItemText
               primary={getEventLabel(code)}
               secondary={`${type.toLowerCase()} - ${dayjs(timestamp).format('YYYY/M/D - HH:mm')}`}

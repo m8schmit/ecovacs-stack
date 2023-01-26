@@ -48,3 +48,5 @@ export const { setLifeSpanDeviceList, setEventsList, setLifeSpanAccessory } = no
 export const getLifeSpanDeviceList = () => useAppSelector(({ notification }) => notification.lifeSpanDeviceList);
 export const getLifeSpanAccessoryList = () => useAppSelector(({ notification }) => notification.lifeSpanAccessoryList);
 export const getEventsList = () => useAppSelector(({ notification }) => notification.eventsList);
+export const getUnreadEventsLength = () =>
+  useAppSelector(({ notification }) => notification.eventsList.filter((event) => !event.read).length);

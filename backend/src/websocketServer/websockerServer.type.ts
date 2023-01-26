@@ -39,7 +39,7 @@ export interface ServerToClientEvents {
   lifeSpanInfo: (params: LifeSpanDevice[]) => void;
   lifeSpanReminder: (params: any /*todo*/) => void;
   eventList: (eventList: any /*todo*/) => void;
-  errorList: (errorList: any /*todo*/) => void;
+  // errorList: (errorList: any /*todo*/) => void;
   savedPatternList: (patternList: BotPattern[]) => void;
   obstacleList: (obstacleList: AiMapObstacle[]) => void;
   cachedMapInfo: (cachedMapInfo: CachedMapInfo[]) => void;
@@ -96,6 +96,7 @@ export interface ClientToServerEvents {
   saveMap: (params: { mid: string }) => void;
   restoreMap: (params: { mid: string; reMid: string }) => void;
   deleteMap: (params: { mid: string }) => void;
+  setAllBotEventsRead: () => void;
 }
 
 export interface InterServerEvents {

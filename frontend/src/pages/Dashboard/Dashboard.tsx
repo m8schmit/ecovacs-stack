@@ -1,11 +1,12 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Tab, Toolbar } from '@mui/material';
+import { Box, Tab } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 
 import Drawer from '../../components/UI/Drawer/Drawer';
 import ControlMap from '../../components/VacuumMap/ControlMap';
+import { getNotificationDrawer } from '../../store/menu/menuSlice';
+import theme from '../../theme';
 import Commands from './Commands/Commands';
-import Notifications from './Notifications/Notifications';
 import Options from './Options/Options';
 
 const Dashboard = () => {
@@ -14,12 +15,12 @@ const Dashboard = () => {
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  const drawerWidth = 480;
+  const { isOpen } = getNotificationDrawer();
 
   return (
     <>
-      <Drawer>
-        <Toolbar />
-
+      <Drawer anchor="left">
         <Box sx={{ width: '100%', height: '100%', typography: 'body1', overflow: 'hidden' }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -30,18 +31,11 @@ const Dashboard = () => {
                 scrollButtons="auto"
                 aria-label="lab API tabs example"
               >
-                <Tab label="Notifications" value="1" />
                 <Tab label="Commands" value="2" />
                 <Tab label="Options" value="3" />
                 <Tab label="Reports" value="4" disabled />
               </TabList>
             </Box>
-            <TabPanel
-              value="1"
-              sx={value === '1' ? { display: 'flex', height: 'calc(100% - 48px)', overflow: 'scroll' } : {}}
-            >
-              <Notifications />
-            </TabPanel>
             <TabPanel
               value="2"
               sx={value === '2' ? { display: 'flex', height: 'calc(100% - 48px)', overflow: 'scroll' } : {}}
@@ -61,7 +55,28 @@ const Dashboard = () => {
           </TabContext>
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, height: '100vh', marginTop: '64px', position: 'relative' }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          padding: theme.spacing(3),
+          transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+          marginRight: `-${drawerWidth}px`,
+          height: '100vh',
+          marginTop: '64px',
+          position: 'relative',
+          ...(isOpen && {
+            transition: theme.transitions.create('margin', {
+              easing: theme.transitions.easing.easeOut,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+            marginRight: 0,
+          }),
+        }}
+      >
         <ControlMap />
       </Box>
     </>

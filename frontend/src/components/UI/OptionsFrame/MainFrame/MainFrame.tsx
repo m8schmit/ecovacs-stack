@@ -1,17 +1,29 @@
 import { NotificationsNone } from '@mui/icons-material';
-import { AppBar, Badge, Box, Toolbar, Typography } from '@mui/material';
+import { AppBar, Badge, Box, Toolbar, Typography, IconButton } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
-import { getUnreadNotification } from '../../../../store/menu/menuSlice';
+import Notifications from '../../../../pages/Dashboard/Notifications/Notifications';
+import { useAppDispatch } from '../../../../store/hooks';
+import { getNotificationDrawer, setNotificationDrawerIsOpen } from '../../../../store/menu/menuSlice';
+import { getUnreadEventsLength } from '../../../../store/vacuum/notificationSlice';
 import theme from '../../../../theme';
 import Battery from '../../../Battery/Battery';
 import DND from '../../../DND/DND';
+import Drawer from '../../Drawer/Drawer';
 
 interface MainFrameProps {
   children?: ReactNode;
 }
 const MainFrame: FC<MainFrameProps> = ({ children }) => {
-  const unReadNotification = getUnreadNotification();
+  const dispatch = useAppDispatch();
+  const { isOpen } = getNotificationDrawer();
+
+  const unreadNotification = getUnreadEventsLength();
+
+  const notificationToggle = () => {
+    dispatch(setNotificationDrawerIsOpen(!isOpen));
+  };
+
   return (
     <Box sx={{ display: 'flex', width: '100%', overflow: 'hidden' }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} color="inherit">
@@ -20,15 +32,22 @@ const MainFrame: FC<MainFrameProps> = ({ children }) => {
             Ecovacs stack
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Badge badgeContent={unReadNotification} color="primary" sx={{ marginRight: theme.typography.pxToRem(15) }}>
-              <NotificationsNone />
-            </Badge>
+            <IconButton onClick={notificationToggle} sx={{ marginRight: theme.typography.pxToRem(15) }}>
+              <Badge badgeContent={unreadNotification} color="primary">
+                <NotificationsNone />
+              </Badge>
+            </IconButton>
             <DND />
             <Battery />
           </Box>
         </Toolbar>
       </AppBar>
       {children}
+      <Drawer anchor="right" isOpen={isOpen}>
+        <Box sx={{ margin: `0 ${theme.typography.pxToRem(15)}` }}>
+          <Notifications />
+        </Box>
+      </Drawer>
     </Box>
   );
 };

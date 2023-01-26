@@ -3,6 +3,7 @@ import { Map as OlMap, View } from 'ol';
 import { getCenter } from 'ol/extent';
 import { Projection } from 'ol/proj';
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { getNotificationDrawer } from '../../../store/menu/menuSlice';
 
 import { LayerProps } from '../../VacuumMap/Layers/Layer.type';
 import { MapContext } from './MapContex';
@@ -19,7 +20,17 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
   const mapRef = useRef<HTMLDivElement>();
   const [map, setMap] = useState<OlMap>();
 
+  const { isOpen } = getNotificationDrawer();
+
   const getZIndex = (index: number) => Children.count(children) - 1 - index;
+
+  useEffect(() => {
+    if (!map) return;
+
+    setTimeout(() => {
+      map.updateSize();
+    }, 200);
+  }, [isOpen]);
 
   useEffect(() => {
     const initialMap = new OlMap({

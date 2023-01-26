@@ -13,3 +13,5 @@ export const delBotEvent = (id: number) => execMysqlQuery(`DELETE FROM \`bot_eve
 export const delAllBotEvent = () => execMysqlQuery(`DELETE FROM \`bot_events\``);
 
 export const getBotEvent = () => execMysqlQuery('SELECT * FROM `bot_events` ORDER BY `timestamp` DESC LIMIT 50');
+
+export const setAllBotEventsRead = () => execMysqlQuery(`UPDATE \`bot_events\` SET \`read\` = '1'`);

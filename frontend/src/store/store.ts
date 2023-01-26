@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { dialogSlice } from './dialog/dialogSlice';
-import { incrementUnreadNotificationMiddleware } from './menu/incrementUnreadNotificationMiddleware';
 import { menuSlice } from './menu/menuSlice';
 import { editMapSlice } from './vacuum/editMapSlice';
 import { mapSlice } from './vacuum/mapSlice';
@@ -19,7 +18,7 @@ const rootReducer = combineReducers({
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend().concat(incrementUnreadNotificationMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(),
   // prepend and concat calls can be chained
   devTools: process.env.NODE_ENV !== 'production',
 });

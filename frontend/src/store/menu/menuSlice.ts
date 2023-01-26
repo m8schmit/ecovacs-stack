@@ -4,20 +4,22 @@ import { useAppSelector } from '../hooks';
 interface MenuState {
   mainDrawer: {
     isOpen: boolean;
+    drawerWidth: number;
   };
   notificationDrawer: {
     isOpen: boolean;
-    unreadNotification: number;
+    drawerWidth: number;
   };
 }
 
 const initialState: MenuState = {
   mainDrawer: {
     isOpen: true,
+    drawerWidth: 480,
   },
   notificationDrawer: {
     isOpen: false,
-    unreadNotification: 0,
+    drawerWidth: 480,
   },
 };
 
@@ -39,26 +41,10 @@ export const menuSlice = createSlice({
         isOpen: action.payload,
       },
     }),
-    addUnreadNotification: (state) => ({
-      ...state,
-      notificationDrawer: {
-        ...state.notificationDrawer,
-        unreadNotification: state.notificationDrawer.unreadNotification + 1,
-      },
-    }),
-    resetUnreadNotification: (state) => ({
-      ...state,
-      notificationDrawer: {
-        ...state.notificationDrawer,
-        unreadNotification: initialState.notificationDrawer.unreadNotification,
-      },
-    }),
   },
 });
 
-export const { setMainDrawerIsOpen, setNotificationDrawerIsOpen, addUnreadNotification, resetUnreadNotification } =
-  menuSlice.actions;
+export const { setMainDrawerIsOpen, setNotificationDrawerIsOpen } = menuSlice.actions;
 
-export const getMainDrawerIsOpen = () => useAppSelector(({ menu }) => menu.mainDrawer.isOpen);
-export const getNotificationDrawerIsOpen = () => useAppSelector(({ menu }) => menu.notificationDrawer.isOpen);
-export const getUnreadNotification = () => useAppSelector(({ menu }) => menu.notificationDrawer.unreadNotification);
+export const getMainDrawer = () => useAppSelector(({ menu }) => menu.mainDrawer);
+export const getNotificationDrawer = () => useAppSelector(({ menu }) => menu.notificationDrawer);

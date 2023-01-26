@@ -33,7 +33,7 @@ import {
   setWaterInfo,
   splitRoom,
 } from '../mqttClient/commands/commands.set';
-import { delAllBotEvent, delBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
+import { delAllBotEvent, delBotEvent, getBotEvent, setAllBotEventsRead } from '../mysqlHelper/botEvent.query';
 import { getAllReminders } from '../mysqlHelper/botReminder.query';
 import { addBotPattern, getBotPattern } from '../mysqlHelper/botSavedPattern';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websockerServer.type';
@@ -186,7 +186,7 @@ const websocketServer = () => {
     socket.on('getEventsList', () => {
       getBotEvent().then((res: any) => {
         console.log('getEventsList ', res);
-        socket.emit('eventList', res);
+        socket.emit('eventList', res.map((current: any) => ({...current, read: current.read === 1})));
       });
     });
 
@@ -195,6 +195,8 @@ const websocketServer = () => {
         getBotEvent().then((res: any) => socket.emit('eventList', res)),
       );
     });
+
+    socket.on('setAllBotEventsRead', () => setAllBotEventsRead())
 
     /*
      ** Saved clean pattern
