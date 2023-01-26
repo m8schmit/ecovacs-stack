@@ -40,7 +40,6 @@ const Drawer: FC<DrawerProps> = ({ children }) => {
             [`& .MuiDrawer-paper`]: { maxWidth: drawerWidth, width: '100%', boxSizing: 'border-box' },
           }}
         >
-          <Toolbar />
           {children}
         </SwipeableDrawer>
       </Fragment>

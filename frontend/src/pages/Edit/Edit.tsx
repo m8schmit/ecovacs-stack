@@ -24,7 +24,7 @@ const Edit = () => {
   return (
     <>
       <Drawer>
-        <Box sx={{ width: '100%', typography: 'body1', overflow: 'hidden', p: 2 }}>
+        <Box sx={{ width: '100%', height: '100%', typography: 'body1', overflow: 'hidden', p: 2 }}>
           <Box>
             <Link to="/">
               <Button variant="contained" startIcon={<ArrowBack />}>
@@ -32,7 +32,7 @@ const Edit = () => {
               </Button>
             </Link>
           </Box>
-          <Box sx={{ display: 'flex', height: 'calc(100vh)', overflow: 'scroll' }}>
+          <Box sx={{ display: 'flex', height: 'calc(100% - 48px)', overflow: 'scroll' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
               <Typography>What do you want to do?</Typography>
 

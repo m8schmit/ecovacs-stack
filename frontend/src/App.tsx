@@ -93,6 +93,9 @@ const App = () => {
       socket.on('connect', () => {
         console.log('connected! ', socket.id);
         socket.emit('getMajorMap');
+        socket.emit('getLifeSpanDevice');
+        socket.emit('getLifeSpanAccessory');
+        socket.emit('getEventsList');
       });
 
     socket &&

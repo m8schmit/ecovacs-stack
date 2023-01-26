@@ -1,5 +1,4 @@
-import { DarkMode } from '@mui/icons-material';
-import { Avatar } from '@mui/material';
+import { DarkModeOutlined } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
 import { getDoNotDisturb } from '../../store/vacuum/stateSlice';
@@ -12,9 +11,7 @@ const DND = () => {
   return (
     <>
       {!!enable && !!dayjs(start).isBefore(now) && !!dayjs(end).isAfter(now) && (
-        <Avatar sx={{ marginRight: theme.typography.pxToRem(15) }}>
-          <DarkMode color="warning" />
-        </Avatar>
+        <DarkModeOutlined sx={{ marginRight: theme.typography.pxToRem(15) }} />
       )}
     </>
   );
