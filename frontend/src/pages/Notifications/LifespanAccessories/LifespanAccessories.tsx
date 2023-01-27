@@ -1,8 +1,8 @@
 import { List, ListItem, Paper, Typography } from '@mui/material';
 
-import { getLifeSpanAccessoryList } from '../../../../store/vacuum/notificationSlice';
-import { getMoppingOption } from '../../../../store/vacuum/stateSlice';
-import theme from '../../../../theme';
+import { getLifeSpanAccessoryList } from '../../../store/vacuum/notificationSlice';
+import { getMoppingOption } from '../../../store/vacuum/stateSlice';
+import theme from '../../../theme';
 
 const DustBagState = () => {
   const dustBag = getLifeSpanAccessoryList().find((accessory) => accessory.name === 'dust_bag');

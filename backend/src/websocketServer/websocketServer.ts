@@ -183,20 +183,23 @@ const websocketServer = () => {
       });
     });
 
+    const sendFormatedBotEventsList = () =>
+      getBotEvent().then((res: any) =>
+        socket.emit(
+          'eventList',
+          res.map((current: any) => ({ ...current, read: current.read === 1 })),
+        ),
+      );
+
     socket.on('getEventsList', () => {
-      getBotEvent().then((res: any) => {
-        console.log('getEventsList ', res);
-        socket.emit('eventList', res.map((current: any) => ({...current, read: current.read === 1})));
-      });
+      sendFormatedBotEventsList();
     });
 
     socket.on('dismissEvent', (id) => {
-      (id ? delBotEvent(id) : delAllBotEvent()).then(() =>
-        getBotEvent().then((res: any) => socket.emit('eventList', res)),
-      );
+      (id ? delBotEvent(id) : delAllBotEvent()).then(() => sendFormatedBotEventsList());
     });
 
-    socket.on('setAllBotEventsRead', () => setAllBotEventsRead())
+    socket.on('setAllBotEventsRead', () => setAllBotEventsRead().then(() => sendFormatedBotEventsList()));
 
     /*
      ** Saved clean pattern

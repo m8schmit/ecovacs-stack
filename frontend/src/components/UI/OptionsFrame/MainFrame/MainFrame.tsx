@@ -1,12 +1,13 @@
 import { NotificationsNone } from '@mui/icons-material';
 import { AppBar, Badge, Box, IconButton, Toolbar, Typography } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useContext } from 'react';
 
-import Notifications from '../../../../pages/Dashboard/Notifications/Notifications';
+import Notifications from '../../../../pages/Notifications/Notifications';
 import { useAppDispatch } from '../../../../store/hooks';
 import { getNotificationDrawer, setNotificationDrawerIsOpen } from '../../../../store/menu/menuSlice';
 import { getUnreadEventsLength } from '../../../../store/vacuum/notificationSlice';
 import theme from '../../../../theme';
+import { WebSocketContext } from '../../../../utils/socket.utils';
 import Battery from '../../../Battery/Battery';
 import DND from '../../../DND/DND';
 import SecondaryDrawer from '../../Drawer/SecondaryDrawer';
@@ -17,10 +18,14 @@ interface MainFrameProps {
 const MainFrame: FC<MainFrameProps> = ({ children }) => {
   const dispatch = useAppDispatch();
   const { isOpen } = getNotificationDrawer();
-
   const unreadNotification = getUnreadEventsLength();
+  const socket = useContext(WebSocketContext);
 
   const notificationToggle = () => {
+    if (!isOpen === false) {
+      console.log('clear event');
+      socket.emit('setAllBotEventsRead');
+    }
     dispatch(setNotificationDrawerIsOpen(!isOpen));
   };
 

@@ -45,10 +45,10 @@ const MainDrawer: FC<MainDrawerProps> = ({ children }) => {
     },
   };
 
-  // useEffect(() => {
-  //   console.log('here', isSmallScreen);
-  //   setIsOpen(!isSmallScreen);
-  // }, [isSmallScreen]);
+  useEffect(() => {
+    setIsOpen(!isSmallScreen);
+  }, [isSmallScreen]);
+
   return (
     <>
       {isSmallScreen && (

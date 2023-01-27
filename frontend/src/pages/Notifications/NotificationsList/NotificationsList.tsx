@@ -2,16 +2,16 @@ import { Box, Button, List, ListItem, ListItemText, Paper, Typography } from '@m
 import dayjs from 'dayjs';
 import { FC, useContext } from 'react';
 
-import GlowingDot from '../../../../components/UI/GlowingDot/GlowingDot';
+import GlowingDot from '../../../components/UI/GlowingDot/GlowingDot';
 import {
   BotErrorId,
   BotEventId,
   BotNotification,
   ERROR_LABEL_LIST,
   EVENT_LABEL_LIST,
-} from '../../../../store/vacuum/notificationSlice.type';
-import theme from '../../../../theme';
-import { WebSocketContext } from '../../../../utils/socket.utils';
+} from '../../../store/vacuum/notificationSlice.type';
+import theme from '../../../theme';
+import { WebSocketContext } from '../../../utils/socket.utils';
 
 interface NotificationsListProps {
   list: BotNotification[];

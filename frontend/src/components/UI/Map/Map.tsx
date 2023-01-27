@@ -28,9 +28,10 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
     if (!map) return;
 
     setTimeout(() => {
+      console.log('refresh map');
       map.updateSize();
-    }, 200);
-  }, [isOpen]);
+    }, 400);
+  }, [isOpen, map]);
 
   useEffect(() => {
     const initialMap = new OlMap({
@@ -41,6 +42,7 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
         zoom,
         minZoom,
         maxZoom,
+        extent: projection.getExtent(),
       }),
     });
 

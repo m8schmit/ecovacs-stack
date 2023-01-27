@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 
-import Dashboard from './pages/Dashboard/Dashboard';
+import Dashboard from './pages/Dashboard';
 import websocketService from './services/websocket.service';
 import { hideDialog } from './store/dialog/dialogSlice';
 import { useAppDispatch } from './store/hooks';
@@ -176,13 +176,9 @@ const App = () => {
 
   return (
     <>
-      socket: {socket?.connected.toString()}
       {socket?.connected && (
         <WebSocketContext.Provider value={socket}>
           <BrowserRouter>
-            {/* <Routes>
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes> */}
             <Dashboard />
           </BrowserRouter>
         </WebSocketContext.Provider>
@@ -193,15 +189,3 @@ const App = () => {
 };
 
 export default App;
-
-{
-  /* <BrowserRouter>
-<MainFrame>
-  <Routes>
-    <Route path="/" element={<Dashboard />} />
-    <Route path="/edit" element={<Edit />} />
-    <Route path="*" element={<Navigate to="/" replace />} />
-  </Routes>
-</MainFrame>
-</BrowserRouter> */
-}

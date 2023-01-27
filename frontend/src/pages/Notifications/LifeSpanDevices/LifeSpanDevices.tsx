@@ -1,11 +1,10 @@
 import { Box, Button, LinearProgress, List, ListItem, Paper, Typography } from '@mui/material';
 import { FC, useContext } from 'react';
 
-import { getLifeSpanDeviceList } from '../../../../store/vacuum/notificationSlice';
-import { LifeSpanDeviceType } from '../../../../store/vacuum/notificationSlice.type';
-import { getAutoEmptyState } from '../../../../store/vacuum/stateSlice';
-import theme from '../../../../theme';
-import { WebSocketContext } from '../../../../utils/socket.utils';
+import { getLifeSpanDeviceList } from '../../../store/vacuum/notificationSlice';
+import { LIFESPAN_LABEL_LIST, LifeSpanDeviceType } from '../../../store/vacuum/notificationSlice.type';
+import theme from '../../../theme';
+import { WebSocketContext } from '../../../utils/socket.utils';
 
 interface LifeSpanDeviceItemProps {
   type: LifeSpanDeviceType;
@@ -41,7 +40,7 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
     >
       <ListItem sx={{ display: 'flex' }}>
         <Typography sx={{ mr: 1, flex: '1 1 35%' }} variant="overline">
-          {type}
+          {LIFESPAN_LABEL_LIST[type]}
         </Typography>
         <Box sx={{ width: '100%', mr: 1, flex: '1 1 65%' }}>
           <Typography variant="body2" sx={{ color: theme.palette[color].main }}>

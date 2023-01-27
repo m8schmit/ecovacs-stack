@@ -2,7 +2,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
 import { useState, SyntheticEvent } from 'react';
 import Commands from '../Commands/Commands';
-import Options from '../Options/Options';
+import Options from '../../Edit/Options/Options';
 
 const ControlDrawerContent = () => {
   const [value, setValue] = useState('2');
@@ -22,6 +22,7 @@ const ControlDrawerContent = () => {
             scrollButtons="auto"
             aria-label="lab API tabs example"
           >
+            /home/mschmit/ecovacs-stack/frontend/src/pages/Dashboard/EditDrawerContent
             <Tab label="Commands" value="2" />
             <Tab label="Options" value="3" />
             <Tab label="Reports" value="4" disabled />

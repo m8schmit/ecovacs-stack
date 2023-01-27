@@ -46,12 +46,12 @@ export interface BotNotification {
   timestamp: string;
 }
 
-export type BotNotificationLabel<T extends string | number | symbol> = {
+type BotLabel<T extends string | number | symbol> = {
   [key in T]: string;
 };
 
 //TODO replace by key for i18n
-export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventId> = {
+export const EVENT_LABEL_LIST: BotLabel<BotEventId> = {
   1007: 'Mop plugged.',
   1011: 'Starting scheduled task.',
   1015: 'unknown (1015).',
@@ -78,7 +78,7 @@ export const EVENT_LABEL_LIST: BotNotificationLabel<BotEventId> = {
 
 export type BotErrorId = 0 | 102 | 103 | 104 | 105 | 109 | 110 | 20003 | 20011 | 20012;
 
-export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorId> = {
+export const ERROR_LABEL_LIST: BotLabel<BotErrorId> = {
   0: 'All good.',
   102: 'Robot as been lift off.',
   103: 'Driving Wheel malfunction.',
@@ -89,4 +89,14 @@ export const ERROR_LABEL_LIST: BotNotificationLabel<BotErrorId> = {
   20003: 'Task type not supported.',
   20011: 'Handle deal message fail.',
   20012: 'Get point count out of range.',
+};
+
+export const LIFESPAN_LABEL_LIST: BotLabel<LifeSpanDeviceType> = {
+  brush: 'Main Brush',
+  sideBrush: 'Side Brushes',
+  heap: 'Filter and Dust band',
+  unitCare: 'Lidar and other sensors',
+  dModule: 'Aroma device',
+  // mop: 'Mop',
+  // dust_bag: 'Dust Bag',
 };
