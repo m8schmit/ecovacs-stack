@@ -2,7 +2,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 
-import Drawer from '../../components/UI/Drawer/Drawer';
+import MainDrawer from '../../components/UI/Drawer/MainDrawer';
 import ControlMap from '../../components/VacuumMap/ControlMap';
 import { getNotificationDrawer } from '../../store/menu/menuSlice';
 import theme from '../../theme';
@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Drawer anchor="left">
+      <MainDrawer>
         <Box sx={{ width: '100%', height: '100%', typography: 'body1', overflow: 'hidden' }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -54,7 +54,7 @@ const Dashboard = () => {
             ></TabPanel>
           </TabContext>
         </Box>
-      </Drawer>
+      </MainDrawer>
       <Box
         component="main"
         sx={{
@@ -65,7 +65,7 @@ const Dashboard = () => {
             duration: theme.transitions.duration.leavingScreen,
           }),
           marginRight: `-${drawerWidth}px`,
-          height: '100vh',
+          height: 'calc(100vh - 64px)',
           marginTop: '64px',
           position: 'relative',
           ...(isOpen && {

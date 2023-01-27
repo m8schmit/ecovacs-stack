@@ -3,10 +3,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import Drawer from '../../components/UI/Drawer/Drawer';
+import MainDrawer from '../../components/UI/Drawer/MainDrawer';
+import Main from '../../components/UI/Main/Main';
 import EditMap from '../../components/VacuumMap/EditMap';
 import { useAppDispatch } from '../../store/hooks';
-import { getNotificationDrawer } from '../../store/menu/menuSlice';
 import { ActiveToolType, getActiveTool, setActivetool } from '../../store/vacuum/editMapSlice';
 import theme from '../../theme';
 import MapDelete from './MapDelete/MapDelete';
@@ -22,11 +22,9 @@ const Edit = () => {
 
   const handleChange = (tool: ActiveToolType) => dispatch(setActivetool(tool));
 
-  const drawerWidth = 480;
-  const { isOpen } = getNotificationDrawer();
   return (
     <>
-      <Drawer anchor="left">
+      <MainDrawer>
         <Box sx={{ width: '100%', height: '100%', typography: 'body1', overflow: 'hidden', p: 2 }}>
           <Box>
             <Link to="/">
@@ -92,32 +90,11 @@ const Edit = () => {
             </Box>
           </Box>
         </Box>
-      </Drawer>
+      </MainDrawer>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          padding: theme.spacing(3),
-          transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-          marginRight: `-${drawerWidth}px`,
-          height: '100vh',
-          marginTop: '64px',
-          position: 'relative',
-          ...(isOpen && {
-            transition: theme.transitions.create('margin', {
-              easing: theme.transitions.easing.easeOut,
-              duration: theme.transitions.duration.enteringScreen,
-            }),
-            marginRight: 0,
-          }),
-        }}
-      >
+      <Main>
         <EditMap />
-      </Box>
+      </Main>
     </>
   );
 };

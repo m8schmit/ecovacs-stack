@@ -1,5 +1,5 @@
 import { NotificationsNone } from '@mui/icons-material';
-import { AppBar, Badge, Box, Toolbar, Typography, IconButton } from '@mui/material';
+import { AppBar, Badge, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
 import Notifications from '../../../../pages/Dashboard/Notifications/Notifications';
@@ -9,7 +9,7 @@ import { getUnreadEventsLength } from '../../../../store/vacuum/notificationSlic
 import theme from '../../../../theme';
 import Battery from '../../../Battery/Battery';
 import DND from '../../../DND/DND';
-import Drawer from '../../Drawer/Drawer';
+import SecondaryDrawer from '../../Drawer/SecondaryDrawer';
 
 interface MainFrameProps {
   children?: ReactNode;
@@ -43,11 +43,11 @@ const MainFrame: FC<MainFrameProps> = ({ children }) => {
         </Toolbar>
       </AppBar>
       {children}
-      <Drawer anchor="right" isOpen={isOpen}>
+      <SecondaryDrawer anchor="right" isOpen={isOpen}>
         <Box sx={{ margin: `0 ${theme.typography.pxToRem(15)}` }}>
           <Notifications />
         </Box>
-      </Drawer>
+      </SecondaryDrawer>
     </Box>
   );
 };

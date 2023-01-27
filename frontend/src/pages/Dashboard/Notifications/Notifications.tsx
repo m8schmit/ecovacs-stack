@@ -18,6 +18,7 @@ export const Notifications = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <Typography variant="h6">LifeSpan</Typography>
       <LifeSpanDevices />
       <LifespanAccessories />
       <Typography variant="h6">Events</Typography>

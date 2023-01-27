@@ -48,7 +48,7 @@ export const NotificationsList: FC<NotificationsListProps> = ({ list }) => {
           }}
         >
           <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Box sx={{ marginRight: theme.typography.pxToRem(5) }}>{!read && <GlowingDot />}</Box>
+            <Box sx={{ marginRight: theme.typography.pxToRem(15) }}>{!read && <GlowingDot />}</Box>
             <ListItemText
               primary={getEventLabel(code)}
               secondary={`${type.toLowerCase()} - ${dayjs(timestamp).format('YYYY/M/D - HH:mm')}`}

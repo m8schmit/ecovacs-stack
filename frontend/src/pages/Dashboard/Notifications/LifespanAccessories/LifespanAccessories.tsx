@@ -23,7 +23,7 @@ const DustBagState = () => {
           }}
         >
           <ListItem sx={{ display: 'flex' }}>
-            <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+            <Typography sx={{ mr: 1, flex: '1 1 25%' }} variant="overline">
               Dust Bag
             </Typography>
             <Typography
@@ -31,7 +31,7 @@ const DustBagState = () => {
               sx={{
                 width: '100%',
                 mr: 1,
-                flex: '1 1 85%',
+                flex: '1 1 75%',
                 color: dustBag.needToBeChanged ? theme.palette.warning.main : theme.palette.success.main,
               }}
             >
@@ -88,7 +88,7 @@ const MopState = () => {
           }}
         >
           <ListItem sx={{ display: 'flex' }}>
-            <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+            <Typography sx={{ mr: 1, flex: '1 1 25%' }} variant="overline">
               Mop
             </Typography>
             <Typography
@@ -96,7 +96,7 @@ const MopState = () => {
               sx={{
                 width: '100%',
                 mr: 1,
-                flex: '1 1 85%',
+                flex: '1 1 75%',
                 color: getTextColor(),
               }}
             >

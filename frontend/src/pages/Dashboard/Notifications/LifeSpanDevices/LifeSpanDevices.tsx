@@ -40,10 +40,10 @@ const LifeSpanDeviceItem: FC<LifeSpanDeviceItemProps> = ({ type, left, total }) 
       }}
     >
       <ListItem sx={{ display: 'flex' }}>
-        <Typography sx={{ mr: 1, flex: '1 1 15%' }} variant="overline">
+        <Typography sx={{ mr: 1, flex: '1 1 35%' }} variant="overline">
           {type}
         </Typography>
-        <Box sx={{ width: '100%', mr: 1, flex: '1 1 85%' }}>
+        <Box sx={{ width: '100%', mr: 1, flex: '1 1 65%' }}>
           <Typography variant="body2" sx={{ color: theme.palette[color].main }}>
             {hoursLeft > 0
               ? `Should be cleaned in ${hoursLeft}hours.`
