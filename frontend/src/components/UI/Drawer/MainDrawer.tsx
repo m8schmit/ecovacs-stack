@@ -30,7 +30,7 @@ const Puller = () => {
 const drawerBleeding = 64;
 const drawerWidth = 480;
 const MainDrawer: FC<MainDrawerProps> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   const isSmallScreen = useIsSmallScreen();
 
   const drawerStyle = {
@@ -45,10 +45,10 @@ const MainDrawer: FC<MainDrawerProps> = ({ children }) => {
     },
   };
 
-  useEffect(() => {
-    console.log('here', isSmallScreen);
-    setIsOpen(!isSmallScreen);
-  }, [isSmallScreen]);
+  // useEffect(() => {
+  //   console.log('here', isSmallScreen);
+  //   setIsOpen(!isSmallScreen);
+  // }, [isSmallScreen]);
   return (
     <>
       {isSmallScreen && (

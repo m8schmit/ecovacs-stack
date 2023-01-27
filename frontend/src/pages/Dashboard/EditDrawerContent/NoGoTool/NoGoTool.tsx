@@ -1,18 +1,17 @@
 import { Button, Typography } from '@mui/material';
 import { useContext } from 'react';
-
-import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
-import { useAppDispatch } from '../../../store/hooks';
+import { OptionsFrame } from '../../../../components/UI/OptionsFrame/OptionsFrame';
+import { useAppDispatch } from '../../../../store/hooks';
 import {
-  ActiveToolType,
   getActiveTool,
   getNoGoSubset,
   getNoMopSubset,
   getSelectedNoGoList,
+  ActiveToolType,
   setActivetool,
-} from '../../../store/vacuum/editMapSlice';
-import { getVacuumMap } from '../../../store/vacuum/mapSlice';
-import { WebSocketContext } from '../../../utils/socket.utils';
+} from '../../../../store/vacuum/editMapSlice';
+import { getVacuumMap } from '../../../../store/vacuum/mapSlice';
+import { WebSocketContext } from '../../../../utils/socket.utils';
 
 export const NoGoGoTool = () => {
   const dispatch = useAppDispatch();

@@ -1,10 +1,10 @@
 import { TextField } from '@mui/material';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
-import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
-import { getMapSubsetsList, getSelectedRoomsList, getVacuumMap } from '../../../store/vacuum/mapSlice';
-import theme from '../../../theme';
-import { WebSocketContext } from '../../../utils/socket.utils';
+import { OptionsFrame } from '../../../../components/UI/OptionsFrame/OptionsFrame';
+import { getMapSubsetsList, getSelectedRoomsList, getVacuumMap } from '../../../../store/vacuum/mapSlice';
+import theme from '../../../../theme';
+import { WebSocketContext } from '../../../../utils/socket.utils';
 import SelectRoomType from './SelectRoomType/SelectRoomType';
 
 export const RenameRoomTool = () => {

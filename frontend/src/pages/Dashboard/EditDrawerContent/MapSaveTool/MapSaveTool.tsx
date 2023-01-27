@@ -1,9 +1,9 @@
 import { Download, Upload } from '@mui/icons-material';
 import { IconButton, Typography } from '@mui/material';
+import { OptionsFrame } from '../../../../components/UI/OptionsFrame/OptionsFrame';
+import { BackupModeType, showBackupDialog } from '../../../../store/dialog/dialogSlice';
+import { useAppDispatch } from '../../../../store/hooks';
 
-import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
-import { BackupModeType, showBackupDialog } from '../../../store/dialog/dialogSlice';
-import { useAppDispatch } from '../../../store/hooks';
 import BackupDialog from './BackupDialog/BackupDialog';
 
 export const MapSaveTool = () => {

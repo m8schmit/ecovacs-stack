@@ -1,11 +1,10 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
-
-import { ROOM_TYPE_LABEL, ROOM_TYPE_V2 } from '../../../../components/VacuumMap/Map.utils';
-import { getMapSubsetsList, getSelectedRoomsList, getVacuumMap } from '../../../../store/vacuum/mapSlice';
-import { RoomType } from '../../../../store/vacuum/mapSlice.type';
-import theme from '../../../../theme';
-import { WebSocketContext } from '../../../../utils/socket.utils';
+import { ROOM_TYPE_LABEL, ROOM_TYPE_V2 } from '../../../../../components/VacuumMap/Map.utils';
+import { getSelectedRoomsList, getMapSubsetsList, getVacuumMap } from '../../../../../store/vacuum/mapSlice';
+import { RoomType } from '../../../../../store/vacuum/mapSlice.type';
+import theme from '../../../../../theme';
+import { WebSocketContext } from '../../../../../utils/socket.utils';
 
 interface SelectRoomTypeProps {
   subtype: string;

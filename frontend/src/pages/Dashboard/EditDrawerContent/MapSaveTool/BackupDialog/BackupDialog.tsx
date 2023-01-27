@@ -9,20 +9,19 @@ import {
   Typography,
 } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-
 import {
-  BackupDialog as BackupDialogType,
-  BackupModeType,
   getDialog,
+  BackupModeType,
   hideDialog,
   setBackupDialogLoading,
-} from '../../../../store/dialog/dialogSlice';
-import { useAppDispatch } from '../../../../store/hooks';
-import { getSelectedCachedMapInfo } from '../../../../store/vacuum/editMapSlice';
-import { getVacuumMap } from '../../../../store/vacuum/mapSlice';
-import theme from '../../../../theme';
-import { WebSocketContext } from '../../../../utils/socket.utils';
-import { isDialog } from '../../../../utils/typeguard.utils';
+  BackupDialog as BackupDialogType,
+} from '../../../../../store/dialog/dialogSlice';
+import { useAppDispatch } from '../../../../../store/hooks';
+import { getSelectedCachedMapInfo } from '../../../../../store/vacuum/editMapSlice';
+import { getVacuumMap } from '../../../../../store/vacuum/mapSlice';
+import theme from '../../../../../theme';
+import { WebSocketContext } from '../../../../../utils/socket.utils';
+import { isDialog } from '../../../../../utils/typeguard.utils';
 
 export const BackupDialog = () => {
   const dispatch = useAppDispatch();

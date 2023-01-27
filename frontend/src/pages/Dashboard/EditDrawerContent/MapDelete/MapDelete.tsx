@@ -1,8 +1,8 @@
 import { Button, Typography } from '@mui/material';
 
-import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
-import { showDialog } from '../../../store/dialog/dialogSlice';
-import { useAppDispatch } from '../../../store/hooks';
+import { OptionsFrame } from '../../../../components/UI/OptionsFrame/OptionsFrame';
+import { showDialog } from '../../../../store/dialog/dialogSlice';
+import { useAppDispatch } from '../../../../store/hooks';
 import MapDeleteDialog from './MapDeleteDialog/MapDeleteDialog';
 
 const MapDelete = () => {

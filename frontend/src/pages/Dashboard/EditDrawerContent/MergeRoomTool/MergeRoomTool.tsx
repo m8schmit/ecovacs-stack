@@ -1,17 +1,17 @@
 import { Button } from '@mui/material';
 import { useContext } from 'react';
 
-import { OptionsFrame } from '../../../components/UI/OptionsFrame/OptionsFrame';
-import { useAppDispatch } from '../../../store/hooks';
-import { setActivetool } from '../../../store/vacuum/editMapSlice';
+import { OptionsFrame } from '../../../../components/UI/OptionsFrame/OptionsFrame';
+import { useAppDispatch } from '../../../../store/hooks';
+import { setActivetool } from '../../../../store/vacuum/editMapSlice';
 import {
   getSelectedRoomsList,
   getVacuumMap,
   resetMapSubsetsList,
   resetSelectedRoomsList,
-} from '../../../store/vacuum/mapSlice';
-import theme from '../../../theme';
-import { WebSocketContext } from '../../../utils/socket.utils';
+} from '../../../../store/vacuum/mapSlice';
+import theme from '../../../../theme';
+import { WebSocketContext } from '../../../../utils/socket.utils';
 
 export const MergeRoomTool = () => {
   const dispatch = useAppDispatch();

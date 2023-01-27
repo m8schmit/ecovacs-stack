@@ -6,11 +6,11 @@ import {
   getDialog,
   hideDialog,
   setDeleteMapDialogLoading,
-} from '../../../../store/dialog/dialogSlice';
-import { useAppDispatch } from '../../../../store/hooks';
-import { getVacuumMap } from '../../../../store/vacuum/mapSlice';
-import { WebSocketContext } from '../../../../utils/socket.utils';
-import { isDialog } from '../../../../utils/typeguard.utils';
+} from '../../../../../store/dialog/dialogSlice';
+import { useAppDispatch } from '../../../../../store/hooks';
+import { getVacuumMap } from '../../../../../store/vacuum/mapSlice';
+import { WebSocketContext } from '../../../../../utils/socket.utils';
+import { isDialog } from '../../../../../utils/typeguard.utils';
 
 const MapDeleteDialog = () => {
   const dispatch = useAppDispatch();
