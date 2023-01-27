@@ -1,3 +1,5 @@
+import { Maybe } from '../../utils/typeguard.utils';
+
 // CleanState
 export interface CleanState {
   state: BotState;
@@ -78,4 +80,11 @@ export interface BotPattern {
     type: string;
     name: string;
   };
+}
+
+export interface BotSerialInfo {
+  ready: boolean;
+  botId: Maybe<string>;
+  botClass: Maybe<string>;
+  botResource: Maybe<string>;
 }

@@ -1,3 +1,4 @@
+import { Info } from '../mqttClient/botInfo/botInfo';
 import { CachedMapInfo, CleaningType, Schedules } from '../mqttClient/commands/commands.schedules.type';
 import {
   AiMapObstacle,
@@ -39,11 +40,11 @@ export interface ServerToClientEvents {
   lifeSpanInfo: (params: LifeSpanDevice[]) => void;
   lifeSpanReminder: (params: any /*todo*/) => void;
   eventList: (eventList: any /*todo*/) => void;
-  // errorList: (errorList: any /*todo*/) => void;
   savedPatternList: (patternList: BotPattern[]) => void;
   obstacleList: (obstacleList: AiMapObstacle[]) => void;
   cachedMapInfo: (cachedMapInfo: CachedMapInfo[]) => void;
   mapActionFinished: () => void;
+  botSerialInfo: (params: Info) => void;
 }
 
 export interface ClientToServerEvents {

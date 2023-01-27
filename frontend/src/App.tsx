@@ -26,6 +26,7 @@ import { setEventsList, setLifeSpanAccessory, setLifeSpanDeviceList } from './st
 import {
   getVacuumClean,
   setAutoEmpty,
+  setBotSerialInfo,
   setChargeState,
   setDoNotDisturb,
   setMoppingOption,
@@ -166,6 +167,8 @@ const App = () => {
       );
 
     socket && socket.on('savedPatternList', (payload) => dispatch(setSavedPatternList(payload)));
+
+    socket && socket.on('botSerialInfo', (payload) => dispatch(setBotSerialInfo(payload)));
 
     socket &&
       socket.on('mapTrace', (payload) => {

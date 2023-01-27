@@ -1,6 +1,7 @@
 import Aedes from 'aedes';
 import { Client } from 'aedes:client';
 import { Subscription } from 'aedes:packet';
+import { Socket } from 'socket.io';
 
 import { setTime } from './mqttClient/commands/commands.special';
 import { options } from './server.utils';

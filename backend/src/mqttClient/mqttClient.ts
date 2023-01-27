@@ -3,6 +3,7 @@ import { connect, MqttClient } from 'mqtt';
 import { addBotEvent, getBotEvent } from '../mysqlHelper/botEvent.query';
 import { updateReminder } from '../mysqlHelper/botReminder.query';
 import { WSsocket } from '../websocketServer/websocketServer';
+import { BotInfo } from './botInfo/botInfo';
 import {
   getLifeSpan,
   getMapInfo,
@@ -25,7 +26,7 @@ const mqttClient = () => {
   client = connect('mqtts://localhost:8883');
   console.info('starting Backend MQTT client');
   let vacuumMap: Maybe<VacuumMap> = null;
-  let botReady = false;
+  let botInfo = new BotInfo();
 
   client.on('connect', () => {
     console.log('connected');
@@ -114,13 +115,16 @@ const mqttClient = () => {
       const res = getDatafromMessage(message);
       const parsedContent = JSON.parse(res.content);
 
-      // const payload = inspect({ ...res, content: { ...parsedContent } }, false, null, true);
-      // console.log('onFwBuryPoint ', payload);
-
       if (parsedContent?.d?.body?.data?.d_val?.act === 'online') {
         //TODO Delay some command after this trigger
-        console.log('Bot is ready!!');
-        botReady = true;
+        const splittedTopic = topic.split('/');
+        botInfo.info = {
+          ready: true,
+          botId: splittedTopic[3],
+          botClass: splittedTopic[4],
+          botResource: splittedTopic[5],
+        };
+        console.log('Bot is ready!!', botInfo.info);
       }
     }
 
@@ -152,7 +156,6 @@ const mqttClient = () => {
     }
 
     if (isTopic('setMapSubSet', topic)) {
-      console.log('HERE', topic, vacuumMap?.settings);
       if (!vacuumMap) return;
 
       //rooms
@@ -275,6 +278,9 @@ const mqttClient = () => {
       const res = getDatafromMessage(message);
       WSsocket?.emit('chargePos', res.chargePos);
       WSsocket?.emit('botPos', res.deebotPos);
+
+      // TODO find a better solution
+      WSsocket?.emit('botSerialInfo', botInfo.info);
     }
 
     if (isTopic('MapTrace', topic)) {

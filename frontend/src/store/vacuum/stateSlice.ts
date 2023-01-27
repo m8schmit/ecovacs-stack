@@ -9,6 +9,7 @@ import {
   AutoEmptyState,
   BatteryState,
   BotPattern,
+  BotSerialInfo,
   ChargeState,
   CleanState,
   DoNotDisturbState,
@@ -27,6 +28,7 @@ interface VacuumState {
   doNotDisturb: DoNotDisturbState;
   savedPatternList: BotPattern[];
   selectedSavedPatternId: string;
+  botSerialInfo: BotSerialInfo;
 }
 
 const initialState: VacuumState = {
@@ -63,6 +65,12 @@ const initialState: VacuumState = {
   },
   savedPatternList: [],
   selectedSavedPatternId: '',
+  botSerialInfo: {
+    ready: false,
+    botId: null,
+    botClass: null,
+    botResource: null,
+  },
 };
 
 export const stateSlice = createSlice({
@@ -133,6 +141,10 @@ export const stateSlice = createSlice({
       ...state,
       selectedSavedPatternId: initialState.selectedSavedPatternId,
     }),
+    setBotSerialInfo: (state, action: PayloadAction<BotSerialInfo>) => ({
+      ...state,
+      botSerialInfo: action.payload,
+    }),
   },
 });
 
@@ -148,6 +160,7 @@ export const {
   setSavedPatternList,
   setSelectedSavedPatternId,
   resetSelectedSavedPatternId,
+  setBotSerialInfo,
 } = stateSlice.actions;
 
 export const getVacuumClean = () => useAppSelector(({ state }) => state.status, shallowEqual);
@@ -161,3 +174,4 @@ export const getDoNotDisturb = () => useAppSelector(({ state }) => state.doNotDi
 export const getSavedPattern = () => useAppSelector(({ state }) => state.savedPatternList, shallowEqual);
 export const getSelectedSavedPatternId = () =>
   useAppSelector(({ state }) => state.selectedSavedPatternId, shallowEqual);
+export const getBotSerialInfo = () => useAppSelector(({ state }) => state.botSerialInfo, shallowEqual);
