@@ -1,11 +1,13 @@
-import { Box } from '@mui/material';
+import { ScreenRotation } from '@mui/icons-material';
+import { Box, IconButton } from '@mui/material';
 import { Map as OlMap, View } from 'ol';
 import { getCenter } from 'ol/extent';
 import { Projection } from 'ol/proj';
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from 'react';
-import { getNotificationDrawer } from '../../../store/menu/menuSlice';
 
+import { getNotificationDrawer } from '../../../store/menu/menuSlice';
 import { LayerProps } from '../../VacuumMap/Layers/Layer.type';
+import { getAngle } from '../../VacuumMap/Map.utils';
 import { MapContext } from './MapContex';
 
 interface MapProps {
@@ -19,6 +21,7 @@ interface MapProps {
 const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => {
   const mapRef = useRef<HTMLDivElement>();
   const [map, setMap] = useState<OlMap>();
+  const [mapAngle, setMapAngle] = useState<number>(0);
 
   const { isOpen } = getNotificationDrawer();
 
@@ -34,6 +37,12 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
   }, [isOpen, map]);
 
   useEffect(() => {
+    if (!map) return;
+
+    map.getView()?.setRotation(getAngle(mapAngle));
+  }, [mapAngle]);
+
+  useEffect(() => {
     const initialMap = new OlMap({
       layers: [],
       view: new View({
@@ -42,6 +51,7 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
         zoom,
         minZoom,
         maxZoom,
+        rotation: getAngle(mapAngle),
         extent: projection.getExtent(),
       }),
     });
@@ -68,6 +78,9 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
             }
           })}
         </Box>
+        <IconButton onClick={() => setMapAngle((prev) => (prev === 0 ? 90 : 0))}>
+          <ScreenRotation />
+        </IconButton>
       </MapContext.Provider>
     </>
   );
