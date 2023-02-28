@@ -28,7 +28,10 @@ address=/aliyuncs.com/your-local-ip-here
 
 - restart your vacuum bot, it should connect to the MQTTs server and you should see something like:
 
-![alt text](2022-12-13_09-51.png 'Title')
+![alt text](2023-02-28_08-55.png 'Title')
+  
+  
+*(Since the main objective is to hide my personal information, the map is intentionally truncated)*
 
 ## Topics
 
