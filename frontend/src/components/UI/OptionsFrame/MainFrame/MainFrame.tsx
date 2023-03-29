@@ -9,6 +9,7 @@ import { getUnreadEventsLength } from '../../../../store/vacuum/notificationSlic
 import theme from '../../../../theme';
 import { WebSocketContext } from '../../../../utils/socket.utils';
 import Battery from '../../../Battery/Battery';
+import BotInfo from '../../../BotInfo/BotInfo';
 import DND from '../../../DND/DND';
 import SecondaryDrawer from '../../Drawer/SecondaryDrawer';
 
@@ -42,6 +43,7 @@ const MainFrame: FC<MainFrameProps> = ({ children }) => {
                 <NotificationsNone />
               </Badge>
             </IconButton>
+            <BotInfo />
             <DND />
             <Battery />
           </Box>

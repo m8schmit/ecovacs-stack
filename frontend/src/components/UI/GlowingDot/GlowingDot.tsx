@@ -1,12 +1,19 @@
 import { Box } from '@mui/material';
+import { FC } from 'react';
+
 import theme from '../../../theme';
 
-const GlowingDot = () => {
+interface GlowingDotProps {
+  color?: string;
+}
+
+const GlowingDot: FC<GlowingDotProps> = ({ color }) => {
+  const dotColor = color ? color : theme.palette.primary.main;
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.main,
+        backgroundColor: dotColor,
+        color: dotColor,
         boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
         width: theme.typography.pxToRem(7),
         height: theme.typography.pxToRem(7),

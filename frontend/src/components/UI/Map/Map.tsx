@@ -6,6 +6,7 @@ import { Projection } from 'ol/proj';
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { getNotificationDrawer } from '../../../store/menu/menuSlice';
+import theme from '../../../theme';
 import { LayerProps } from '../../VacuumMap/Layers/Layer.type';
 import { getAngle } from '../../VacuumMap/Map.utils';
 import { MapContext } from './MapContex';
@@ -78,8 +79,20 @@ const Map: FC<MapProps> = ({ children, zoom, minZoom, maxZoom, projection }) => 
             }
           })}
         </Box>
-        <IconButton onClick={() => setMapAngle((prev) => (prev === 0 ? 90 : 0))}>
-          <ScreenRotation />
+        <IconButton
+          sx={{
+            backgroundColor: theme.palette.common.white,
+            borderRadius: theme.typography.pxToRem(5),
+            border: `solid thin lightgray`,
+            position: 'absolute',
+            top: theme.typography.pxToRem(8),
+            left: theme.typography.pxToRem(40),
+            padding: theme.typography.pxToRem(5),
+            [`&:hover`]: { borderColor: 'gray', backgroundColor: theme.palette.common.white },
+          }}
+          onClick={() => setMapAngle((prev) => (prev === 0 ? 90 : 0))}
+        >
+          <ScreenRotation sx={{ fontSize: theme.typography.pxToRem(15), color: 'gray' }} />
         </IconButton>
       </MapContext.Provider>
     </>

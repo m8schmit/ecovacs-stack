@@ -22,7 +22,6 @@ const ControlDrawerContent = () => {
             scrollButtons="auto"
             aria-label="lab API tabs example"
           >
-            /home/mschmit/ecovacs-stack/frontend/src/pages/Dashboard/EditDrawerContent
             <Tab label="Commands" value="2" />
             <Tab label="Options" value="3" />
             <Tab label="Reports" value="4" disabled />
