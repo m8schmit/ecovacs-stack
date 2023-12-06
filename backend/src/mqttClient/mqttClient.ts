@@ -23,7 +23,7 @@ import { Maybe } from './types';
 export let client: MqttClient;
 
 const mqttClient = () => {
-  client = connect('mqtts://localhost:8883');
+  client = connect('mqtts://localhost:8883', {rejectUnauthorized: false});
   console.info('starting Backend MQTT client');
   let vacuumMap: Maybe<VacuumMap> = null;
   let botInfo = new BotInfo();
