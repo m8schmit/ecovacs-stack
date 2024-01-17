@@ -1,4 +1,5 @@
 import Aedes from 'aedes';
+import { inspect } from 'node:util';
 import { Client } from 'aedes:client';
 import { Subscription } from 'aedes:packet';
 import { Socket } from 'socket.io';
@@ -15,9 +16,9 @@ const mqttsServer = (): Promise<Aedes> => {
 
     broker.on('clientError', (client: Client, error: Error) => {
       console.log(
-        `MQTT client \x1b[34m${client ? client.id : client}\x1b[0m  receive this error   \x1b[34m${JSON.stringify(
-          error,
-        )}\x1b[0m`,
+        `MQTT client \x1b[34m${client ? client.id : client}\x1b[0m  receive this error   \x1b[34m${
+          inspect(error, true, null, true)
+	}\x1b[0m`,
       ),
         reject();
     });
