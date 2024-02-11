@@ -76,7 +76,7 @@ export const EVENT_LABEL_LIST: BotLabel<BotEventId> = {
   1092: 'Failed to find position after being lift.',
 };
 
-export type BotErrorId = 0 | 102 | 103 | 104 | 105 | 109 | 110 | 20003 | 20011 | 20012;
+export type BotErrorId = 0 | 102 | 103 | 104 | 105 | 109 | 110 | 111 | 20003 | 20011 | 20012;
 
 export const ERROR_LABEL_LIST: BotLabel<BotErrorId> = {
   0: 'All good.',
@@ -86,6 +86,7 @@ export const ERROR_LABEL_LIST: BotLabel<BotErrorId> = {
   105: 'Robot is stuck.',
   109: 'Main Brush is tangled.',
   110: 'Dust Band is Missing.',
+  111: 'The bumper is stuck.',
   20003: 'Task type not supported.',
   20011: 'Handle deal message fail.',
   20012: 'Get point count out of range.',
