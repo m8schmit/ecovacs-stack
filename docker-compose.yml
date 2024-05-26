@@ -34,7 +34,8 @@ services:
       default:
     volumes:
       - ./backend:/opt/app
-    user: '${UID}:${GID}'
+# bash complaied about UID being readonly shell variable, used below instead
+    user: '${REAL_UID}:${REAL_GID}'
     environment:
       - BASE_URL=https://localhost
       - BASE_URL_01=https://ecovacs.com
@@ -70,7 +71,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    user: '${UID}:${GID}'
+    user: '${REAL_UID}:${REAL_GID}'
     environment:
       - WDS_SOCKET_PORT=0
       - TZ=America/New_York

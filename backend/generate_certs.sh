@@ -1,7 +1,8 @@
 #!/bin/ash
 set -e
 
-if [ ! -f ./ssl.crt ]; then
+# this should execute every time as repo does provide ssl.crt and ssl.key files but not chain nor ca
+#~ if [ ! -f ./ssl.crt ]; then
 	echo "Generate Certificates" 
 
   BASE_URLS=$(env | grep -P "^BASE_URL(_\d\d)?\=")
@@ -15,4 +16,8 @@ if [ ! -f ./ssl.crt ]; then
   rm -f ./ssl.crt ./ssl.key
   mkcert -cert-file  ./ssl.crt -key-file  ./ssl.key $domains_list
   mkcert -install
-fi
+# hacky hack to make node happy...
+  cat ./ssl.crt "$(mkcert -CAROOT)/rootCA.pem" > chain.pem
+  cp "$(mkcert -CAROOT)"/rootCA.pem .
+  
+#~ fi
