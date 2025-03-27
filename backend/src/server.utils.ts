@@ -5,6 +5,8 @@ import { inspect } from 'util';
 export const options = {
   key: fs.readFileSync('/opt/app/ssl.key'),
   cert: fs.readFileSync('/opt/app/ssl.crt'),
+//~ for some reason Node needs to have root certificate authority to trust mkcert-generated certificates
+  ca: fs.readFileSync('/opt/app/rootCA.pem'),
 };
 
 export const requestListener = (req: IncomingMessage, res: ServerResponse) => {

@@ -24,7 +24,7 @@ address=/aliyuncs.com/your-local-ip-here
 
 - In the `frontend` folder make a copy of the `.env.example` file to `.env` and add your local `ip` .
 
-- run ` UID="$(id -u)" GID="$(id -g)" docker-compose up`, you should be able to access to `http://localhost:4200/`
+- run ` REAL_UID="$(id -u)" REAL_GID="$(id -g)" docker-compose up`, you should be able to access to `http://localhost:4200/`
 
 - restart your vacuum bot, it should connect to the MQTTs server and you should see something like:
 
